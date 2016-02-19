@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>订单列表</title>
+  <link href="${res}/css/xc/main.css" rel="stylesheet" />
+<link href="${res}/css/xc/orderlist.css" rel="stylesheet">
+<link href="${res}/css/xc/myorder.css" rel="stylesheet">
+<link href="${res}/css/xc/list.css" rel="stylesheet">
+<link href="${res}/css/xc/admin.css" rel="stylesheet">
+<script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
+</head>
+<body class="ui-mobile-viewport ui-overlay-c">
+<div data-role="page"  tabindex="0" class="ui-page ui-body-c ui-page-active" >
+
+<div class="m-ordernav">
+		<ul class="clearfix">
+			<li [#if status=='1']class="on"[/#if]>
+				<a href="${base}/adminIdex.html?status=1">未开始</a>
+			</li>
+			<li [#if status=='3']class="on"[/#if]>
+				<a href="${base}/adminIdex.html?status=3">进行中</a>
+			</li>
+			<li [#if status=='4']class="on"[/#if]>
+				<a href="${base}/adminIdex.html?status=4">已完成</a>
+			</li>
+		</ul>
+	</div>
+	<!-- the content -->
+    <div id="wrapper" >
+        <div id="scroller">
+        <article id="thelist">
+        [#if _admin_key??]
+         [@admin_order_list  userId="${_admin_key.userId}" status="${status?default('1')}"]
+            [#if sendOrderList?? &&sendOrderList?size>0]
+            [#list sendOrderList as sendOrder]
+
+	        	<div class="userlist">
+		        	<div class="listinfo">
+			        	<div class="userinfo p_r">
+				        	<p class="username">车主：${sendOrder.name!''}</p>
+
+				        	<div style="font-size:26px">手机：<a href="tel:${sendOrder.mobile!''}" style="">${sendOrder.mobile!''}</a></div>
+				        	<p>
+					        	<span>车牌号：${sendOrder.carNo!''} </span>
+					        	<span>预约时间：${sendOrder.preTime!''} </span>
+					        	<span class="amount">派单时间：<font>${sendOrder.operatorDate?substring(0,16)}</font></span>
+				        	</p>
+
+					          <span class="btn_rectangle greyframe color_blue f_r vieworder"><a href="/renwu/order${sendOrder.orderId!''}.html">查看订单</a></span>
+				        	
+	                                [#if sendOrder.status=='-1']
+	                               	 	<span class="orderstate color_orange" >未支付</span>
+	                                [/#if]
+	                                [#if sendOrder.status=='0']
+	                               	 	<span class="orderstate color_orange" >未开始</span>
+	                                [/#if]
+	                                [#if sendOrder.status=='3']
+	                               	 	<span class="orderstate color_orange" >洗车已开始</span>
+	                                [/#if]
+	                                [#if sendOrder.status=='4']
+	                               	 	<span class="orderstate color_orange" >洗车结束</span>
+	                                [/#if]
+				</div></div></div>
+
+
+
+            [/#list]
+            [#else]
+	            <div class="userlist">
+			        	<div class="listinfo">
+							[@portal_picture typeName="wx_logo"]
+							[#list pictures as pic]
+							<img class="avataricon" src="${pic.attachmentUrl!''}">
+							[/#list]
+							[/@portal_picture]
+				        	<div class="userinfo p_r">
+					        	<!--<p class="username">洪宝洗车</p>-->
+					        	<p >  暂无订单</p>
+					        </div>
+					       
+					    </div>
+					    
+			     </div>
+            [/#if]
+            [/@admin_order_list]
+             [/#if]
+        	</article>
+       </div>
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="format-detection" content="telephone=no"/> 
+
+    <title>订单详情</title>
+   
+    <!--  <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.css" />
+    <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.default.css" />-->
+   <link rel="stylesheet" type="text/css" href="../../../res/images/foot/foot.css">
+    <link rel='stylesheet' type="text/css" href='../../../res/css/ggwash/od.css'>
+    <link rel='stylesheet' type="text/css" href='${res}/css/ggwash/fileupload.css'>
+      <script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
+    <script>
+    	var msg="${flag!''}";
+    	if(""!=msg&&null!=msg){
+    		alert("评论成功");
+    	}
+    </script>
+</head>
+<body style="display:block">
+<form id="step2Form" method="POST" action="${base}/pinglun.html">
+
+<input type="hidden" id="orderId" name="orderId" value="${orderId!''}"/>
+<div id="">
+<div id="scroller">
+<div id="d_main">
+    <div id="d_detail">
+
+        <div id="d_status" style='display: block; width: 100%'>
+        <div id='d_iconstates'>
+			
+            <div id='d_statussub1' class="c_fllf0">
+                    <div class=" c_imgsize c_statusimg" id="d_status1"></div>
+                    <div class='c_statustip'>支付完成</div>
+            </div>
+           	 [#if orderId??]
+    			[@find_order_byid id="${orderId}"]
+	    		[#if order??]
+	    			[#if order.sendOrderStatus?number lt 1]
+	    				 <div id='d_statussub2' class="c_fllf">
+	                    	<div class=" c_imgsize c_statusimg" id="d_status2"></div>
+	                   		 <div class='c_statustip'>派单完成</div>
+			            </div>
+	    			[#else]
+	    			 <div id='d_statussub2' class="c_fllf0">
+	                    	<div class=" c_imgsize c_statusimg" id="d_status2"></div>
+	                   		 <div class='c_statustip'>派单完成</div>
+			            </div>
+	    			[/#if]
+	    			[#if order.sendOrderStatus?number lt 3]
+	    				   <div id='d_statussub3' class="c_fllf">
+                   			 <div class=" c_imgsize c_statusimg" id="d_status3"></div>
+                   			 <div class='c_statustip'>洗车开始</div>
+           					 </div>
+	    			[#else]
+	    				   <div id='d_statussub3' class="c_fllf0">
+		                    <div class=" c_imgsize c_statusimg" id="d_status3"></div>
+		                    <div class='c_statustip'>洗车开始</div>
+		           			 </div>
+	    			[/#if]
+	    			[#if order.sendOrderStatus?number lt 4]
+	    				    <div id='d_statussub4' class="c_fllf">
+			                    <div class=" c_imgsize c_statusimg" id="d_status4"></div>
+			                    <div class='c_statustip'>洗车完成</div>
+			           		 </div>
+
+	    			[#else]
+	    				   <div id='d_statussub4' class="c_fllf0">
+				                    <div class=" c_imgsize c_statusimg" id="d_status4"></div>
+				                    <div class='c_statustip'>洗车完成</div>
+				            </div>
+
+	    			[/#if]
+	    		
+           
+        </div>
+
+    </div>
+
+
+	    					 <div id="d_more">
+					        <div id="d_phone">
+					            <div id="d_pimg" class="c_fllf c_imgsize c_moreimg"></div>
+					            <span id="s_phone" class='c_vtext'>联系电话</span>
+					            <span id="d_sphone" class='c_vtext'>${order.mobile!''}</span>
+					        </div>
+					        <div id="d_addr">
+					            <div id="d_aimg" class="c_fllf c_imgsize c_moreimg"></div>
+					            <span id="s_loc" class='c_vtext'>停放位置</span>
+					            <span id="d_saddr" class='c_vtext'>${order.address!''}</span>
+					        </div>
+					
+					        <div id="d_note">
+					                <div id='d_subrow' class='clear'>
+					            <div id="d_nimg" class="c_fllf c_imgsize c_moreimg"></div>
+					            	<span id="s_note" class='c_vtext'>备注信息</span>
+					            	${order.discription!''}
+					                </div>
+					            <div id="d_snotemore"></div>
+					        </div>
+	    						</div>
+
+  
+    [@send_order orderId="${orderId}"]
+    	[#if sendOrder??]
+    			 <div id="d_befor">
+			        <div id="d_tbefor">
+			            	洗车前
+			        </div>
+			         <div style="text-align:center;">
+			         [#if sendOrder.beforePhoto??]
+			       		 	<img id="d_ibefor"  src="${sendOrder.beforePhoto}"/>
+			       	 [/#if]	 	
+			       	 </div>
+			   		 </div>
+				    <div id="d_after">
+				        <div id="d_tafter">
+				        		    洗车后
+				        </div>
+				        <div style="text-align:center;">
+				        [#if sendOrder.afterPhoto??]
+				        	<img id="d_iafter"  src="${sendOrder.afterPhoto}"/>
+				        [/#if]	
+				        </div>
+				    </div>
+				     <div id="d_comment">
+			        <div id="d_tcomment">
+			            <div id="d_cimg" class="c_fllf c_imgsize c_moreimg"></div>
+			            <span id="s_comment" class='c_vtext'>洗车内容</span>
+			            <span id="d_srating" class='c_vtext'></span>
+			        </div>
+			        <div id="d_scomment">${sendOrder.content!''}</div>
+			    </div>
+    	[/#if]
+    [/@send_order]
+   
+    [#if order.sendOrderStatus?number gt 3]
+    [@find_comment_orderId orderId="${orderId}"]
+    	[#if comment??]
+    		 <div class="login_bd">
+	            <span id="s_comment" class='c_vtext'>评价内容</span>
+	            <textarea rows="5" cols="5" style="width:100%;border:1px solid #2EC5C0" id="content" name="content">${comment.content!''} </textarea>
+	        </div>
+    	[#else]
+    		 <div class="login_bd">
+	            <span id="s_comment" class='c_vtext'>评价内容</span>
+	            <textarea rows="5" cols="5" style="width:100%;border:1px solid #2EC5C0" id="content" name="content"></textarea>
+	           
+	        </div>
+ 			 <div class="yytz_x">
+  		    	<a href="javascript:void(0);" onclick="$('#step2Form').submit();">提交评价</a>
+  		    </div>
+    	[/#if]
+    [/@find_comment_orderId]
+   
+    [/#if]
+    
+      		[/#if]
+    	[/@find_order_byid]
+    [/#if]
+   
+    <!--  
+    <div id="d_footnote">温馨提示: 系统派单前撤单可全额退款。</div>
+    <div align="center"><input type="button" id="order_refund_btn" class="ui-btn red"  value=""></div>
+    -->
+</div>
+
+</div>
+
+</div>
+
+</div>
+</form>
+
+</body>
+</html>

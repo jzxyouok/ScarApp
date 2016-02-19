@@ -1,0 +1,17 @@
+<div style="height: 48px; margin-top: 10px;" class="kd"></div>
+<footer>
+	<div class="nav">
+		<ul>
+	        <li><a href="${base}/fund" class="nav_cpjxa">产品精选</a></li>
+	        <li><a href="${base}/url/lzh/lzh.html" class="nav_lzha">乐资会</a></li>
+	        [@portal_nav codeValue="10223"]
+			[#list nnavs?if_exists as nav]
+				[#if nav?? && nav_index == 0]
+				<li><a href="${base}/articlelist/wzwslt/1/${nav.codeId!''}.html" class="nav_gkka">公开课</a></li>
+				[/#if]
+			[/#list]
+	        [/@portal_nav]
+	        <li><a href="${base}/user/vip.html" class="nav_grzxa">个人中心</a></li>
+		</ul>
+	</div>
+</footer>
