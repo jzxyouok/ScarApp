@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="format-detection" content="telephone=no"/> 
+    <meta name="format-detection" content="telephone=no"/>
 
     <title>修改任务</title>
-   
+
     <!--  <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.css" />
     <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.default.css" />-->
    <link rel="stylesheet" type="text/css" href="${res}/images/foot/foot.css">
@@ -20,7 +20,7 @@
 	.upload_text {position:fixed; opacity:0;}
 </style>
     <script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
-    
+
     <script type="text/javascript" src="${res}/scripts/mobile/user/fts.js"></script>
     <script type="text/javascript" src="${res}/scripts/mobile/user/fileupload.js?v=9"></script>
     <script>
@@ -33,7 +33,7 @@
     			alert("洗车结束");
     		}
     	}
-    	
+
     	fileChange('userCard');
 		fileChange('idCard');
 	})
@@ -54,7 +54,7 @@
 
         <div id="d_status" style='display: block; width: 100%'>
         <div id='d_iconstates'>
-			
+
             <div id='d_statussub1' class="c_fllf0">
                     <div class=" c_imgsize c_statusimg" id="d_status1"></div>
                     <div class='c_statustip'>支付完成</div>
@@ -97,8 +97,8 @@
 				            </div>
 
 	    			[/#if]
-	    		
-           
+
+
         </div>
 
     </div>
@@ -118,7 +118,7 @@
 					<div class="d_tb">
 						<div  class="c_fllf c_imgsize c_moreimg"><img src="${res}/images/ggwash/car_model.png" width="22px" height="22px"/></div>
 						<span  class='c_vtext'>车型</span>
-						<span  class='c_vtext'>[#if '0'==order.carType]轿车[#else]吉普[/#if]</span>
+						<span  class='c_vtext'>[#if order.carType!=null&&order.carType!=''][#if '0'==order.carType]轿车[#else]吉普[/#if][/#if]</span>
 					</div>
 					<div class="d_tb">
 						<div  class="c_fllf c_imgsize c_moreimg"><img src="${res}/images/ggwash/car_model.png" width="22px" height="22px"/></div>
@@ -161,7 +161,7 @@
 					<img id="userCardImg" src="${sendOrder.beforePhoto!'${res}/images/login_bg.png'}" width="30%" />
 				</p>
 		    </div>
-			
+
 		    <div class="login_sc">
 		    	<p><span>&nbsp;&nbsp;&nbsp;洗车后照片：</span>
 			    	<a href="javascript:void(0);">选择文件</a>
@@ -174,7 +174,7 @@
 					<img id="idCardImg" src="${sendOrder.afterPhoto!'${res}/images/login_bg.png'}" width="30%" />
 				</p>
 		    </div>
-	       
+
 	    </div>
 	     <div class="login_bd">
 	            <span id="s_comment" class='c_vtext'>洗车内容</span>
@@ -190,7 +190,7 @@
   		   <div id="d_footnote" style="padding-top:5px;">
   		   		<font color="red"><br/>
   		   		<p>温馨提示:点击开始洗车，会发送1条微信消息给车主，提示您的车正在清洗</p>
-  		   
+
   		       <p>点击完成洗车，会发送1条微信消息给车主，提示您的车已经洗完。</p>
   		       </font>
   		   </div>
@@ -199,8 +199,8 @@
       		[/#if]
     	[/@find_order_byid]
     [/#if]
-   
-    <!--  
+
+    <!--
     <div id="d_footnote">温馨提示: 系统派单前撤单可全额退款。</div>
     <div align="center"><input type="button" id="order_refund_btn" class="ui-btn red"  value=""></div>
     -->
