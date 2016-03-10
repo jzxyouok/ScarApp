@@ -13,20 +13,20 @@ import java.util.Date;
 /**
  *
  * 前端处理工具类
- * 
+ *
  * @author zhengyunfei
  *
  */
 public class FmUtils {
 
-	private static final String IMAGEPATH = "/images";
-	private static final String CSSPATH = "/style";
-	private static final String SCRIPTSPATH = "/scripts/portal";
+	private static final String IMAGEPATH = "/res/images";
+	private static final String CSSPATH = "/res/css";
+	private static final String SCRIPTSPATH = "/res/js";
 	private static final String RESPATH = "/res";
-	
+
 	//错误页面请求
 	private static final String ERROR_404_PAGE = "error/404";
-	
+
 	//重定向标记
 	private static final String PAGE_REDIRECT = "redirect:";
 
@@ -51,7 +51,7 @@ public class FmUtils {
 			model.put("res", site.getContextPath() + RESPATH);
 			model.put("images", site.getContextPath() + IMAGEPATH);
 			model.put("css", site.getContextPath() + CSSPATH);
-			model.put("scripts", site.getContextPath() + SCRIPTSPATH);
+			model.put("js", site.getContextPath() + SCRIPTSPATH);
 			model.put("cmsReq", site.getHttpUrIAddr());
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
@@ -59,7 +59,7 @@ public class FmUtils {
 			model.put("now", currDate);
 		}
 	}
-	
+
 	/**
 	 * 处理html页面跳转请求
 	 * @param request
@@ -71,7 +71,7 @@ public class FmUtils {
 		FmUtils.FmData(request, model);
 		return rpage;
 	}
-	
+
 	/**
 	 * 处理重定向条状请求
 	 * @param request
@@ -80,10 +80,10 @@ public class FmUtils {
 	 * @return
 	 */
 	public static String fmRedirectPage(HttpServletRequest request, ModelMap model, String rpage) {
-		
+
 		return new StringBuffer(PAGE_REDIRECT).append(rpage).toString();
 	}
-	
+
 	/**
 	 * 处理重定向条状请求
 	 * @param request
@@ -92,7 +92,7 @@ public class FmUtils {
 	 * @return
 	 */
 	public static void fmRedirectPage(HttpServletRequest request, HttpServletResponse response, ModelMap model, String rpage) throws IOException {
-		
+
 		response.sendRedirect(new StringBuffer(request.getContextPath()).append(rpage).toString());
 	}
 
@@ -102,7 +102,7 @@ public class FmUtils {
 	 * @param model
 	 * @return
 	 */
-	public static String fmNotFountPage(HttpServletRequest request, HttpServletResponse response, 
+	public static String fmNotFountPage(HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) {
 		FmData(request, model);
 		return ERROR_404_PAGE;
