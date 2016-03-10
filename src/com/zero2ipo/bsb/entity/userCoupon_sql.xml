@@ -1,0 +1,86 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<typeAlias alias="userCoupon" type="com.zero2ipo.bsb.entity.UserCoupon" />
+	<resultMap class="userCoupon" id="userCouponMap">
+		<result property="userId" column="user_id" />
+		<result property="couponId" column="coupon_id" />
+		<result property="buyDate" column="buy_date" />
+		<result property="createTime" column="create_time" />
+		<result property="id" column="id" />
+		<result property="carNo" column="car_no" />
+	</resultMap>
+<!--查询-->
+	<select id='findUserCouponList' resultMap='userCouponMap'>
+		SELECT user_id, coupon_id, DATE_FORMAT(buy_date,'%Y-%c-%d %H:%i:%s') AS buy_date,
+	DATE_FORMAT(create_time,'%Y-%c-%d %H:%i:%s') AS create_time,car_no
+	,	
+	id	
+FROM USER_COUPON
+order by buy_date desc
+<!--<dynamic prepend="WHERE">
+<isNotEmpty prepend="AND" property="userId">
+INSTR(USER_ID,#userId#)>0
+</isNotEmpty>
+</dynamic>
+--></select>
+
+	<!-- 信息列表    总条数查询 -->
+    <select id="findUserCouponListCount" resultClass="java.lang.Integer">
+	   SELECT 
+		   	COUNT(0)
+		 FROM 
+				USER_COUPON
+  	</select>
+  	<!-- 根据用户标识查询信息 -->
+	<select id="findUserCouponById" resultMap="userCouponMap">
+		 SELECT	user_id,	
+	coupon_id,car_no,
+	DATE_FORMAT(buy_date,'%Y-%c-%d %H:%i:%s')AS buy_date,	
+	DATE_FORMAT(create_time,'%Y-%c-%d %H:%i:%s')AS create_time,	
+	id	
+		 FROM 
+				USER_COUPON
+		WHERE 
+		     id= #id#
+	</select>	
+<!--新增-->
+<insert id="addUserCoupon" parameterClass="userCoupon">
+	INSERT INTO USER_COUPON(
+	user_id,	
+	coupon_id,	
+	buy_date,	
+	create_time,	
+	id	
+)VALUES(
+	#userId#,	
+	#couponId#,	
+	#buyDate#,	
+	#createTime#,	
+	#id#	
+)
+</insert>
+<!--修改-->
+<update id="updUserCoupon" parameterClass="userCoupon">
+	UPDATE
+	USER_COUPON
+	SET
+	user_id=#userId#,	
+	coupon_id=#couponId#,	
+	buy_date=#buyDate#,	
+	create_time=#createTime#,	
+	id=#id#	
+ 	WHERE 
+	ID=#id#
+</update>
+<!--删除-->
+<delete id="delUserCoupon" parameterClass="java.util.Map">
+	DELETE FROM 
+		USER_COUPON
+	WHERE
+	ID IN
+	<iterate property="id" conjunction="," close=")" open="(">
+	#id[]#
+	</iterate> 
+</delete>
+</sqlMap>

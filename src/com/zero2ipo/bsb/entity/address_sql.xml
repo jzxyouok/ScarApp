@@ -1,0 +1,50 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="bsb.mobile.address">
+<typeAlias alias="entity" type="com.zero2ipo.bsb.entity.Address"/>
+<resultMap class="entity" id="queryMap">
+	<result property="cid" column="CID"/>
+	<result property="id" column="ID"/>
+	<result property="washAddr" column="WASH_ADDR"/>
+	<result property="mobile" column="MOBILE"/>
+	<result property="openId" column="OPEN_ID"/>
+</resultMap>
+
+
+<select id='findAddressAllList' resultMap="queryMap">
+SELECT
+	ID,
+	CID,
+	WASH_ADDR,
+	OPEN_ID,
+	MOBILE
+FROM ADDRESS
+<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="id">
+	ID=#id#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="openId">
+	OPEN_ID=#openId#
+	</isNotEmpty>
+</dynamic>
+
+</select>
+<select id='findAddressById' resultMap="queryMap">
+SELECT
+	ID,
+	CID,
+	OPEN_ID,
+	WASH_ADDR,
+	MOBILE
+FROM ADDRESS
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="id">
+			ID=#id#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="openId">
+			OPEN_ID=#openId#
+		</isNotEmpty>
+	</dynamic>
+</select>
+
+</sqlMap>

@@ -1,0 +1,75 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="bsb.mobile.sendOrder">
+	<typeAlias alias="sendOrder" type="com.zero2ipo.bsb.entity.SendOrder" />
+	<resultMap class="sendOrder" id="sendOrderMap">
+		<result property="id" column="ID" />
+		<result property="orderId" column="ORDER_ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="content" column="CONTENT" />
+		<result property="operatorId" column="OPERATOR_ID" />
+		<result property="operatorDate" column="OPERATOR_DATE" />
+		<result property="finishDate" column="FINISH_DATE" />
+		<result property="status" column="STATUS" />
+		<result property="beforePhoto" column="BEFORE_PHOTO" />
+		<result property="afterPhoto" column="AFTER_PHOTO" />
+	</resultMap>
+<!--查询-->
+<!-- 根据Id查信息 -->
+	<select id="findSendOrderById" resultMap="sendOrderMap"> SELECT ID, ORDER_ID,
+		USER_ID,
+		CONTENT,
+		OPERATOR_ID,
+		DATE_FORMAT(OPERATOR_DATE,'%Y-%c-%d %H:%i:%s') AS OPERATOR_DATE,
+		DATE_FORMAT(FINISH_DATE,'%Y-%c-%d %H:%i:%s') AS FINISH_DATE,
+		STATUS,
+		BEFORE_PHOTO,
+		AFTER_PHOTO FROM BSB_SEND_ORDER
+		WHERE
+		 ID =#id#
+		</select>
+			<select id="findSendOrderByMap" resultMap="sendOrderMap"> SELECT ID, ORDER_ID,
+		USER_ID, CONTENT, OPERATOR_ID,DATE_FORMAT(OPERATOR_DATE,'%Y-%c-%d %H:%i:%s') AS OPERATOR_DATE,DATE_FORMAT(FINISH_DATE,'%Y-%c-%d %H:%i:%s') AS FINISH_DATE,STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM BSB_SEND_ORDER
+		WHERE
+			
+			ORDER_ID=#orderId#
+			
+		</select>	
+		
+		<!-- 派单列表信息查询 -->
+	<select id="findSendOrderList" resultMap="sendOrderMap">
+	SELECT ID, ORDER_ID,
+		USER_ID, CONTENT, OPERATOR_ID,DATE_FORMAT(OPERATOR_DATE,'%Y-%c-%d %H:%i:%s') AS OPERATOR_DATE,DATE_FORMAT(FINISH_DATE,'%Y-%c-%d %H:%i:%s') AS FINISH_DATE,STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM
+		BSB_SEND_ORDER
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="status">
+				INSTR(STATUS,#status#)>0
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="userId">
+				INSTR(USER_ID,#userId#)>0</isNotEmpty>
+		</dynamic>
+		order by 	OPERATOR_DATE desc
+	</select>	
+	
+		<!-- 派单信息列表    总条数查询 -->
+	<select id="findSendOrderListCount" resultClass="java.lang.Integer">
+		SELECT COUNT(0) FROM BSB_SEND_ORDER
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="status">
+				INSTR(STATUS,#status#)>0
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="userId">
+				INSTR(USER_ID,#userId#)>0</isNotEmpty>
+		</dynamic>
+	</select>
+<!--新增-->
+	<insert id="addSendOrder" parameterClass="sendOrder"> INSERT INTO
+		BSB_SEND_ORDER( ID,ORDER_ID, USER_ID, CONTENT, OPERATOR_ID, STATUS,OPERATOR_DATE,FINISH_DATE,BEFORE_PHOTO,AFTER_PHOTO
+		)VALUES( #id#,#orderId#, #userId#, #content#, #operatorId#, #status#,#operatorDate#,#finishDate#,#beforePhoto#,#afterPhoto#)
+	</insert>
+	<!-- 修改 -->
+	<update id="updSendOrder" parameterClass="sendOrder"> UPDATE
+		BSB_SEND_ORDER SET ORDER_ID=#orderId#, USER_ID=#userId#,
+		CONTENT=#content#, OPERATOR_ID=#operatorId#, STATUS=#status#,OPERATOR_DATE=#operatorDate#,FINISH_DATE=#finishDate#,BEFORE_PHOTO=#beforePhoto#,AFTER_PHOTO=#afterPhoto# WHERE 
+		ID=#id#</update>
+</sqlMap>
