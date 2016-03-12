@@ -1,6 +1,6 @@
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
-<sqlMap namespace="mobile.Article.">
+<sqlMap namespace="mobile.Article">
 <typeAlias alias="ArticleBo" type="com.zero2ipo.eeh.article.bo.ArticleBo"/>
 <resultMap class="ArticleBo" id="ArticleMap">
 	<result property="thumbnail" column="thumbnail"/>
@@ -31,6 +31,7 @@ FROM eeh_article
 		type=#type#
 	</isNotEmpty>
 </dynamic>
+order by 	time desc
 </select>
 
 	<select id='findArticleById' resultClass='ArticleBo'>

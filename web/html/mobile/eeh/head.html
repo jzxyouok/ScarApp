@@ -3,6 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <script src="${js}/currenttime.js"></script>
+    <script src="${js}/public.js"></script>
 </head>
 <body>
 
@@ -12,12 +13,34 @@
     <span class="t-0 fl" id="time"></span>
     <span class="dib fr">
         [@portal_current_classroom]
-            [#if classRoom?? && classRoom!=null]
+            [#if classRoom??]
                  ${(classRoom.name)!''}
             [/#if]
         [/@portal_current_classroom]
     </span>
 </header>
 <!---header-->
+<!--导航-->
+<ul class="nav" id="navHeard">
+    <li url="/index.html" [#if type=="kb"]class="current"[/#if] id="kb">
+        <span>课表</span>
+    </li>
+    <li id="zwb"  [#if type=="zwb"]class="current"[/#if] >
+        <span>座位表</span>
+    </li>
+    <li url="/bjfc.html" id="bjfc"  [#if type=="bjfc"]class="current"[/#if] >
+        <span>班级风采</span>
+    </li>
+    <li url="/tongzhi.html" id="tz"  [#if type=="tz"]class="current"[/#if] >
+        <span>通知</span>
+    </li>
+    <li url="/gonggao.html" id="gg"  [#if type=="gg"]class="current"[/#if] >
+        <span>公告</span>
+    </li>
+    <li id="kscx"  [#if type=="kscx"]class="current"[/#if] >
+        <span>考试查询</span>
+    </li>
+</ul>
+
 </body>
 </html>

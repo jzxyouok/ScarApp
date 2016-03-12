@@ -1,8 +1,8 @@
 $(document).ready(
     function () {
-        setInterval(function () {
-            setCurrentTime();
-        }, 60000);
+       // setInterval(function () {
+         //   setCurrentTime();
+        //}, 60000);
        // readBJ();
        // setCurrentTime();
        // setCurrentDate();
@@ -28,21 +28,18 @@ $(document).ready(
             }
         });
         $("#navHeard").children().bind({
-            click: function () {
+            click: function (i) {
                 $("#navHeard").children().removeClass("current");
                 $(this).addClass("current");
-                if ($(this).attr("id") != "seats") {
-                    $("#seats").data("seatsState", "none");
-                    $("#divSeats").slideUp();
-                }
-            }
-        });
-        $("#navHeard").children().bind({
-            click: function () {
                 var url = $(this).attr("url");
+                var type=$(this).attr("id");
                 if (url) {
                     window.location.href = window.location.protocol+"//" + window.location.host + url + "?" + new Date().getTime();
                 }
+               // if ($(this).attr("id") != "seats") {
+                   // $("#seats").data("seatsState", "none");
+                  //  $("#divSeats").slideUp();
+               // }
             }
         });
         //payByCardRead();

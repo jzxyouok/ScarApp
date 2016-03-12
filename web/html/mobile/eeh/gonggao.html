@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>公告</title>
+    [#include "common.html"]
+<body>
+
+<!--header-->
+[#include "head.html"]
+
+<ul class="active-ul hz-hid">
+    [@portal_articlelist_bytype type="2"]
+    [#if articleList?? &&articleList?size>0]
+    [#list articleList as arc]
+    <li>
+        <i>
+            ${arc.time?string[0..3]}
+            <br/><strong>${arc.time?string[5..6]}/${arc.time?string[8..9]}</strong>
+        </i>
+        <a href="">${(arc.title)}!''</a>
+    </li>
+    [/#list]
+    [/#if]
+    [/@portal_articlelist_bytype]
+
+</ul>
+
+<a href="" class="load-more"></a>
+<footer class="footer">
+    通知:关于2016年国际数学竞赛的通知
+</footer>
+
+</body>
+</html>

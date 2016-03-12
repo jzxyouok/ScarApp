@@ -35,7 +35,7 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 				queryMap.put("type",ArticleContants.articleMap.get(type));
 			}
 			//如果是通知或者公告，则不用根据所在班级查询
-			if(!ArticleContants.ARTICLE_TYPE_01.equals(type)||!ArticleContants.ARTICLE_TYPE_02.equals(type)){
+			if(!ArticleContants.ARTICLE_TYPE_01.equals(type)&&!ArticleContants.ARTICLE_TYPE_02.equals(type)){
 				//获取本机mac地址
 				String mac= LocalMAC.getLocalMac();
 				//根据mac地址查询所在班级
@@ -46,7 +46,7 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 				if(null!=list&&list.size()>0){
 					classRoomBo=list.get(0);
 				}
-				queryMap.put("gradeName",classRoomBo);
+				queryMap.put("gradeName",classRoomBo.getName());
 			}
 			List<ArticleBo> articleList=ArticleService.findAllList(queryMap);
 		    env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
