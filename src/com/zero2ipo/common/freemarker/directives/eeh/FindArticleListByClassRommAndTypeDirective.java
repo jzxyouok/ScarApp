@@ -7,6 +7,8 @@ import com.zero2ipo.eeh.article.bo.ArticleBo;
 import com.zero2ipo.eeh.article.bo.ArticleContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.classroom.bo.ClassRoomBo;
+import com.zero2ipo.eeh.common.CommonConstant;
+import com.zero2ipo.eeh.utils.ListUtils;
 import com.zero2ipo.framework.util.StringUtil;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -25,11 +27,14 @@ import java.util.Map;
  */
 public class FindArticleListByClassRommAndTypeDirective implements TemplateDirectiveModel{
 	private static  final String  PARAM_TYPE="type";
+	private static  final String  PARAM_PAGENO="pageNo";
+
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
 		List<ClassRoomBo> list=null;
 		try {
 			String type= DirectiveUtils.getString(PARAM_TYPE, params);
+			String pageNo= DirectiveUtils.getString(PARAM_PAGENO, params);
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			if(!StringUtil.isNullOrEmpty(type)){
 				queryMap.put("type",ArticleContants.articleMap.get(type));
@@ -49,7 +54,11 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 				queryMap.put("gradeName",classRoomBo.getName());
 			}
 			List<ArticleBo> articleList=ArticleService.findAllList(queryMap);
-		    env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
+			int PAGESIZE= CommonConstant.PAGESIZE;
+			List<ArticleBo> fs = ListUtils.getSubListPage(articleList, (Integer.valueOf(pageNo) - 1) * PAGESIZE, PAGESIZE);
+
+			env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(fs));
+			env.setVariable("recordCount", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList.size()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

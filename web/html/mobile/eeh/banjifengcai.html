@@ -1,3 +1,4 @@
+[#import "../../ftl/pagination.ftl" as pag]
 <!doctype html>
 <html lang="en">
 <head>
@@ -33,7 +34,7 @@
         </ul>
 
         <ul class="ban-main hz-hid">
-            [@portal_articlelist_bytype type="3"]
+            [@portal_articlelist_bytype type="3" pageNo="${pageNo!'1'}"]
                 [#if articleList?? &&articleList?size>0]
                     [#list articleList as arc]
                     <li>
@@ -55,11 +56,7 @@
             [/@portal_articlelist_bytype]
 
         </ul>
-
-        <div class="m7-bottom hz-hid">
-            <a href="" class="prev-0 fl">上一页</a>
-            <a href="" class="next-0 fr">下一页</a>
-        </div>
+        [@pag.pagination pageNo=pageNo pageSize=pageSize recordCount=recordCount toURL="${base}/bjfc.html"/]
 
 
     </section>

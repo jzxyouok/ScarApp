@@ -4,11 +4,11 @@ import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.WaterPageContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.common.CommonConstant;
+import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.io.FileHelper;
 import com.zero2ipo.mobile.services.bsb.IHistoryCarService;
 import com.zero2ipo.mobile.services.bsb.IWashCouponService;
 import com.zero2ipo.mobile.web.URLHelper;
-import com.zero2ipo.module.entity.fund.FundEntity;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -68,7 +68,12 @@ public class DynamicMobilePageAct {
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.BanJiFengCaiPage);
 		mv.addObject("type", CommonConstant.NAV_TYPE_BanJiFengCai);
-
+		if(StringUtil.isNullOrEmpty(pageNo)){
+			pageNo="1";
+		}
+		model.put("pageNo", Integer.valueOf(pageNo));
+		model.put("pageSize", CommonConstant.PAGESIZE);
+		model.put("recordCount",20);
 		return mv;
 	}
 

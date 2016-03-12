@@ -26,7 +26,10 @@ public class WeekDate {
     }
 
     public String getMonthAndDay() {
-        return monthAndDay;
+        if(monthAndDay.substring(0,1).equals("0")){
+            monthAndDay=monthAndDay.substring(1);
+        }
+        return monthAndDay.replace("月0","月");
     }
 
     public void setMonthAndDay(String monthAndDay) {
