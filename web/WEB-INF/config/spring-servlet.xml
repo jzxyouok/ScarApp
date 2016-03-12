@@ -74,6 +74,7 @@
 				<entry key="getcurrentWeekList" value-ref="getcurrentWeekList"></entry>
 				<!--根据mac地址获取当前所在班级-->
 				<entry key="portal_current_classroom" value-ref="portal_current_classroom"></entry>
+				<entry key="portal_current_grade" value-ref="portal_current_grade"></entry>
 				<entry key="portal_articlelist_bytype" value-ref="portal_articlelist_bytype"></entry>
 			</map>
 		</property>
@@ -100,6 +101,7 @@
 	<bean id="getcurrentWeekList" class="com.zero2ipo.common.freemarker.directives.FindCurrentWeekDirective"/>
 	<!--根据当前机器mac地址获取所在班级-->
     <bean id="portal_current_classroom" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentClassRoomDirective"/>
+    <bean id="portal_current_grade" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentGradeByMacDirective"/>
     <bean id="portal_articlelist_bytype" class="com.zero2ipo.common.freemarker.directives.eeh.FindArticleListByClassRommAndTypeDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"

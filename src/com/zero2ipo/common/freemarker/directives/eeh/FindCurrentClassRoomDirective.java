@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  *
- * 根据当前机器的mac查询所在班级标签
+ * 根据当前机器的mac查询所在教室标签
  * @author zhengYunfei
  *
  */

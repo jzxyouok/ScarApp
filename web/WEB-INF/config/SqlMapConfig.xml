@@ -25,4 +25,5 @@
 	<sqlMap resource="com/zero2ipo/sql/picture.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/eeh/classroom/bo/Eeh_classRoom_sql.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/eeh/article/bo/Eeh_article_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/eeh/grade/bo/Eeh_grade_sql.xml"></sqlMap>
 </sqlMapConfig>

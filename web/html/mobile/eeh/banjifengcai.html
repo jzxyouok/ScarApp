@@ -4,6 +4,7 @@
 <head>
     <title>班级风采</title>
     [#include "common.html"]
+    <script src="${js}/bjfc.js"></script>
 </head>
 <body>
 
@@ -13,21 +14,35 @@
 
     <section class="m1-right fl hz-hid">
         <ul class="ban">
+            [@portal_current_grade]
+            [#if gradeBo??]
             <li>
                 <strong>班主任：</strong>
-                <span>陈玉珠</span>
+                <span>${(gradeBo.teacherName)!''}</span>
             </li>
-
             <li>
                 <strong>班干团队：</strong>
-                <i>
-                    李梅（班长）、李华（副班长）...
+                <i id="classTeamMember">
+                    [#if gradeBo.classCadre?length lt 15]
+                         ${gradeBo.classCadre!''}
+                    [#else]
+                         ${gradeBo.classCadre[0..16]}...
+                    <section class="bangan" id="classTeam" style="display: none;">
+                        <p><strong>班干团队</strong></p>
+                        <div class="bangan-main hz-hid">
+                            ${gradeBo.classCadre!''}
+                        </div>
+                    </section>
+
+                    [/#if]
                 </i>
             </li>
+            [/#if]
+            [/@portal_current_grade]
 
             <li>
                 <strong>班级明星：</strong>
-                <i>
+                <i id="classStarMember" date-stars="">
                     王小美、张强、李小花...
                 </i>
             </li>
@@ -42,7 +57,7 @@
                         <div class="txt hz-hid fr">
                             <p class="p"><strong>${arc.title!''}</strong></p>
                             <p>
-                                [#if arc.content?length lt 46]
+                                [#if (arc.content)?length lt 46]
                                          ${arc.content}
                                     [#else]
                                         ${arc.content[0..47]}...
@@ -57,8 +72,6 @@
 
         </ul>
         [@pag.pagination pageNo=pageNo pageSize=pageSize recordCount=recordCount toURL="${base}/bjfc.html"/]
-
-
     </section>
 </section>
 
@@ -69,16 +82,90 @@
 <footer class="footer">
     通知:关于2016年国际数学竞赛的通知
 </footer>
+<section class="cover" id="secContext" style="display: none;"></section>
+<section class="bangan" id="classStar">
+    <p><strong>班级小明星</strong></p>
 
+    <div class="banji por">
+        <a class="prev"></a><a class="next"></a>
 
+        <div class="banji-0"><img src="images/img0.png" alt="">
+            <div class="txt hz-hid">
+                龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学同
+            </div>
+            <div class="clear">学龙雨晴同学同学龙雨晴同学同学龙雨晴同学同</div>
+            <strong class="db">座右铭：</strong>
+            <div class="bottom">“明智的人不会信任任何模糊的事情”</div>
+        </div>
+        <div class="banji-1"><img src="images/img0.png" alt="">
+            <div class="txt hz-hid">
+               222 龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学同
+            </div>
+            <div class="clear">学龙雨晴同学同学龙雨晴同学同学龙雨晴同学同</div>
+            <strong class="db">座右铭：</strong>
+            <div class="bottom">“明智的人不会信任任何模糊的事情”</div>
+        </div>
 
+        <script>
+            var dataIndex = 0;
+            $(document).ready(
+                    function () {
 
+                        $("#classStar").find(".prev").bind({
+                            click: function () {
+                                var stars = $("#classStarMember").data("stars");
+                                alert(stars);
+                                if (stars && stars.length > 0) {
+                                    if (dataIndex < 0) {
+                                        dataIndex = stars.length - 1;
+                                    }
+                                    $("#classStar").find(".banji-0").html(stars[dataIndex].BriefIntroduction);
+                                    //$("#classStar").find(".txt").html(stars[dataIndex].txt);
+                                    //$("#classStar").find(".clear").html(stars[dataIndex].clear);
+                                    //$("#classStar").find(".bottom").html(stars[dataIndex].bottom);
+                                    dataIndex--;
+                                }
+                            }
+                        });
+                        $("#classStar").find(".next").bind({
+                            click: function () {
+                                var stars = $("#classStarMember").data("stars");
+                                alert(stars);
+                                if (stars && stars.length > 0) {
+                                    if (dataIndex > stars.length - 1) {
+                                        dataIndex = 0;
+                                    }
+                                    $("#classStar").find(".banji-0").html(stars[dataIndex].BriefIntroduction);
+                                    //$("#classStar").find(".txt").html(stars[dataIndex].txt);
+                                    //$("#classStar").find(".clear").html(stars[dataIndex].clear);
+                                    //$("#classStar").find(".bottom").html(stars[dataIndex].bottom);
+                                    dataIndex++;
+                                }
+                            }
+                        });
 
+                    });
+        </script>
+    </div>
+</section>
+<section class="slide" id="classMienContext" style="display: none">
+    <div class="bd">
+        <ul class="hz-hid">
+            <li>
+                <div class="slide-0 hz-hid">
 
+                    <div class="slide-title"></div>
+                    <div class="slide-txt hz-hid">
+                        <img src="images/img.png" alt="">
+                        <div class="txt hz-hid"> 举行这项活动，将有助于，提高学生计算的速度和计算的准确率；培养学生灵活运用知识解决生活中的实际问题的能力；激发学生学习数学的兴趣，发展学生的思维能力；培养学生集体主义荣誉感和竞争意识。现将具体事项通知如下： </div>
 
-
-
-
-
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--<a class="prev"></a>
+    <a class="next"></a>-->
+</section>
 </body>
 </html>
