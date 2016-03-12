@@ -1,35 +1,0 @@
-/*index643973929211478*/
-.footer {
-	border-top:.1em solid gainsboro;
-	padding:2.5em 0;
-	text-align:center
-}
-.footer .g_1 a {
-	color:#88898d;
-	font-size:15px;
-	padding:0 10px;
-}
-.footer .g_1 a:first-child {
-	border-right:.06667em solid #ccc
-}
-.footer .g_1 a:last-child {
-	border-left:.06667em solid #ccc
-}
-.footer .g_2 {
-	color:#c5c5c5;
-	padding:1.5em 0
-}
-.footer .g_2 a {
-	color:#88898d;
-	font-size:15px;
-	padding:0 1.66667em;
-	background:url(../images/pc_icon.png) no-repeat 0 50%;
-	-webkit-background-size:1.16667em .86667em;
-	-moz-background-size:1.16667em .86667em;
-	-o-background-size:1.16667em .86667em;
-	background-size:1.16667em .86667em
-}
-.footer .g_3 p {
-	color:#c5c5c5;
-	font-size:12px;
-}/*弹框*/.alert-wrap{position:fixed;height: 100%;width: 100%;left: 0;top: 0;background-color: rgba( 8, 8, 8,0.45);}.alert-box{position: absolute;left:50%;top:50%;  background-image: -moz-linear-gradient( 90deg, rgb(255,255,255) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgb(255,255,255) 100%);  background-image: -webkit-linear-gradient( 90deg, rgb(255,255,255) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgb(255,255,255) 100%);  background-image: -ms-linear-gradient( 90deg, rgb(255,255,255) 0%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 70%, rgb(255,255,255) 100%);border:.1rem solid #fff;background-color: #fff;box-shadow: 0px 2px 4px 0px rgb( 0, 0, 0 );opacity: 0.8;width: 13rem;margin:-5rem 0 0 -6.5rem;border-radius: .5rem;padding-bottom: .5rem;}.alert-box h3{width:13.8rem;margin:.8rem 0 0 -.38rem;}.alert-box h3 img{display: block;width: 100%;}.alert-box h4{width:13.8rem;margin:.8rem 0 0 -.38rem;text-align: center;}.alert-box .alert-text{color: #232323;font-size: 1rem;line-height: 1.4rem;padding: 1rem;}.alert-box .alert-text p{text-indent: 2em;}.alert-action{text-align: center;}.alert-action a{display: inline-block;height: 1.7rem;width: 5.7rem;color: #fff;font-size: 1rem;background: url(../images/al02.png) no-repeat;background-size:cover;line-height: 1.6rem;}

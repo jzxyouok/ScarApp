@@ -6,6 +6,7 @@ import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.core.MobilePageContants;
 import com.zero2ipo.core.WaterPageContants;
+import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.io.FileHelper;
 import com.zero2ipo.mobile.services.bsb.IHistoryCarService;
@@ -14,6 +15,7 @@ import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.mobile.web.URLHelper;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -33,7 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class DynamicMobilePageAct {
-
+	@Autowired
+	@Qualifier("classRoomService")
+	private IClassRoomService classRoomService ;
 	/**
 	 * 首页
 	 * @param request
@@ -41,9 +47,9 @@ public class DynamicMobilePageAct {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/water/index.html", method = RequestMethod.GET)
+	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,String couponId) {
+							  HttpServletResponse response, ModelMap model,String couponId) throws SocketException, UnknownHostException {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.INDEX_PAGE);
@@ -52,18 +58,18 @@ public class DynamicMobilePageAct {
 
 
 	/**
-	 * 商品列表页面
+	 * 班级风采
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/water/goodlist.html", method = RequestMethod.GET)
+	@RequestMapping(value = "/bjfc.html", method = RequestMethod.GET)
 	public ModelAndView wycj(HttpServletRequest request,
 							 HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
-		mv.setViewName(WaterPageContants.GOODS_LIST_PAGE);
+		mv.setViewName(WaterPageContants.BanJiFengCai);
 		return mv;
 	}
 	/**

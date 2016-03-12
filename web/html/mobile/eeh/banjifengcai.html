@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>班级风采</title>
+    <link rel="stylesheet" href="${css}/base.css"/>
+    <link rel="stylesheet" href="${css}/style.css">
+    <script src="${js}/jquery-1.8.0.js"></script>
+    <script src="${js}/js.js"></script>
+
+</head>
+<body>
+
+<!--header-->
+
+
+<ul class="nav">
+    <li>
+        <span>课表</span>
+    </li>
+    <li>
+        <span>座位表</span>
+    </li>
+    <li class="current">
+        <span>班级风采</span>
+    </li>
+    <li>
+        <span>通知</span>
+    </li>
+    <li>
+        <span>公告</span>
+    </li>
+    <li>
+        <span>考试查询</span>
+    </li>
+</ul>
+
+<section class="m1 hz-hid">
+    <ul class="m1-left por hz-hid fl">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <span class="line db"></span>
+    </ul>
+    <section class="m1-right fl hz-hid">
+        <ul class="ban">
+            <li>
+                <strong>班主任：</strong>
+                <span>陈玉珠</span>
+            </li>
+
+            <li>
+                <strong>班干团队：</strong>
+                <i>
+                    李梅（班长）、李华（副班长）...
+                </i>
+            </li>
+
+            <li>
+                <strong>班级明星：</strong>
+                <i>
+                    王小美、张强、李小花...
+                </i>
+            </li>
+        </ul>
+
+        <ul class="ban-main hz-hid">
+            [@portal_articlelist_bytype type="3"]
+                [#if articleList?? &&articleList?size>0]
+                    [#list articleList as arc]
+                    <li>
+                        <img src="${arc.thumbnail!''}" alt=""/>
+                        <div class="txt hz-hid fr">
+                            <p class="p"><strong>${arc.title!''}</strong></p>
+                            <p>
+                                [#if arc.content?length lt 46]
+                                         ${arc.content}
+                                    [#else]
+                                        ${arc.content[0..47]}...
+                                [/#if]
+                            </p>
+                        </div>
+                        <div class="time fl">${arc.time}</div>
+                    </li>
+                    [/#list]
+                [/#if]
+            [/@portal_articlelist_bytype]
+            <li>
+                <img src="images/img.png" alt=""/>
+                <div class="txt hz-hid fr">
+                    <p class="p"><strong>班级辩论</strong></p>
+                    <p>在曾老师的带领下，我们全班同学在贵州西江的苗寨进行了为期10天的文化考察，苗寨有不同于城市的...</p>
+                </div>
+                <div class="time fl">2015.11.15</div>
+            </li>
+            <li>
+                <img src="images/img.png" alt=""/>
+                <div class="txt hz-hid fr">
+                    <p class="p"><strong>班级辩论</strong></p>
+                    <p>在曾老师的带领下，我们全班同学在贵州西江的苗寨进行了为期10天的文化考察，苗寨有不同于城市的...</p>
+                </div>
+                <div class="time fl">2015.11.15</div>
+            </li>
+            <li>
+                <img src="images/img.png" alt=""/>
+                <div class="txt hz-hid fr">
+                    <p class="p"><strong>班级辩论</strong></p>
+                    <p>在曾老师的带领下，我们全班同学在贵州西江的苗寨进行了为期10天的文化考察，苗寨有不同于城市的...</p>
+                </div>
+                <div class="time fl">2015.11.15</div>
+            </li>
+        </ul>
+
+        <div class="m7-bottom hz-hid">
+            <a href="" class="prev-0 fl">上一页</a>
+            <a href="" class="next-0 fr">下一页</a>
+        </div>
+
+
+    </section>
+</section>
+
+
+
+
+
+<footer class="footer">
+    通知:关于2016年国际数学竞赛的通知
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <title>课表</title>
+    <link rel="stylesheet" href="${css}/base.css"/>
+    <link rel="stylesheet" href="${css}/style.css">
+    <script src="${js}/jquery-1.8.0.js"></script>
+    <script src="${js}/js.js"></script>
+    <script src="${js}/public.js"></script>
+</head>
+<body>
+
+<!--header-->
+
+<ul class="nav" id="navHeard">
+    <li class="current">
+        <span>课表</span>
+    </li>
+    <li>
+        <span>座位表</span>
+    </li>
+    <li url="/bjfc.html">
+        <span>班级风采</span>
+    </li>
+    <li>
+        <span>通知</span>
+    </li>
+    <li>
+        <span>公告</span>
+    </li>
+    <li>
+        <span>考试查询</span>
+    </li>
+</ul>
+
+
+<ul class="week hz-hid">
+    [@getcurrentWeekList]
+        [#list weekDates as week]
+            [#if week.isCurrent=='1']
+                 <li class="current" date-time="${week.date}">
+            [#else]
+                <li date-time="${week.date}">
+            [/#if]
+                <p>${week.week}</p>
+                <p class="small">${week.monthAndDay}</p>
+            </li>
+        [/#list]
+    [/@getcurrentWeekList]
+  <!--  <li>
+        <p>周一</p>
+
+        <p class="small">12月08日</p>
+    </li>
+    <li>
+        <p>周二</p>
+
+        <p class="small">12月09日</p>
+    </li>
+    <li>
+        <p>周三</p>
+
+        <p class="small">12月10日</p>
+    </li>
+    <li>
+        <p>周四</p>
+
+        <p class="small">12月11日</p>
+    </li>
+    <li>
+        <p>周五</p>
+
+        <p class="small">12月12日</p>
+    </li>
+    <li>
+        <p>周六</p>
+
+        <p class="small">12月13日</p>
+    </li>
+    <li>
+        <p>周日</p>
+
+        <p class="small">12月14日</p>
+    </li>-->
+</ul>
+
+<ul class="ke hz-hid por">
+    <li >
+        <i>08:10</i>
+        <span class="span">数学</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>09:05</i>
+        <span class="span">英语</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li class="current">
+        <i>10:15</i>
+        <span class="span">物理</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>10:15</i>
+        <span class="span">化学</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>08:10</i>
+        <span class="span">数学</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>08:10</i>
+        <span class="span">语文</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>08:10</i>
+        <span class="span">化学</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <li>
+        <i>08:10</i>
+        <span class="span">生物</span>
+        <div class="liright fr">张大一</div>
+    </li>
+    <span class="db line"></span>
+</ul>
+
+
+
+<footer>
+    通知:关于2016年国际数学竞赛的通知
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

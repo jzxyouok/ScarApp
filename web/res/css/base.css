@@ -1,0 +1,66 @@
+
+
+/*reset*/
+html,body,p,ul,li,a,img,input,textarea,strong,s,span,section,ol,i{
+    padding: 0;
+    margin: 0;
+}
+html,body{
+    font-family: '微软雅黑';
+    -webkit-text-size-adjust: none !important;
+}
+
+a,button,input,textarea{
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+a{
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+}
+/* 解决Google浏览器字体不小于12px的问题
+--------------------------------------------------*/
+
+ol,ul{list-style: none;}
+a{text-decoration: none;outline: none;}
+em,i{font-style: normal;}
+
+img{border: none;}
+input,textarea,select{font-family: '微软雅黑';background: none;border: none;-webkit-appearance: none;}
+
+*:focus{outline: none;}
+textarea{resize: none;}
+
+
+/*常用样式*/
+.fl{float: left;}
+.fr{float: right;}
+.dib{display: inline-block;}
+.db{display: block;}
+.dn{display: none;}
+.hz-hid{height: auto;overflow: hidden;zoom: 1;}
+.clear{clear: both;zoom: 1;}
+.clear:after{content: '';display: inline-block;clear: both;}
+.por{position: relative;}
+.tac{
+    text-align: center;}
+.tal{
+    text-align: left;
+}
+.tar{
+    text-align: right;
+}
+
+
+
+.f20{font-size: 0.2rem;}
+.f22{font-size: 0.22rem;}
+.f24{font-size: 0.24rem;}
+.f25{font-size: 0.25rem;}
+.f26{font-size: 0.26rem;}
+.f28{font-size: 0.28rem;}
+.f30{
+    font-size: 0.3rem !important;}
+.tac{text-align: center;}
+.tal{text-align: left;}
+.tar{text-align: right;}

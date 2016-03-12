@@ -33,6 +33,7 @@
 		<property name="cacheManager" ref="cacheManagerFactory" />
 	</bean>
 
+
 	<!-- json转换器配置 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
@@ -67,22 +68,13 @@
 			<map>
 				<!-- 获取图片标签 -->
 				<entry key="portal_picture" value-ref="portal_picture"></entry>
-				<entry key="pretime_car" value-ref="pretime_car"></entry>
-				<entry key="history_car" value-ref="history_car"></entry>
-				<entry key="order_list" value-ref="order_list"></entry>
-				<entry key="find_car_byid" value-ref="find_car_byid"></entry>
-				<entry key="find_order_byid" value-ref="find_order_byid"></entry>
-				<entry key="love_address" value-ref="love_address"></entry>
-				<entry key="coupon_list" value-ref="coupon_list"></entry>
-				<entry key="student_list" value-ref="student_list"></entry>
-				<entry key="send_order" value-ref="send_order"></entry>
-				<entry key="findGgwash_couponList" value-ref="findGgwash_couponList"></entry>
-				<entry key="coupon_buy_list" value-ref="coupon_buy_list"></entry>
-				<entry key="admin_order_list" value-ref="admin_order_list"></entry>
-				<entry key="find_comment_orderId" value-ref="find_comment_orderId"></entry>
 				<entry key="find_user_byId" value-ref="find_user_byId"></entry>
 				<entry key="find_config_bykey" value-ref="find_config_bykey"></entry>
-
+				<!--获取本周日期-->
+				<entry key="getcurrentWeekList" value-ref="getcurrentWeekList"></entry>
+				<!--根据mac地址获取当前所在班级-->
+				<entry key="portal_current_classroom" value-ref="portal_current_classroom"></entry>
+				<entry key="portal_articlelist_bytype" value-ref="portal_articlelist_bytype"></entry>
 			</map>
 		</property>
 		<property name="templateLoaderPath">
@@ -102,21 +94,13 @@
 	</bean>
 	<!-- 图片获取标签 -->
 	<bean id="portal_picture" class="com.zero2ipo.common.freemarker.directives.PortalPictureDirective" />
-	<bean id="pretime_car" class="com.zero2ipo.common.freemarker.directives.IsYuYueCarDirective" />
-	<bean id="history_car" class="com.zero2ipo.common.freemarker.directives.HistoryCarDirective" />
-	<bean id="order_list" class="com.zero2ipo.common.freemarker.directives.MyOrderListDirective" />
-	<bean id="find_car_byid" class="com.zero2ipo.common.freemarker.directives.FindCarByIdDirective" />
-	<bean id="find_order_byid" class="com.zero2ipo.common.freemarker.directives.FindOrderByIdDirective" />
-	<bean id="love_address" class="com.zero2ipo.common.freemarker.directives.LoveAddressListDirective" />
-	<bean id="coupon_list" class="com.zero2ipo.common.freemarker.directives.WashCarCouponListDirective"/>
-	<bean id="student_list" class="com.zero2ipo.common.freemarker.directives.StudentListDirective"/>
-	<bean id="send_order" class="com.zero2ipo.common.freemarker.directives.FindSendOrderByIorderIdDirective"/>
-	<bean id="findGgwash_couponList" class="com.zero2ipo.common.freemarker.directives.MyCouponListDirective"/>
-	<bean id="coupon_buy_list" class="com.zero2ipo.common.freemarker.directives.BuyCouponWashListDirective"/>
-	<bean id="admin_order_list" class="com.zero2ipo.common.freemarker.directives.FindSendOrderByAdminIdDirective"/>
-	<bean id="find_comment_orderId" class="com.zero2ipo.common.freemarker.directives.FindCommentByorderIdDirective"/>
 	<bean id="find_user_byId" class="com.zero2ipo.common.freemarker.directives.FindUserByUserIdDirective"/>
 	<bean id="find_config_bykey" class="com.zero2ipo.common.freemarker.directives.FindConfigByConfigKeyDirective"/>
+	<!--获取本周日期-->
+	<bean id="getcurrentWeekList" class="com.zero2ipo.common.freemarker.directives.FindCurrentWeekDirective"/>
+	<!--根据当前机器mac地址获取所在班级-->
+    <bean id="portal_current_classroom" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentClassRoomDirective"/>
+    <bean id="portal_articlelist_bytype" class="com.zero2ipo.common.freemarker.directives.eeh.FindArticleListByClassRommAndTypeDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
