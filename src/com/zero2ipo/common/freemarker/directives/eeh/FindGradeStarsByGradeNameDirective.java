@@ -42,6 +42,9 @@ public class FindGradeStarsByGradeNameDirective implements TemplateDirectiveMode
 			}
 			List<ArticleBo> articleList=ArticleService.findAllList(queryMap);
 			env.setVariable("gradeStars", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
+			if(articleList.size()>0){
+				env.setVariable("mainGradeStart", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList.get(0)));
+			}
 			env.setVariable("recordCount", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList.size()));
 		} catch (Exception e) {
 			e.printStackTrace();

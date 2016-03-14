@@ -3,18 +3,59 @@
 <head>
     <title>课表</title>
     [#include "common.html"]
+    <script src="${js}/template.js"></script>
 </head>
+<script>
+    function  getkeChengBiao(week,index){
+        $("#weeks").children().removeClass("current");
+        $("#week"+index).addClass("current");
+        //通过week和教室查询课程表
+        var classRoom="${gradename}";
+        var data={"classRoom":classRoom,"week":week};
+        $.ajax({
+            url :  '${base}/Course/findAllList.html',
+            type : 'POST',
+            timeout : '1000',
+            async : false,
+            dataType : 'json',
+            data : data,
+            success : function(r) {
+                var str='';
+                if(null!= r.result&&''!= r.result){
+                  for(var i=0;i< r.result.length;i++){
+                      var time=r.result[i].schoolTime;
+                      if(time.length>4){
+                          time=time.substring(0,5);
+                      }
+                      var name=r.result[i].courseName;
+                      var teacher=r.result[i].teacher;
+                      str+='<li>';
+                      str+='<i>'+ time+'</i>';
+                      str+='<span class="span">'+ name+'</span>';
+                      str+='<div class="liright fr">'+ teacher+'</div>';
+                      str+='</li>';
+                  }
+                  str+='<span class="db line"></span>';
+                }
+                $("#weekUL").empty();
+                $("#weekUL").html(str);
+            }
+        });
+    }
+
+
+</script>
 <body>
 
 <!--header-->
 [#include "head.html"]
-<ul class="week hz-hid">
+<ul class="week hz-hid" id="weeks">
     [@getcurrentWeekList]
         [#list weekDates as week]
             [#if week.isCurrent=='1']
-                 <li class="current" date-time="${week.date}">
+                 <li id="week${week_index}" class="current" date-time="${week.date}" onclick="getkeChengBiao('${week.week}','${week_index}')">
             [#else]
-                <li date-time="${week.date}">
+                <li id="week${week_index}" date-time="${week.date}"  onclick="getkeChengBiao('${week.week}','${week_index}')">
             [/#if]
                 <p>${week.week}</p>
                 <p class="small">${week.monthAndDay}</p>
@@ -57,66 +98,12 @@
         <p class="small">12月14日</p>
     </li>-->
 </ul>
-
-<ul class="ke hz-hid por">
-    <li >
-        <i>08:10</i>
-        <span class="span">数学</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>09:05</i>
-        <span class="span">英语</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li class="current">
-        <i>10:15</i>
-        <span class="span">物理</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>10:15</i>
-        <span class="span">化学</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>08:10</i>
-        <span class="span">数学</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>08:10</i>
-        <span class="span">语文</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>08:10</i>
-        <span class="span">化学</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <li>
-        <i>08:10</i>
-        <span class="span">生物</span>
-        <div class="liright fr">张大一</div>
-    </li>
-    <span class="db line"></span>
-</ul>
-
-
+<ul class="ke hz-hid por"  id="weekUL">
+ </ul>
 
 <footer>
     通知:关于2016年国际数学竞赛的通知
 </footer>
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
+

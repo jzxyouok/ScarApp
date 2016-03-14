@@ -10,7 +10,7 @@
 
 <!--header-->
 [#include "head.html"]
-<section class="m1 hz-hid">
+<section class="m1 hz-hid" id="closeGradeStar">
 
     <section class="m1-right fl hz-hid">
         <ul class="ban">
@@ -39,7 +39,6 @@
             </li>
             [/#if]
             [/@portal_current_grade]
-
             <li>
                 <strong>班级明星：</strong>
                 <i id="classStarMember" date-stars="">
@@ -47,7 +46,7 @@
                         [#if gradeStars?? &&gradeStars?size gt 0]
                             [#list gradeStars as starts]
                                 [#if starts_index lt 3]
-                                    ${starts.title!''}
+                                    <label onclick="showStar('${starts_index}');">${starts.title!''}</label>
                                 [/#if]
                             [/#list]
                         [/#if]
@@ -114,53 +113,14 @@
                 <div class="txt hz-hid">
                     ${gradeStart.content!''}
                 </div>
-                <div class="clear">${gradeStart.remark}</div>
+                <div class="clear">${gradeStart.remark!''}</div>
                 <strong class="db">座右铭：</strong>
-                <div class="bottom">${gradeStart.motto}</div>
+                <div class="bottom">${gradeStart.motto!''}</div>
             </div>
             [/#list]
         [/#if]
         [/@portal_gradestarts]
-        <script>
-            var dataIndex = 0;
-            $(document).ready(
-                    function () {
-                        $("#classStarMember").bind({click:function(){
-                            $("#classStar9").show();
-                        }});
-                        $("#classStar").find(".prev").bind({
-                            click: function () {
-                                var stars=$(".banji-1");
-                                if (stars && stars.length > 0) {
-                                    if (dataIndex <= 0) {
-                                        dataIndex = stars.length - 1;
-                                    }else{
-                                        dataIndex--;
-                                    }
-                                    alert(dataIndex);
-                                    $("#classStar").find("#bjxmx").html($("#classStar").find("#banji-"+dataIndex).html());
-                                }
-                            }
-                        });
-                        $("#classStar").find(".next").bind({
-                            click: function () {
-                                var stars=$(".banji-1");
-                                if (stars && stars.length > 0) {
-                                    if (dataIndex >= stars.length - 1) {
-                                        dataIndex = 0;
-                                    }else{
-                                        dataIndex++;
-                                    }
-                                    alert(dataIndex);
 
-                                    $("#classStar").find("#bjxmx").html($("#classStar").find("#banji-"+dataIndex).html());
-
-                                }
-                            }
-                        });
-
-                    });
-        </script>
     </div>
 </section>
 <section class="slide" id="classMienContext" style="display: none">

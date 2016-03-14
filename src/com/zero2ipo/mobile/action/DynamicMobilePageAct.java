@@ -147,6 +147,22 @@ public class DynamicMobilePageAct {
 		return mv;
 	}
 	/**
+	 * 考试查询
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/kaoshi.html", method = RequestMethod.GET)
+	public ModelAndView kaoshiPage(HttpServletRequest request,
+								HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(WaterPageContants.KaoShiPage);
+		mv.addObject("type", CommonConstant.NAV_TYPE_KaoShiChaXun);
+		return mv;
+	}
+	/**
 	 * 单页资源请求处理
 	 */
 	@RequestMapping(value = "/url/**/*.*", method = RequestMethod.GET)

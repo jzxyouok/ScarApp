@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>考试查询</title>
+    [#include "common.html"]
+    <script>
+        $(document).ready(
+                function () {
+                    $("#exSeat").children().bind({
+                        click: function () {
+                            $("#secContext").fadeIn();
+                            $("#secExaminee").fadeIn();
+
+                        }
+                    });
+                    $("#secExaminee").children(".back").bind({
+                        click: function () {
+                            $("#secContext").fadeOut();
+                            $("#secExaminee").fadeOut();
+                        }
+                    });
+                });
+
+    </script>
+</head>
+<body>
+<!--header-->
+[#include "head.html"]
+<section class="exam hz-hid">
+    <section class="exam-title">暂无考试</section>
+    <footer class="footer">
+        通知:关于2016年国际数学竞赛的通知
+    </footer>
+    <section class="cover" id="secContext" style="display: none"></section>
+    <section class="exam-info" id="secExaminee" style="display: none">
+        <section class="infor-title">考试信息</section>
+        <a href="javascript:" class="back">返回</a>
+        <section class="exam-0 hz-hid">
+            <span class="img"></span>
+
+            <div class="exam-left">
+                <p>姓 名 : ***</p>
+
+                <p>班 级 : ***</p>
+
+                <p>学 号 : ***</p>
+            </div>
+        </section>
+
+        <section class="exam-1 hz-hid">
+            <p>准考证号：******</p>
+
+            <p>考 场 号：******</p>
+
+            <p>座 位 号：**</p>
+
+            <p>考试科目：**</p>
+        </section>
+    </section>
+</body>
+</html>
