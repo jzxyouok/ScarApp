@@ -3,48 +3,7 @@
 <head>
     <title>课表</title>
     [#include "common.html"]
-    <script src="${js}/template.js"></script>
 </head>
-<script>
-    function  getkeChengBiao(week,index){
-        $("#weeks").children().removeClass("current");
-        $("#week"+index).addClass("current");
-        //通过week和教室查询课程表
-        var classRoom="${gradename}";
-        var data={"classRoom":classRoom,"week":week};
-        $.ajax({
-            url :  '${base}/Course/findAllList.html',
-            type : 'POST',
-            timeout : '1000',
-            async : false,
-            dataType : 'json',
-            data : data,
-            success : function(r) {
-                var str='';
-                if(null!= r.result&&''!= r.result){
-                  for(var i=0;i< r.result.length;i++){
-                      var time=r.result[i].schoolTime;
-                      if(time.length>4){
-                          time=time.substring(0,5);
-                      }
-                      var name=r.result[i].courseName;
-                      var teacher=r.result[i].teacher;
-                      str+='<li>';
-                      str+='<i>'+ time+'</i>';
-                      str+='<span class="span">'+ name+'</span>';
-                      str+='<div class="liright fr">'+ teacher+'</div>';
-                      str+='</li>';
-                  }
-                  str+='<span class="db line"></span>';
-                }
-                $("#weekUL").empty();
-                $("#weekUL").html(str);
-            }
-        });
-    }
-
-
-</script>
 <body>
 
 <!--header-->
@@ -62,48 +21,55 @@
             </li>
         [/#list]
     [/@getcurrentWeekList]
-  <!--  <li>
-        <p>周一</p>
-
-        <p class="small">12月08日</p>
-    </li>
-    <li>
-        <p>周二</p>
-
-        <p class="small">12月09日</p>
-    </li>
-    <li>
-        <p>周三</p>
-
-        <p class="small">12月10日</p>
-    </li>
-    <li>
-        <p>周四</p>
-
-        <p class="small">12月11日</p>
-    </li>
-    <li>
-        <p>周五</p>
-
-        <p class="small">12月12日</p>
-    </li>
-    <li>
-        <p>周六</p>
-
-        <p class="small">12月13日</p>
-    </li>
-    <li>
-        <p>周日</p>
-
-        <p class="small">12月14日</p>
-    </li>-->
 </ul>
 <ul class="ke hz-hid por"  id="weekUL">
  </ul>
-
 <footer>
     通知:关于2016年国际数学竞赛的通知
 </footer>
 </body>
 </html>
 
+<script>
+    getkeChengBiao(currentWeek,currentWeekIndex);
+    function  getkeChengBiao(week,index){
+        $("#weeks").children().removeClass("current");
+        $("#week"+index).addClass("current");
+        //通过week和教室查询课程表
+        var classRoom="${gradename}";
+        var data={"classRoom":classRoom,"week":week};
+        $.ajax({
+            url :  '${base}/Course/findAllList.html',
+            type : 'POST',
+            timeout : '1000',
+            async : false,
+            dataType : 'json',
+            data : data,
+            success : function(r) {
+                var str='';
+                if(null!= r.result&&''!= r.result){
+                    for(var i=0;i< r.result.length;i++){
+                        var time=r.result[i].schoolTime;
+                        if(time.length>4){
+                            time=time.substring(0,5);
+                            time=time.replace("-","");
+                            time=time.replace("：",":");
+                        }
+                        var name=r.result[i].courseName;
+                        var teacher=r.result[i].teacher;
+                        str+='<li>';
+                        str+='<i>'+ time+'</i>';
+                        str+='<span class="span">'+ name+'</span>';
+                        str+='<div class="liright fr">'+ teacher+'</div>';
+                        str+='</li>';
+                    }
+                    str+='<span class="db line"></span>';
+                }
+                $("#weekUL").empty();
+                $("#weekUL").html(str);
+            }
+        });
+    }
+
+
+</script>

@@ -38,7 +38,9 @@ textarea{resize: none;}
 .dib{display: inline-block;}
 .db{display: block;}
 .dn{display: none;}
-.hz-hid{height: auto;overflow: hidden;zoom: 1;}
+.hz-hid{
+    height: auto;
+    overflow: hidden;zoom: 1;}
 .clear{clear: both;zoom: 1;}
 .clear:after{content: '';display: inline-block;clear: both;}
 .por{position: relative;}
