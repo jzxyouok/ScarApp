@@ -9,6 +9,8 @@ public class CommonConstant {
 
     public static final int FLOOR_SIZE = 10;  // 楼层数
     public static final int ClASS_ROOM_SIZE = 12;  // 班级数
+    public static final String DEFAULT_GRADE_NAME = "1501";  // 默认班级
+    public static final String DEFAULT_GRADE_NAME_kEY = "gradename";  // 默认班级
     public static final String NAV_TYPE_KEBIAO = "kb";  // 导航：课表
     public static final String NAV_TYPE_ZuoWeiBiao = "zwb";  // 导航：座位表
     public static final String NAV_TYPE_BanJiFengCai = "bjfc";  // 导航：班级风采

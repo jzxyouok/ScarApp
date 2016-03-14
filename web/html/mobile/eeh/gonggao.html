@@ -9,7 +9,7 @@
 [#include "head.html"]
 
 <ul class="active-ul hz-hid">
-    [@portal_articlelist_bytype type="2"]
+    [@portal_articlelist_bytype type="2" gradeName="${gradename!''}"]
     [#if articleList?? &&articleList?size>0]
     [#list articleList as arc]
     <li>

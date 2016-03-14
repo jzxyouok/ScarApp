@@ -21,6 +21,7 @@ import java.util.Map;
 public class FindCurrentClassRoomDirective implements TemplateDirectiveModel{
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
+
 		List<ClassRoomBo> list=null;
 		try {
 			//获取本机mac地址

@@ -10,6 +10,8 @@
 	<result property="time" column="time"/>
 	<result property="articleId" column="articleId"/>
 	<result property="gradeName" column="gradeName"/>
+	<result property="motto" column="motto"/>
+	<result property="remark" column="remark"/>
 </resultMap>
 <!--查询-->
 
@@ -21,7 +23,9 @@ SELECT
 	title,
 	time,
 	articleId,
-	gradeName
+	gradeName,
+	motto,
+	remark
 FROM eeh_article
 <dynamic prepend="WHERE">
 	<isNotEmpty prepend="AND" property="gradeName">
@@ -42,7 +46,9 @@ order by 	time desc
 			title,
 			time,
 			articleId,
-			gradeName
+			gradeName,
+			motto,
+			remark
 		FROM
 		 	eeh_article
 		WHERE
@@ -70,7 +76,9 @@ order by 	time desc
 	title,
 	time,
 	articleId,
-	gradeName
+	gradeName,
+	motto,
+	remark
 )VALUES(
 	#thumbnail#,
 	#type#,
@@ -78,7 +86,9 @@ order by 	time desc
 	#title#,
 	#time#,
 	#articleId#,
-	#gradeName#
+	#gradeName#,
+	#motto#,
+	#remark#
 )
 </insert>
 <!--修改-->
@@ -100,6 +110,9 @@ order by 	time desc
 		</isNotEmpty>
 		<isNotEmpty prepend="," property="time">
 			time=#time#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="motto">
+			motto=#motto#
 		</isNotEmpty>
 		<isNotEmpty prepend="," property="gradeName">
 			gradeName=#gradeName#

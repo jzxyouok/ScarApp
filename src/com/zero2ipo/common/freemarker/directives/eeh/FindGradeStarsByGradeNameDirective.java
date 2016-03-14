@@ -6,8 +6,6 @@ import com.zero2ipo.eeh.article.bo.ArticleBo;
 import com.zero2ipo.eeh.article.bo.ArticleContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.classroom.bo.ClassRoomBo;
-import com.zero2ipo.eeh.common.CommonConstant;
-import com.zero2ipo.eeh.utils.ListUtils;
 import com.zero2ipo.framework.util.StringUtil;
 import freemarker.core.Environment;
 import freemarker.template.*;
@@ -20,21 +18,19 @@ import java.util.Map;
 
 /**
  *
- * 根据所在班级和类型查询信息列表
+ * 查询某班级的所有班级明星
  * @author zhengYunfei
  *
  */
-public class FindArticleListByClassRommAndTypeDirective implements TemplateDirectiveModel{
-	private static  final String  PARAM_TYPE="type";
-	private static  final String  PARAM_GRADE_NAME="gradeName";
-	private static  final String  PARAM_PAGENO="pageNo";
+public class FindGradeStarsByGradeNameDirective implements TemplateDirectiveModel{
+	private static  final String  PARAM_TYPE="type";//类型1通知2公告3班级风采4班级明星
+	private static  final String  PARAM_GRADE_NAME="gradeName";//所在班级，默认1501
 
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
 		List<ClassRoomBo> list=null;
 		try {
 			String type= DirectiveUtils.getString(PARAM_TYPE, params);
-			String pageNo= DirectiveUtils.getString(PARAM_PAGENO, params);
 			String gradeName= DirectiveUtils.getString(PARAM_GRADE_NAME, params);
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			if(!StringUtil.isNullOrEmpty(type)){
@@ -45,10 +41,7 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 				queryMap.put("gradeName",gradeName);
 			}
 			List<ArticleBo> articleList=ArticleService.findAllList(queryMap);
-			int PAGESIZE= CommonConstant.PAGESIZE;
-			List<ArticleBo> fs = ListUtils.getSubListPage(articleList, (Integer.valueOf(pageNo) - 1) * PAGESIZE, PAGESIZE);
-
-			env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(fs));
+			env.setVariable("gradeStars", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
 			env.setVariable("recordCount", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList.size()));
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,13 +1,16 @@
 package com.zero2ipo.mobile.action;
 
 import com.zero2ipo.common.http.FmUtils;
+import com.zero2ipo.common.util.LocalMAC;
 import com.zero2ipo.core.WaterPageContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
+import com.zero2ipo.eeh.classroom.bo.ClassRoomBo;
 import com.zero2ipo.eeh.common.CommonConstant;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.io.FileHelper;
 import com.zero2ipo.mobile.services.bsb.IHistoryCarService;
 import com.zero2ipo.mobile.services.bsb.IWashCouponService;
+import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.mobile.web.URLHelper;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -45,12 +52,36 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,String type) throws SocketException, UnknownHostException {
+							  HttpServletResponse response, ModelMap model) throws SocketException, UnknownHostException {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.INDEX_PAGE);
 		mv.addObject("type", CommonConstant.NAV_TYPE_KEBIAO);
+		String gradeName=getCurrentGradeByMacAddress();
+		SessionHelper.setAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY,gradeName);
 		return mv;
+	}
+
+	/**
+	 * 根据当前机器mac地址查询所在班级
+	 * @throws SocketException
+	 * @throws UnknownHostException
+	 */
+	public String getCurrentGradeByMacAddress() throws SocketException, UnknownHostException {
+		//获取本机mac地址
+		String mac= LocalMAC.getLocalMac();
+		//根据mac地址查询所在班级
+		Map<String,Object> map=new HashMap<String, Object>();
+		map.put("ip", mac);
+		List<ClassRoomBo> list=new ArrayList<ClassRoomBo>();
+		list= classRoomService.findAllList(map);
+		ClassRoomBo classRoomBo=new ClassRoomBo();
+		String gradeName=CommonConstant.DEFAULT_GRADE_NAME;//默认班级名称
+		if(null!=list&&list.size()>0){
+			classRoomBo=list.get(0);
+			gradeName=classRoomBo.getName();
+		}
+		return gradeName;
 	}
 
 
@@ -63,7 +94,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/bjfc.html", method = RequestMethod.GET)
 	public ModelAndView wycj(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model,String type,String pageNo) {
+							 HttpServletResponse response, ModelMap model,String pageNo) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.BanJiFengCaiPage);
@@ -88,7 +119,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/tongzhi.html", method = RequestMethod.GET)
 	public ModelAndView tongzhi(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model,String type) {
+							 HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.TongZhiPage);
@@ -108,7 +139,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/gonggao.html", method = RequestMethod.GET)
 	public ModelAndView gonggao(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model,String type) {
+							 HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.GongGaoPage);

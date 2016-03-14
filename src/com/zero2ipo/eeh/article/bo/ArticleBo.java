@@ -5,13 +5,15 @@ package com.zero2ipo.eeh.article.bo;
     */
 public class ArticleBo{
 	private int id;
-	private String thumbnail;
-	private String type;
-	private String content;
-	private String title;
-	private String time;
-	private long articleId;
-    private String  gradeName;
+	private String thumbnail;//图片地址
+	private String type;//类型 1 通知2公告3班级风采4班级明星
+	private String content;//内容
+	private String title;//标题
+	private String time;//时间
+	private long articleId;//主键
+    private String  gradeName;//班级名称
+    private String  motto;//座右铭
+    private String  remark;//备注
 
 	public int getId() {
 		return id;
@@ -66,6 +68,22 @@ public class ArticleBo{
 
 	public void setGradeName(String gradeName) {
 		this.gradeName = gradeName;
+	}
+
+	public String getMotto() {
+		return motto;
+	}
+
+	public void setMotto(String motto) {
+		this.motto = motto;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 }
 

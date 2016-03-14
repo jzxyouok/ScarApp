@@ -14,7 +14,7 @@
 
     <section class="m1-right fl hz-hid">
         <ul class="ban">
-            [@portal_current_grade]
+            [@portal_current_grade gradeName="${gradename!''}"]
             [#if gradeBo??]
             <li>
                 <strong>班主任：</strong>
@@ -43,13 +43,21 @@
             <li>
                 <strong>班级明星：</strong>
                 <i id="classStarMember" date-stars="">
-                    王小美、张强、李小花...
+                    [@portal_gradestarts type="4" gradeName="${gradename!''}"]
+                        [#if gradeStars?? &&gradeStars?size gt 0]
+                            [#list gradeStars as starts]
+                                [#if starts_index lt 3]
+                                    ${starts.title!''}
+                                [/#if]
+                            [/#list]
+                        [/#if]
+                    [/@portal_gradestarts]
                 </i>
             </li>
         </ul>
 
         <ul class="ban-main hz-hid">
-            [@portal_articlelist_bytype type="3" pageNo="${pageNo!'1'}"]
+            [@portal_articlelist_bytype type="3" pageNo="${pageNo!'1'}" gradeName="${gradename!''}"]
                 [#if articleList?? &&articleList?size>0]
                     [#list articleList as arc]
                     <li>
@@ -83,63 +91,70 @@
     通知:关于2016年国际数学竞赛的通知
 </footer>
 <section class="cover" id="secContext" style="display: none;"></section>
-<section class="bangan" id="classStar">
+<section class="bangan" id="classStar9" style="display: none;">
     <p><strong>班级小明星</strong></p>
-
-    <div class="banji por">
+    <div class="banji por" id="classStar">
         <a class="prev"></a><a class="next"></a>
-
-        <div class="banji-0"><img src="images/img0.png" alt="">
+        [@portal_gradestarts type="4" gradeName="${gradename!''}"]
+        [#if mainGradeStart??]
+        <div id="bjxmx"  class="banji-0">
+            <img src="${mainGradeStart.thumbnail}" alt="">
             <div class="txt hz-hid">
-                龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学同
+                ${mainGradeStart.content!''}
             </div>
-            <div class="clear">学龙雨晴同学同学龙雨晴同学同学龙雨晴同学同</div>
+            <div class="clear">${mainGradeStart.remark!''}</div>
             <strong class="db">座右铭：</strong>
-            <div class="bottom">“明智的人不会信任任何模糊的事情”</div>
+            <div class="bottom">${mainGradeStart.motto!''}</div>
         </div>
-        <div class="banji-1"><img src="images/img0.png" alt="">
-            <div class="txt hz-hid">
-               222 龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学龙雨晴同学同
+        [/#if]
+        [#if gradeStars?? &&gradeStars?size>0]
+            [#list gradeStars as gradeStart]
+            <div id="banji-${gradeStart_index}" style="display: none"  class="banji-1">
+                <img src="${gradeStart.thumbnail!''}" alt="">
+                <div class="txt hz-hid">
+                    ${gradeStart.content!''}
+                </div>
+                <div class="clear">${gradeStart.remark}</div>
+                <strong class="db">座右铭：</strong>
+                <div class="bottom">${gradeStart.motto}</div>
             </div>
-            <div class="clear">学龙雨晴同学同学龙雨晴同学同学龙雨晴同学同</div>
-            <strong class="db">座右铭：</strong>
-            <div class="bottom">“明智的人不会信任任何模糊的事情”</div>
-        </div>
-
+            [/#list]
+        [/#if]
+        [/@portal_gradestarts]
         <script>
             var dataIndex = 0;
             $(document).ready(
                     function () {
-
+                        $("#classStarMember").bind({click:function(){
+                            $("#classStar9").show();
+                        }});
                         $("#classStar").find(".prev").bind({
                             click: function () {
-                                var stars = $("#classStarMember").data("stars");
-                                alert(stars);
+                                var stars=$(".banji-1");
                                 if (stars && stars.length > 0) {
-                                    if (dataIndex < 0) {
+                                    if (dataIndex <= 0) {
                                         dataIndex = stars.length - 1;
+                                    }else{
+                                        dataIndex--;
                                     }
-                                    $("#classStar").find(".banji-0").html(stars[dataIndex].BriefIntroduction);
-                                    //$("#classStar").find(".txt").html(stars[dataIndex].txt);
-                                    //$("#classStar").find(".clear").html(stars[dataIndex].clear);
-                                    //$("#classStar").find(".bottom").html(stars[dataIndex].bottom);
-                                    dataIndex--;
+                                    alert(dataIndex);
+                                    $("#classStar").find("#bjxmx").html($("#classStar").find("#banji-"+dataIndex).html());
                                 }
                             }
                         });
                         $("#classStar").find(".next").bind({
                             click: function () {
-                                var stars = $("#classStarMember").data("stars");
-                                alert(stars);
+                                var stars=$(".banji-1");
                                 if (stars && stars.length > 0) {
-                                    if (dataIndex > stars.length - 1) {
+                                    if (dataIndex >= stars.length - 1) {
                                         dataIndex = 0;
+                                    }else{
+                                        dataIndex++;
                                     }
-                                    $("#classStar").find(".banji-0").html(stars[dataIndex].BriefIntroduction);
-                                    //$("#classStar").find(".txt").html(stars[dataIndex].txt);
-                                    //$("#classStar").find(".clear").html(stars[dataIndex].clear);
-                                    //$("#classStar").find(".bottom").html(stars[dataIndex].bottom);
-                                    dataIndex++;
+                                    alert(dataIndex);
+
+                                    $("#classStar").find("#bjxmx").html($("#classStar").find("#banji-"+dataIndex).html());
+
                                 }
                             }
                         });

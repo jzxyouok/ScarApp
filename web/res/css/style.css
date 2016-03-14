@@ -795,6 +795,59 @@ footer{
     line-height: 0.4rem;
 }
 
+.banji-0{
+    width:4.05rem;
+    color:#000;
+    font-size: 0.18rem;
+    line-height: 0.26rem;
+    text-align: justify;
+}
+
+.banji-0>img{
+    width:1.37rem;
+    height:1.94rem;
+    float: left;
+}
+.banji-0>.txt{
+    width:2.45rem;
+    float: right;
+}
+.banji-0 strong{
+    font-size: 0.24rem;
+    padding-top: 0.26rem;
+    line-height: 0.4rem;
+}
+.banji-0 .bottom{
+    font-size: 0.22rem;
+    line-height: 0.4rem;
+}
+
+.banji-1{
+    width:4.05rem;
+    color:#000;
+    font-size: 0.18rem;
+    line-height: 0.26rem;
+    text-align: justify;
+}
+
+.banji-1>img{
+    width:1.37rem;
+    height:1.94rem;
+    float: left;
+}
+.banji-1>.txt{
+    width:2.45rem;
+    float: right;
+}
+.banji-1 strong{
+    font-size: 0.24rem;
+    padding-top: 0.26rem;
+    line-height: 0.4rem;
+}
+.banji-1 .bottom{
+    font-size: 0.22rem;
+    line-height: 0.4rem;
+}
 .m7-bottom{
     width:4.58rem;
     margin-bottom: 1rem;
