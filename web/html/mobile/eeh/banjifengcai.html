@@ -27,13 +27,6 @@
                          ${gradeBo.classCadre!''}
                     [#else]
                          ${gradeBo.classCadre[0..16]}...
-                    <section class="bangan" id="classTeam" style="display: none;">
-                        <p><strong>班干团队</strong></p>
-                        <div class="bangan-main hz-hid">
-                            ${gradeBo.classCadre!''}
-                        </div>
-                    </section>
-
                     [/#if]
                 </i>
             </li>
@@ -91,6 +84,7 @@
 </footer>
 <section class="cover" id="secContext" style="display: none;"></section>
 <section class="bangan" id="classStar9" style="display: none;">
+    <a href="javascript:location.reload()" class="back">返回</a>
     <p><strong>班级小明星</strong></p>
     <div class="banji por" id="classStar">
         <a class="prev"></a><a class="next"></a>
@@ -123,6 +117,15 @@
 
     </div>
 </section>
+<section class="bangan" id="classTeam" style="display: none;">
+    <section class="infor-title">班干团队</section>
+    <a href="javascript:location.reload()" class="back">返回</a>
+    <div class="bangan-main hz-hid">
+        ${gradeBo.classCadre!''}
+    </div>
+</section>
+
+
 <section class="slide" id="classMienContext" style="display: none">
     <div class="bd">
         <ul class="hz-hid">

@@ -63,11 +63,11 @@
 		<#list start..end as i>
 		<#if (pageNo==i)>
 		<#if pageNo gt 1>
-		 <a href="${toURL}?pageNo=${pageNo-1}" class="prev-0 fl" onclick="turnOverPage(${pageNo-1});">上一页</a>
+		 <a href="${toURL}?pageNo=${pageNo-1}" class="prev-0" onclick="turnOverPage(${pageNo-1});">上一页</a>
 		  </#if>
 
 			<#if (pageCount>pageNo)>
-             <a href="${toURL}?pageNo=${pageNo+1}" class="next-0 fr" onclick="turnOverPage(${pageNo+1});">下一页</a>
+             <a href="${toURL}?pageNo=${pageNo+1}" class="next-0" onclick="turnOverPage(${pageNo+1});">下一页</a>
 			</#if>
 
 

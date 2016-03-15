@@ -5,16 +5,12 @@ $(document).ready(
             click: function () {
                 $("#secContext").fadeIn();
                 $("#classTeam").fadeIn();
+                //$("#classTeam").show();
             }
         });
         $("#classStarMember").bind('click',function(){
             $("#classStar9").show();
         });
-        $(".ban-main").bind('click',function(){
-            alert("main");
-           // $("#classStar9").hide();
-        });
-
 
         $("#classStar").find(".prev").bind({
             click: function () {

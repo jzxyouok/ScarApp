@@ -38,9 +38,7 @@ textarea{resize: none;}
 .dib{display: inline-block;}
 .db{display: block;}
 .dn{display: none;}
-.hz-hid{
-    height: auto;
-    overflow: hidden;zoom: 1;}
+.hz-hid{height: auto;overflow: hidden;zoom: 1;}
 .clear{clear: both;zoom: 1;}
 .clear:after{content: '';display: inline-block;clear: both;}
 .por{position: relative;}
@@ -52,7 +50,35 @@ textarea{resize: none;}
 .tar{
     text-align: right;
 }
+.prev-0{
+    float: left;
+    width:0.95rem;
+    height:1rem;
+    color:#fff;
+    padding-left: 0.28rem;
+    line-height: 0.46rem;
+    font-size: 0.27rem;
+    bottom:0.4rem;
+    left:0.15rem;
+    background: url("../images/prev.png") no-repeat;
+    background-size: 1.23rem;
+    display: block;
+}
 
+.next-0{
+    float: right;
+    width:1.02rem;
+    height:1rem;
+    color:#fff;
+    padding-left: 0.21rem;
+    line-height: 0.46rem;
+    font-size: 0.27rem;
+    bottom:0.4rem;
+    right:0.15rem;
+    background: url("../images/next.png") no-repeat;
+    background-size: 1.23rem;
+    display: block;
+}
 
 
 .f20{font-size: 0.2rem;}

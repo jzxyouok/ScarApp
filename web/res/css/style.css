@@ -49,6 +49,7 @@ header .t-0{
 }
 .nav>li:hover,.nav>li.current{
     color:#32a490;
+
 }
 .nav>li:nth-child(1){
     background: url("../images/l-00.png") no-repeat center 0.08rem;
@@ -116,6 +117,7 @@ header .t-0{
     color:#fff;
     font-size: 0.21rem;
     width:1.08rem;
+    cursor: pointer;
 }
 .sub-nav>a:hover,.sub-nav>a.current{
     background: #218273;
@@ -126,7 +128,7 @@ header .t-0{
     color:#535454;
     font-size: 0.26rem;
     line-height: 0.42rem;
-    width:0.937rem;
+    width:0.850rem;
     padding-top: 0.25rem;
     padding-bottom: 0.15rem;
     float: left;
@@ -153,7 +155,7 @@ header .t-0{
 }
 .ke>li{
     width:6.56rem;
-    height:1.15rem;
+    height:0.95rem;
     border-bottom: 1px solid #DBDBDB;
     float: left;
     color:#747474;
@@ -164,7 +166,7 @@ header .t-0{
 .ke>li i{
     text-align: right;
     width:1.25rem;
-    line-height: 1.15rem;
+    line-height: 0.95rem;
     float: left;
     font-size: 0.24rem;
     margin-right: 0.15rem;
@@ -172,7 +174,7 @@ header .t-0{
 .ke>li .span{
     padding-left: 0.8rem;
     width:2.50rem;
-    line-height: 1.15rem;
+    line-height: 0.95rem;
     display: inline-block;
     float: left;
     background: url("../images/point.png") no-repeat 0.11rem center;
@@ -186,7 +188,7 @@ header .t-0{
     background-size: 0.28rem;
     display: inline-block;
     font-size: 0.28rem;
-    line-height: 1.15rem;
+    line-height: 0.8rem;
 }
 .ke>li.current i{
     color:#424746;
@@ -334,6 +336,7 @@ footer{
 }
 
 
+
 .active-ul{
     width:5.2rem;
     padding-top: 1rem;
@@ -349,14 +352,14 @@ footer{
     float: left;
     margin-bottom: 0.24rem;
     color:#444344;
-    font-size: 0.26rem;
+    font-size: 0.22rem;
     line-height: 0.66rem;
 }
 .active-ul>li >i{
     width:0.95rem;
     text-align: center;
     color:#444344;
-    font-size: 0.22rem;
+    font-size: 0.20rem;
     line-height: 0.28rem;
     font-family: 'Microsoft Yahei';
     display: inline-block;
@@ -369,6 +372,7 @@ footer{
     display: inline-block;
     float: left;
     color:#444344;
+    cursor: pointer;
 }
 
 .load-more{
@@ -379,15 +383,45 @@ footer{
     display: block;
     margin:0 auto;
     margin-top: 0.7rem;
+    cursor: pointer;
 }
+.load-ing{
+    width:0.71rem;
+    height:0.19rem;
 
+    background-size: 0.71rem;
+    display: block;
+    margin:0 auto;
+    margin-top: 0.7rem;
+}
+.load-msg{
+    width:5.15rem;
+    height:0.19rem;
 
+    background-size: 0.71rem;
+    display: block;
+    margin:0 auto;
+    margin-top: 0.7rem;
+    color:#444344;
+    font-size: 0.14rem;
+    line-height: 0.24rem;
+    text-indent: 2em;
+    text-align: center;
+}
 
 .slide{
     width:4.5rem;
     margin:0 auto;
-    margin-top: 1.2rem;
-    height:7.15rem;
+    /*height:7.15rem;*/
+    min-height: 2rem;
+    position: fixed;
+    top:50%;
+    left:50%;
+    margin-top: -2.5rem;
+    margin-left: -2.2rem;
+    /*padding-top: 0.6rem;*/
+    z-index: 5;
+    background: #ffffff;
 }
 .slide .prev{
     width:0.22rem;
@@ -398,6 +432,20 @@ footer{
     top:2.38rem;
     left:-0.63rem;
     display: block;
+    cursor: pointer;
+}
+.slide .back{
+    width:0.88rem;
+    height:0.46rem;
+    text-align: center;
+    color:#fff;
+    line-height: 0.46rem;
+    font-size: 0.27rem;
+    position: absolute;
+    top:0.17rem;
+    right:0.22rem;
+    border-radius: 0.1rem;
+    background: #209280;
 }
 .slide .next{
     width:0.22rem;
@@ -408,12 +456,13 @@ footer{
     top:2.38rem;
     right:-0.63rem;
     display: block;
+    cursor: pointer;
 }
 .slide .bd{
     width:100%;
-    position: absolute;
-    top:0;
-    left:0;
+    /*position: absolute;*/
+    /*top:0;*/
+    /*left:0;*/
 }
 .slide .bd li{
     height: auto;
@@ -516,22 +565,23 @@ footer{
 }
 
 .exam-info{
-    width:5.34rem;
+    width:4.84rem;
     height:6.1rem;
     background: #2DAA96;
     position: fixed;
     top:50%;
     left:50%;
-    margin-top: -3.05rem;
-    margin-left: -2.67rem;
+    margin-top: -2.05rem;
+    margin-left: -2.42rem;
 }
 .exam-info .infor-title{
     width:2.04rem;
     height:0.68rem;
     text-align: center;
     line-height:0.68rem;
-    font-size: 0.36rem;
+    font-size: 0.30rem;
     color:#fff;
+    margin-right: 0.24rem;
     margin:0 auto;
     background: #219280;
     margin-top: 0.06rem;
@@ -542,23 +592,36 @@ footer{
     text-align: center;
     color:#fff;
     line-height: 0.46rem;
-    font-size: 0.27rem;
+    font-size: 0.22rem;
     position: absolute;
     top:0.17rem;
-    right:0.22rem;
+    right:0.12rem;
     border-radius: 0.1rem;
     background: #209280;
 }
-
+.bangan .back{
+    width:0.88rem;
+    height:0.46rem;
+    text-align: center;
+    color:#fff;
+    line-height: 0.46rem;
+    font-size: 0.22rem;
+    position: absolute;
+    top:0.17rem;
+    right:0.12rem;
+    border-radius: 0.1rem;
+    background: #209280;
+}
 .exam-info .exam-0{
-    margin-top: 0.15rem;
+    margin-top: 0.25rem;
 }
 .exam-info .exam-0 .img{
-    width:1.38rem;
-    height:1.86rem;
+    width:1.18rem;
+    margin-top: 0.25rem;
+    height:1.56rem;
     float: right;
-    margin-right: 0.54rem;
-    background: #4FB8A7;
+    margin-right: 0.44rem;
+    background: url('../images/tou.png') center no-repeat;
 }
 .exam-info .exam-0 .img img{
     width:1.38rem;
@@ -568,7 +631,7 @@ footer{
     width:2.8rem;
     padding-left: 0.5rem;
     color:#fff;
-    font-size: 0.35rem;
+    font-size: 0.28rem;
     line-height: 0.6rem;
 }
 .exam-info .exam-1{
@@ -585,19 +648,19 @@ footer{
     padding-bottom: 0.24rem;
 }
 .exam-info .exam-2{
-    margin-top: 0.64rem;
-    margin-left: 0.27rem;
+    margin-top: 0.44rem;
+    margin-left: 0.57rem;
     background: url('../images/exam.png') no-repeat left center;
-    height:1.44rem;
+    height:1.24rem;
     background-size: 1.42rem 1.18rem;
     color:#fff;
-    font-size: 0.8rem;
-    line-height: 1.44rem;
-    padding-left: 1.47rem;
+    font-size: 0.5rem;
+    line-height: 1.04rem;
+    padding-left: 1.57rem;
 }
 .exam-info .exam-ul{
     margin-top: 0.4rem;
-    margin-left: 0.2rem;
+    margin-left: 0.4rem;
 }
 .exam-info .exam-ul> li{
     width:1.54rem;
@@ -605,8 +668,8 @@ footer{
     text-align: center;
     line-height: 0.54rem;
     color:#fff;
-    font-size: 0.33rem;
-    margin-right: 0.15rem;
+    font-size: 0.28rem;
+    margin-right: 0.45rem;
     float: left;
     border-radius: 0.12rem;
     background: #229280;
@@ -646,7 +709,7 @@ footer{
     background: #2DAA96;
 }
 .m1 .m1-right{
-    width:5.7rem;
+    width:5.5rem;
     margin-left: 2px;
     padding-top: 0.7rem;
 }
@@ -725,13 +788,15 @@ footer{
     left:50%;
     margin-top: -3.05rem;
     margin-left: -2.89rem;
+
+    padding-top: 0.6rem;
+    z-index: 5;
     border-radius: 0.15rem;
     background: #fff;
-    padding-top: 0.6rem;
     text-align: center;
     color:#2fac97;
     font-size: 0.38rem;
-    z-index: 5;
+
 }
 
 .bangan .bangan-main{
@@ -758,6 +823,7 @@ footer{
     position: absolute;
     top:1.15rem;
     left:-0.6rem;
+    cursor: pointer;
 }
 .banji .next{
     width:0.11rem;
@@ -767,6 +833,7 @@ footer{
     position: absolute;
     top:1.15rem;
     right:-0.6rem;
+    cursor: pointer;
 }
 .banji-0{
     width:4.05rem;
@@ -795,85 +862,8 @@ footer{
     line-height: 0.4rem;
 }
 
-.banji-0{
-    width:4.05rem;
-    color:#000;
-    font-size: 0.18rem;
-    line-height: 0.26rem;
-    text-align: justify;
-}
 
-.banji-0>img{
-    width:1.37rem;
-    height:1.94rem;
-    float: left;
-}
-.banji-0>.txt{
-    width:2.45rem;
-    float: right;
-}
-.banji-0 strong{
-    font-size: 0.24rem;
-    padding-top: 0.26rem;
-    line-height: 0.4rem;
-}
-.banji-0 .bottom{
-    font-size: 0.22rem;
-    line-height: 0.4rem;
-}
 
-.banji-1{
-    width:4.05rem;
-    color:#000;
-    font-size: 0.18rem;
-    line-height: 0.26rem;
-    text-align: justify;
-}
 
-.banji-1>img{
-    width:1.37rem;
-    height:1.94rem;
-    float: left;
-}
-.banji-1>.txt{
-    width:2.45rem;
-    float: right;
-}
-.banji-1 strong{
-    font-size: 0.24rem;
-    padding-top: 0.26rem;
-    line-height: 0.4rem;
-}
-.banji-1 .bottom{
-    font-size: 0.22rem;
-    line-height: 0.4rem;
-}
-.m7-bottom{
-    width:4.58rem;
-    margin-bottom: 1rem;
-    margin-left: 0.25rem;
-}
 
-.next-0{
-    width:1.02rem;
-    height:0.5rem;
-    color:#fff;
-    padding-left: 0.21rem;
-    line-height: 0.46rem;
-    font-size: 0.27rem;
-    background: url("../images/next.png") no-repeat;
-    background-size: 1.23rem;
-    display: block;
-}
-.prev-0{
-    width:0.95rem;
-    height:0.5rem;
-    color:#fff;
-    padding-left: 0.28rem;
-    line-height: 0.46rem;
-    font-size: 0.27rem;
-    background: url("../images/prev.png") no-repeat;
-    background-size: 1.23rem;
-    display: block;
-}
 

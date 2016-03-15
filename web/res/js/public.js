@@ -1,11 +1,5 @@
 $(document).ready(
     function () {
-       // setInterval(function () {
-         //   setCurrentTime();
-        //}, 60000);
-       // readBJ();
-       // setCurrentTime();
-       // setCurrentDate();
         $("#seats").bind({
             click: function () {
                 var seatsState = $(this).data("seatsState");
@@ -56,21 +50,7 @@ function setCurrentDate() {
     $("#currentDate").text(curDate.Format("yyyy-MM-dd"));
 }
 
-function ajaxGetRequest(url, callBackFun, isAsync) {
-    if (!isAsync) { isAsync = true;}
-    $.ajax({
-        type: "get",
-        url: url,
-        dataType: "json",
-        contentType: "application/x-www-form-urlencoded; charset=utf-8",
-        async: false,
-        success: function (msg) {
-            callBackFun(msg);
-        },
-        error: function (xhr, st, err) {//执行错误走此方法
-        }
-    });
-}
+
 function AddDays(date, days) {
     return new Date(Date.parse(date) + (days * 24 * 60 * 60 * 1000));
 }
@@ -117,88 +97,5 @@ String.prototype.Format = function (fmt) {
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }
-//String.prototype.parseDate = function () {
-//    var dateResult = new Date(this.replace(/-/g, '/'));
-//    return dateResult;
-//}
-
-function readBJ() {
-    ajaxGetRequest("ashx/classInfo.ashx", loadBJ);
-}
-
-function loadBJ(msg) {
-    if(msg){
-        $("header").find(".dib").attr("data-code", msg.ClassId);
-        $("header").find(".dib").text(msg.ClassName);
-    }
-}
 
 
-function payByCardRead() {
-    var payID=0;
-    if ($("#payByCardBg").length <= 0) {
-        $("body").append('<section class="cover" id="payByCardBg"  style="display:none"></section>');
-        $("#payByCardBg").bind({click:function(){
-            $("#payByCard").fadeOut();
-            $("#payByCardBg").fadeOut();
-            setIntervalPayByCard();
-        }});
-    }
-    if ($("#payByCard").length <= 0) {
-        $("body").append('<section class="exam-info" id="payByCard" style="display:none">'
-        +'<section class="infor-title">个人信息</section>'
-        +'<a class="back">返回</a>'
-        +'<section class="exam-0 hz-hid">'
-        +'<span class="img"></span>'
-        +'<div class="exam-left">'
-        +'</div>'
-        +'</section>'
-        +'<section class="exam-2">'
-        +'刷卡成功'
-        +'</section>'
-        +'<ul class="exam-ul">'
-        +'<li>今日课表</li>'
-        +'<li>班级课表</li>'
-        +'<li>教室课表</li>'
-        +'</ul>'
-        +'</section>');
-        $("#payByCard").find(".back").bind({click:function(){
-            $("#payByCard").fadeOut();
-            $("#payByCardBg").fadeOut();
-            setIntervalPayByCard();
-        }});
-    }
-    setIntervalPayByCard();
-
-    function setIntervalPayByCard(){
-        payID =  setInterval(function () {
-            getPayByCard();
-        }, 1000);
-    }
-    function getPayByCard(){
-        $.ajax({
-            type: "get",
-            url: "ashx/payByCard.ashx",
-            dataType: "json",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            success: function (msg) {
-                loadData(msg);
-            },
-            error: function (xhr, st, err) {//执行错误走此方法
-                setIntervalPayByCard();
-            }
-        });
-    }
-    function loadData(msg){
-        if(msg){
-            payID=window.clearInterval(payID);
-            $("#payByCard").find(".exam-left").html("");
-            $("#payByCard").find(".exam-left").append('<p>姓&nbsp;&nbsp;&nbsp; 名  : '+ msg.StudentName+'</p>'
-            +'<p>班&nbsp;&nbsp;&nbsp; 级  :  '+ msg.ClassName+'</p>'
-            +'<p>班主任  : '+ msg.ClassTeacher+'</p>');
-            $("#payByCardBg").fadeIn();
-            $("#payByCard").fadeIn();
-        }
-    }
-
-}
