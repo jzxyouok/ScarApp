@@ -49,7 +49,8 @@
                 var str='';
                 if(null!= r.result&&''!= r.result){
                     for(var i=0;i< r.result.length;i++){
-                        var time=r.result[i].schoolTime;
+                        var schoolTime=r.result[i].schoolTime;
+                        var time=schoolTime;
                         if(time.length>4){
                             time=time.substring(0,5);
                             time=time.replace("-","");
@@ -57,7 +58,22 @@
                         }
                         var name=r.result[i].courseName;
                         var teacher=r.result[i].teacher;
-                        str+='<li>';
+                        var times=schoolTime.split("-");
+                        var start='';//上课开始时间
+                        var end='';//上课结束时间
+                        var current='';//当前时间
+                        if(times.length==2){
+                             start=times[0].replace("：",":");
+                             end=times[1].replace("：",":");
+                             showTime();
+                             current= $("#time").html();
+                        }
+                        if(current>=start&&current<=end){
+                            str+='<li class="current">';
+                        }else{
+                            str+='<li>';
+                        }
+
                         str+='<i>'+ time+'</i>';
                         str+='<span class="span">'+ name+'</span>';
                         str+='<div class="liright fr">'+ teacher+'</div>';
