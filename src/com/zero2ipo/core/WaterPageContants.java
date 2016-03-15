@@ -12,4 +12,5 @@ public class WaterPageContants {
 	public static final String TongZhiPage = "mobile/eeh/tongzhi"; //通知页面
 	public static final String GongGaoPage = "mobile/eeh/gonggao"; //公告页面
 	public static final String KaoShiPage = "mobile/eeh/kaoshiquery"; //考试查询
+	public static final String ZuoWeiBiaoPage = "mobile/eeh/zuoweibiao"; //座位表
 }

@@ -1,0 +1,105 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>座次</title>
+    [#include "common.html"]
+    <script>
+        $(document).ready(
+                function () {
+                    $("#seatsContext").find(".prev").bind({
+                        click: function () {
+                            $("#courseDateday").val(AddDays($("#courseDateday").val().replace(/-/g, '/'), -1).Format("yyyy-MM-dd"));
+                            $("#seatsInfo").html("");
+                            //initCourseHtml($("#courseDateday").val());
+                        }
+                    });
+                    $("#seatsContext").find(".next").bind({
+                        click: function () {
+                            $("#courseDateday").val(AddDays($("#courseDateday").val().replace(/-/g, '/'), 1).Format("yyyy-MM-dd"));
+                            $("#seatsInfo").html("");
+                            initCourseHtml($("#courseDateday").val());
+                        }
+                    });
+
+                    $("#courseDateday").val(new Date().Format("yyyy-MM-dd"));
+                    //initCourseHtml($("#courseDateday").val());
+                });
+    </script>
+</head>
+<body>
+
+<!--header-->
+[#include "head.html"]
+
+<input type="hidden" id="courseDateday" />
+<section class="m0 hz-hid por" id="seatsContext">
+
+    <div class="Right-main fl hz-hid">
+        <p>培优座次</p>
+        <span class="jiangtai">讲台</span>
+        <ul class="hz-hid">
+            [@portal_seats gradeName="${gradename}"]
+                [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
+                  [#list seatsList as seat]
+                    [#if seat_index%firstSeat.cell==0]
+                        <li data-name="${seat.name!''}"  class="mr-0">${seat.seatNo}</li>
+                    [#else]
+                        <li data-name="${seat.name!''}">${seat.seatNo}</li>
+                    [/#if]
+
+                  [/#list]
+                [/#if]
+            [/@portal_seats]
+        </ul>
+    </div>
+
+    <a href="" class="prev">上一节</a><a href="" class="next">下一节</a></section>
+
+
+<footer>
+    通知:关于2016年国际数学竞赛的通知
+</footer>
+<section class="cover dn"></section>
+
+<section class="exam-info dn">
+    <section class="infor-title">个人信息</section>
+    <a href="javascript:location.reload()" class="back">返回</a>
+    <section class="exam-0 hz-hid">
+        <span class="img"></span>
+        <div class="exam-left">
+            <p >姓&nbsp;&nbsp;&nbsp; 名: <label id="xname">于沈文</label>
+            </p>
+            <p>班&nbsp;&nbsp;&nbsp; 级: ${gradename!''}
+            </p>
+            <p>班主任  : <label id="xmainTeacher">${mainTeacher!''}</label></p>
+        </div>
+    </section>
+
+    <section class="exam-2">
+        签到成功
+    </section>
+
+    <ul class="exam-ul">
+        <li>我的课表</li>
+        <li>班级课表</li>
+
+    </ul>
+</section>
+
+
+<script>
+    $(function () {
+        var li=$('.Right-main ul>li');
+        li.click(function(){
+            var name=$(this).attr('data-name');
+            $("#xname").html(name);
+            $('.cover').show();
+            $('.exam-info').show();
+        })
+    })
+</script>
+
+
+</body>
+</html>

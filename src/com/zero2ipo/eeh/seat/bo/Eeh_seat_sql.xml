@@ -1,0 +1,125 @@
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+		 "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="mobile.Seat">
+<typeAlias alias="SeatBo" type="com.zero2ipo.eeh.seat.bo.SeatBo"/>
+<resultMap class="SeatBo" id="SeatMap">
+	<result property="id" column="id"/>
+	<result property="row" column="row"/>
+	<result property="cell" column="cell"/>
+	<result property="seatNo" column="seatNo"/>
+	<result property="name" column="name"/>
+	<result property="classRoom" column="classRoom"/>
+	<result property="week" column="week"/>
+	<result property="schoolTime" column="schoolTime"/>
+</resultMap>
+	<!--根据id查询查询-->
+	<select id='findSeatById' resultClass='SeatBo'>
+		SELECT
+		id,
+		row,
+		cell,
+		name,
+		seatNo,
+		classRoom,
+		schoolTime,
+		week
+		FROM
+			eeh_Seat
+		WHERE  id=#id#
+	</select>
+
+<!--查询-->
+<select id='findSeatList' resultMap='SeatMap'>
+SELECT
+	id,
+	row,
+	cell,
+	name,
+	seatNo,
+	classRoom,
+	schoolTime,
+	week
+FROM
+	eeh_Seat
+<dynamic prepend="WHERE">
+	<isNotEmpty prepend="AND" property="id">
+		id=#id#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="classRoom">
+		classRoom=#classRoom#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="week">
+		week=#week#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="schoolTime">
+		schoolTime=#schoolTime#
+	</isNotEmpty>
+</dynamic>
+</select>
+<!--查询个数-->
+	<select id='findSeatListCount' resultClass='java.lang.Integer'>
+		SELECT
+		count(0)
+		FROM
+		eeh_Seat
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="id">
+				id=#id#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="classRoom">
+				classRoom=#classRoom#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="week">
+				week=#week#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="schoolTime">
+				schoolTime=#schoolTime#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+<!--新增-->
+<insert id="add_Seat" parameterClass="SeatBo">
+	INSERT INTO
+		eeh_Seat(
+		id,
+		row,
+		cell,
+		name,
+		seatNo,
+		classRoom,
+		schoolTime,
+		week
+	)VALUES(
+	    #id#,
+		#row#,
+		#cell#,
+		#name#,
+		#seatNo#,
+		#classRoom#,
+		#schoolTime#,
+		#week#
+	)
+</insert>
+<!--修改-->
+<update id="upd_Seat" parameterClass="SeatBo">
+	UPDATE
+		eeh_Seat
+	SET
+	row=#row#,
+	cell=#cell#,
+	name=#name#,
+	seatNo=#seatNo#
+ 	WHERE
+	ID=#id#
+</update>
+<!--删除-->
+<delete id="del_Seat" parameterClass="java.util.Map">
+	DELETE FROM
+	eeh_Seat
+	WHERE
+	ID IN
+	<iterate property="id" conjunction="," close=")" open="(">
+	#id[]#
+	</iterate>
+</delete>
+</sqlMap>

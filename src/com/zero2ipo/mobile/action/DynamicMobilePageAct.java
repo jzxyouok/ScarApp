@@ -6,6 +6,8 @@ import com.zero2ipo.core.WaterPageContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.classroom.bo.ClassRoomBo;
 import com.zero2ipo.eeh.common.CommonConstant;
+import com.zero2ipo.eeh.grade.bizc.IGradeService;
+import com.zero2ipo.eeh.grade.bo.GradeBo;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.io.FileHelper;
 import com.zero2ipo.mobile.services.bsb.IHistoryCarService;
@@ -43,6 +45,9 @@ public class DynamicMobilePageAct {
 	@Autowired
 	@Qualifier("classRoomService")
 	private IClassRoomService classRoomService ;
+	@Autowired
+	@Qualifier("GradeService")
+	private IGradeService GradeService;
 	/**
 	 * 首页
 	 * @param request
@@ -57,8 +62,8 @@ public class DynamicMobilePageAct {
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.INDEX_PAGE);
 		mv.addObject("type", CommonConstant.NAV_TYPE_KEBIAO);
-		String gradeName=getCurrentGradeByMacAddress();
-		SessionHelper.setAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY,gradeName);
+		getCurrentGradeByMacAddress(request);//将班级和所在班主任保存到缓存中
+
 		return mv;
 	}
 
@@ -67,7 +72,7 @@ public class DynamicMobilePageAct {
 	 * @throws SocketException
 	 * @throws UnknownHostException
 	 */
-	public String getCurrentGradeByMacAddress() throws SocketException, UnknownHostException {
+	public void getCurrentGradeByMacAddress(HttpServletRequest request) throws SocketException, UnknownHostException {
 		//获取本机mac地址
 		String mac= LocalMAC.getLocalMac();
 		//根据mac地址查询所在班级
@@ -81,7 +86,13 @@ public class DynamicMobilePageAct {
 			classRoomBo=list.get(0);
 			gradeName=classRoomBo.getName();
 		}
-		return gradeName;
+		SessionHelper.setAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY,gradeName);
+		//根据gradename查询班级信息
+		map.put("name",gradeName);
+		List<GradeBo> listGrade=GradeService.findAllList(map);
+		if(null!=listGrade&&listGrade.size()>0){
+			SessionHelper.setAttribute(request,CommonConstant.MAIN_TEACHER_NAME_kEY,listGrade.get(0).getTeacherName());
+		}
 	}
 
 
@@ -162,6 +173,23 @@ public class DynamicMobilePageAct {
 		mv.addObject("type", CommonConstant.NAV_TYPE_KaoShiChaXun);
 		return mv;
 	}
+	/**
+	 * 座位表
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/seats.html", method = RequestMethod.GET)
+	public ModelAndView seatsPage(HttpServletRequest request,
+								   HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(WaterPageContants.ZuoWeiBiaoPage);
+		mv.addObject("type", CommonConstant.NAV_TYPE_ZuoWeiBiao);
+		return mv;
+	}
+
 	/**
 	 * 单页资源请求处理
 	 */

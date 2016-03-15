@@ -21,8 +21,13 @@
     <li url="/index.html" [#if type=="kb"]class="current"[/#if] id="kb">
         <span>课表</span>
     </li>
-    <li id="zwb"  [#if type=="zwb"]class="current"[/#if] >
+    <li id="zwb" url="/seats.html"  [#if type=="zwb"]class="current"[/#if] >
         <span>座位表</span>
+        <div class="sub-nav hz-hid" id="divSeats" style="display: none">
+            <a url="seats.html">日常座次</a>
+            <a url="seats.html">培优座次</a>
+            <a url="seats.html">晚自习座次</a>
+        </div>
     </li>
     <li url="/bjfc.html" id="bjfc"  [#if type=="bjfc"]class="current"[/#if] >
         <span>班级风采</span>
