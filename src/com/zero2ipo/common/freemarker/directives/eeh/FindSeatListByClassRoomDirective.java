@@ -1,6 +1,7 @@
 package com.zero2ipo.common.freemarker.directives.eeh;
 
 import com.zero2ipo.common.freemarker.DirectiveUtils;
+import com.zero2ipo.common.util.WeekDateUtils;
 import com.zero2ipo.eeh.seat.bizc.ISeatService;
 import com.zero2ipo.eeh.seat.bo.SeatBo;
 import freemarker.core.Environment;
@@ -28,6 +29,12 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 			String classRoom= DirectiveUtils.getString(PARAM_GRADE_NAME, params);
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("classRoom",classRoom);
+			//除了根据教室查询座次表，还要根据星期和上课时间
+			//获取今天是周几
+			String week= WeekDateUtils.getWeekOfDate(null);
+			//获取当前系统时间 时分
+			String time= WeekDateUtils.getDateNowHm();
+
 			List<SeatBo> seatsList=SeatService.findAllList(queryMap);
 			if(null!=seatsList&&seatsList.size()>0){
 				env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList.get(0)));

@@ -42,7 +42,7 @@
             [@portal_seats gradeName="${gradename}"]
                 [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
                   [#list seatsList as seat]
-                    [#if seat_index%firstSeat.cell==0]
+                    [#if (seat_index+1)%firstSeat.cell==0]
                         <li data-name="${seat.name!''}"  class="mr-0">${seat.seatNo}</li>
                     [#else]
                         <li data-name="${seat.name!''}">${seat.seatNo}</li>
@@ -53,15 +53,9 @@
             [/@portal_seats]
         </ul>
     </div>
-
     <a href="" class="prev">上一节</a><a href="" class="next">下一节</a></section>
-
-
-<footer>
-    通知:关于2016年国际数学竞赛的通知
-</footer>
+[#include "foot.html"]
 <section class="cover dn"></section>
-
 <section class="exam-info dn">
     <section class="infor-title">个人信息</section>
     <a href="javascript:location.reload()" class="back">返回</a>
