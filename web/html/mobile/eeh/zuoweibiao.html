@@ -31,7 +31,7 @@
         <p>培优座次</p>
         <span class="jiangtai">讲台</span>
         <ul class="hz-hid">
-            [@portal_seats gradeName="${gradename}"]
+            [@portal_seats gradeName="${gradename!''}"]
                 [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
                   [#list seatsList as seat]
                     [#if (seat_index+1)%firstSeat.cell==0]
@@ -47,10 +47,10 @@
     </div>
     <a href="" class="prev">上一节</a><a href="" class="next">下一节</a></section>
 [#include "foot.html"]
-<section class="cover dn"></section>
-<section class="exam-info dn">
+<section class="cover dn" id="CoverDn"></section>
+<section class="exam-info dn" id="examInfoSection">
     <section class="infor-title">个人信息</section>
-    <a href="javascript:location.reload()" class="back">返回</a>
+    <a href="javascript:void(0)" class="back">返回</a>
     <section class="exam-0 hz-hid">
         <span class="img"></span>
         <div class="exam-left">
@@ -77,6 +77,10 @@
             $("#xname").html(name);
             $('.cover').show();
             $('.exam-info').show();
+        })
+        $(".back").bind('click', function () {
+            $("#examInfoSection").fadeOut();
+            $("#CoverDn").hide();
         })
     })
 </script>

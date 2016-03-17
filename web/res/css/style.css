@@ -266,12 +266,12 @@ footer{
 .Right-main{
     width:5.47rem;
     margin-left: 0.67rem;
-    padding-top: 0.32rem;
+    padding-top: 0.12rem;
     color:#383939;
     font-size: 0.45rem;
     text-align: center;
-    line-height: 0.85rem;
-    padding-bottom: 2.1rem;
+    line-height: 0.65rem;
+    padding-bottom: 1.0rem;
 }
 .Right-main .jiangtai{
     width:1.23rem;
@@ -288,7 +288,7 @@ footer{
 
 .Right-main ul{
     display: block;
-    margin-top: 0.7rem;
+    margin-top: 0.2rem;
 }
 .Right-main ul>li{
     width:0.51rem;

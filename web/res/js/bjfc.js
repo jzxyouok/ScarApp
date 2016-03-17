@@ -52,6 +52,7 @@ $(document).ready(
             $("#classStar9").fadeOut();
             $("#classTeam").fadeOut();
             $("#classMienContext").fadeOut();
+            $(".cover").hide();
         })
        // initClassMien();
     });

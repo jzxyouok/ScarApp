@@ -89,6 +89,7 @@ public class DynamicMobilePageAct {
 		}
 		SessionHelper.removeAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY);
 		SessionHelper.setAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY,gradeName);
+		SessionHelper.setAttribute(request,CommonConstant.MAC_SNO,sno);
 		//根据gradename查询班级信息
 		map.put("name",gradeName);
 		List<GradeBo> listGrade=GradeService.findAllList(map);
@@ -133,12 +134,17 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/tongzhi.html", method = RequestMethod.GET)
 	public ModelAndView tongzhi(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model) {
+							 HttpServletResponse response, ModelMap model,String pageNo) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.TongZhiPage);
 		mv.addObject("type", CommonConstant.NAV_TYPE_TongZhi);
-
+		if(StringUtil.isNullOrEmpty(pageNo)){
+			pageNo="1";
+		}
+		model.put("pageNo", Integer.valueOf(pageNo));
+		model.put("pageSize", CommonConstant.PAGESIZE);
+		model.put("recordCount",20);
 		return mv;
 	}
 
@@ -153,11 +159,17 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/gonggao.html", method = RequestMethod.GET)
 	public ModelAndView gonggao(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model) {
+							 HttpServletResponse response, ModelMap model,String pageNo) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.GongGaoPage);
 		mv.addObject("type", CommonConstant.NAV_TYPE_GongGao);
+		if(StringUtil.isNullOrEmpty(pageNo)){
+			pageNo="1";
+		}
+		model.put("pageNo", Integer.valueOf(pageNo));
+		model.put("pageSize", CommonConstant.PAGESIZE);
+		model.put("recordCount",20);
 		return mv;
 	}
 	/**

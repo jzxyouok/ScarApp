@@ -1,4 +1,5 @@
 <!doctype html>
+[#import "../../ftl/pagination.ftl" as pag]
 <html lang="en">
 <head>
     <title>通知</title>
@@ -9,7 +10,7 @@
 [#include "head.html"]
 
 <ul class="active-ul hz-hid">
-    [@portal_articlelist_bytype type="1" gradeName="${gradename!''}"]
+    [@portal_articlelist_bytype type="1" pageNo="${pageNo!'1'}" gradeName="${gradename!''}"]
         [#if articleList?? &&articleList?size>0]
             [#list articleList as arc]
             <li>
@@ -22,8 +23,8 @@
         [/#list]
         [/#if]
     [/@portal_articlelist_bytype]
-
 </ul>
+[@pag.pagination pageNo=pageNo pageSize=pageSize recordCount=recordCount toURL="${base}/tongzhi.html"/]
 
 <!--<a href="" class="load-more"></a>-->
 [#include "foot.html"]

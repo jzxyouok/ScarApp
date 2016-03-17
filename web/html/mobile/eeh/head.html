@@ -18,7 +18,7 @@
 <!---header-->
 <!--导航-->
 <ul class="nav" id="navHeard">
-    <li url="/index.html" [#if type=="kb"]class="current"[/#if] id="kb">
+    <li url="/wrap/${computer_sno!''}.html" [#if type=="kb"]class="current"[/#if] id="kb">
         <span>课表</span>
     </li>
     <li id="zwb" url="/seats.html"  [#if type=="zwb"]class="current"[/#if] >

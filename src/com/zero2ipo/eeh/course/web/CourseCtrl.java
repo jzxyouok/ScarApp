@@ -148,40 +148,41 @@ public class CourseCtrl extends BaseCtrl {
         List<CourseBo> list=new ArrayList<CourseBo>();
         String firstClass=timetableBo.getFirstClass();//第一节课
         String classRoom=timetableBo.getgradeName();
+        String week=timetableBo.getWeek();
         //去时段表里查询第一节课上课时间
-        CourseBo courseBo1=getCourseBoByKeMuAndClassRoom(firstClass,classRoom,1);
+        CourseBo courseBo1=getCourseBoByKeMuAndClassRoom(firstClass,classRoom,1,week);
         list.add(courseBo1);
         //第二节课
         String secondClass=timetableBo.getSecondClass();
-        CourseBo courseBo2=getCourseBoByKeMuAndClassRoom(secondClass,classRoom,2);
+        CourseBo courseBo2=getCourseBoByKeMuAndClassRoom(secondClass,classRoom,2,week);
         list.add(courseBo2);
         //第3节课
         String threeClass=timetableBo.getThreeClass();
-        CourseBo courseBo3=getCourseBoByKeMuAndClassRoom(threeClass,classRoom,3);
+        CourseBo courseBo3=getCourseBoByKeMuAndClassRoom(threeClass,classRoom,3,week);
         list.add(courseBo3);
         //第4节课
         String fourClass=timetableBo.getFourClass();
-        CourseBo courseBo4=getCourseBoByKeMuAndClassRoom(fourClass,classRoom,4);
+        CourseBo courseBo4=getCourseBoByKeMuAndClassRoom(fourClass,classRoom,4,week);
         list.add(courseBo4);
         //第5节课
         String fiveClass=timetableBo.getFiveClass();
-        CourseBo courseBo5=getCourseBoByKeMuAndClassRoom(fiveClass,classRoom,5);
+        CourseBo courseBo5=getCourseBoByKeMuAndClassRoom(fiveClass,classRoom,5,week);
         list.add(courseBo5);
         //第6节课
         String sixClass=timetableBo.getSixClass();
-        CourseBo courseBo6=getCourseBoByKeMuAndClassRoom(sixClass,classRoom,6);
+        CourseBo courseBo6=getCourseBoByKeMuAndClassRoom(sixClass,classRoom,6,week);
         list.add(courseBo6);
         //第7节课
         String sevenClass=timetableBo.getSevenClass();
-        CourseBo courseBo7=getCourseBoByKeMuAndClassRoom(sevenClass,classRoom,7);
+        CourseBo courseBo7=getCourseBoByKeMuAndClassRoom(sevenClass,classRoom,7,week);
         list.add(courseBo7);
         //第8节课
         String eightClass=timetableBo.getEightClass();
-        CourseBo courseBo8=getCourseBoByKeMuAndClassRoom(eightClass,classRoom,8);
+        CourseBo courseBo8=getCourseBoByKeMuAndClassRoom(eightClass,classRoom,8,week);
         list.add(courseBo8);
         //第9节课
         String nineClass=timetableBo.getSecondClass();
-        CourseBo courseBo9=getCourseBoByKeMuAndClassRoom(nineClass,classRoom,9);
+        CourseBo courseBo9=getCourseBoByKeMuAndClassRoom(nineClass,classRoom,9,week);
         list.add(courseBo9);
         return list;
 
@@ -192,11 +193,12 @@ public class CourseCtrl extends BaseCtrl {
      * @param classId
      * @return
      */
-    public CourseBo getCourseBoByKeMuAndClassRoom(String subjectId,String classId,int index){
+    public CourseBo getCourseBoByKeMuAndClassRoom(String subjectId,String classId,int index,String week){
         String schoolTime=getSchoolTimeByCourseName(index);
         CourseBo firstCourse=new CourseBo();
         firstCourse.setSchoolTime(schoolTime);
         firstCourse.setCourseName(subjectId);
+        firstCourse.setWeek(week);
         //根据教室和课程名去教师表里面查询
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("subjectId",subjectId);//科目

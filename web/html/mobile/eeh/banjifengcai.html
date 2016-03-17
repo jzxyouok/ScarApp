@@ -1,5 +1,6 @@
 [#import "../../ftl/pagination.ftl" as pag]
 <!doctype html>
+
 <html lang="en">
 <head>
     <title>班级风采</title>
@@ -11,6 +12,13 @@
 <!--header-->
 [#include "head.html"]
 <section class="m1 hz-hid" id="closeGradeStar">
+    <ul class="m1-left por hz-hid fl">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <span class="line db"></span>
+    </ul>
     <section class="m1-right fl hz-hid">
         <ul class="ban">
             [@portal_current_grade gradeName="${gradename!''}"]
@@ -80,7 +88,7 @@
 [#include "foot.html"]
 <section class="cover" id="secContext" style="display: none;"></section>
 <section class="bangan" id="classStar9" style="display: none;">
-    <a href="javascript:location.reload()" class="back">返回</a>
+    <a href="javascript:void(0) " class="back">返回</a>
     <p><strong>班级小明星</strong></p>
     <div class="banji por" id="classStar">
         <a class="prev"></a><a class="next"></a>
@@ -123,7 +131,7 @@
 </section>
 <section class="bangan" id="classTeam" style="display: none;">
     <section class="infor-title">班干团队</section>
-    <a href="javascript:location.reload()" class="back">返回</a>
+    <a href="javascript:void(0) " class="back">返回</a>
     <div class="bangan-main hz-hid">
         ${gradeBo.classCadre!''}
     </div>
@@ -134,11 +142,11 @@
     <div class="bd">
         <ul class="hz-hid">
             <li>
-                <div class="slide-0 hz-hid">
+                <div class="slide-0 hz-hid" style="">
                     <div class="slide-title" id="slideTitle">篮球友谊赛事</div>
-                    <div class="slide-txt hz-hid">
+                    <div class="slide-txt hz-hid" style="position:relative; height:400px; overflow:auto">
                         <img src="${images}/img.png" alt="" id="slideImg">
-                        <div class="txt hz-hid" style="height: 300px;" id="slideContent">篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事...</div>
+                        <div class="txt hz-hid"  id="slideContent">篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事...</div>
                     </div>
                 </div>
             </li>

@@ -48,6 +48,7 @@
                 if(null!= r.result&&''!= r.result){
                     for(var i=0;i< r.result.length;i++){
                         var schoolTime=r.result[i].schoolTime;
+                        var week= r.result[i].week;
                         var time=schoolTime;
                         if(time.length>4){
                             time=time.substring(0,5);
@@ -66,7 +67,10 @@
                              showTime();
                              current= $("#time").html();
                         }
-                        if(current>=start&&current<=end){
+                        //周四 星期四  比较最后一位是否相等
+                        var a=currentWeek.substring(currentWeek.length-1);
+                        var b=week.substring(week.length-1);
+                        if(current>=start&&current<=end&&a==b){
                             str+='<li class="current">';
                         }else{
                             str+='<li>';
