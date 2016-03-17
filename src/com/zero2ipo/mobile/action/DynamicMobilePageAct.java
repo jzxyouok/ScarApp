@@ -118,8 +118,8 @@ public class DynamicMobilePageAct {
 			pageNo="1";
 		}
 		model.put("pageNo", Integer.valueOf(pageNo));
-		model.put("pageSize", CommonConstant.PAGESIZE);
-		model.put("recordCount",20);
+		model.put("pageSize", CommonConstant.PAGESIZE_BJFC);
+		model.put("recordCount",CommonConstant.RECOND_COUNT);
 		return mv;
 	}
 

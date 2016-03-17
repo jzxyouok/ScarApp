@@ -20,6 +20,8 @@ public class CommonConstant {
     public static final String NAV_TYPE_GongGao = "gg";  // 导航：公告
     public static final String NAV_TYPE_KaoShiChaXun = "kscx";  // 导航：考试查询
     public static final int PAGESIZE = 6;//分页条数
+    public static final int PAGESIZE_BJFC = 3;//班级风采分页条数
+    public static final int RECOND_COUNT = 20;
 
 
 

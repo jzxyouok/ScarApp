@@ -46,6 +46,9 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 			}
 			List<ArticleBo> articleList=ArticleService.findAllList(queryMap);
 			int PAGESIZE= CommonConstant.PAGESIZE;
+			if(ArticleContants.ARTICLE_TYPE_03.equals(type)){
+				PAGESIZE=CommonConstant.PAGESIZE_BJFC;
+			}
 			env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
 			//if(ArticleContants.ARTICLE_TYPE_03.equals(type)){//只有班级风采需要分页
 				List<ArticleBo> fs = ListUtils.getSubListPage(articleList, (Integer.valueOf(pageNo) - 1) * PAGESIZE, PAGESIZE);
