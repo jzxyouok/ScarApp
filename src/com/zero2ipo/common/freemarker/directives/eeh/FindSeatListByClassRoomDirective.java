@@ -2,8 +2,10 @@ package com.zero2ipo.common.freemarker.directives.eeh;
 
 import com.zero2ipo.common.freemarker.DirectiveUtils;
 import com.zero2ipo.common.util.WeekDateUtils;
+import com.zero2ipo.eeh.course.bo.CourseConstants;
 import com.zero2ipo.eeh.seat.bizc.ISeatService;
 import com.zero2ipo.eeh.seat.bo.SeatBo;
+import com.zero2ipo.framework.util.StringUtil;
 import freemarker.core.Environment;
 import freemarker.template.*;
 
@@ -34,10 +36,26 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 			String week= WeekDateUtils.getWeekOfDate(null);
 			//获取当前系统时间 时分
 			String time= WeekDateUtils.getDateNowHm();
-
+			System.out.println("week========================"+week);
+			System.out.println("time========================"+time);
+			queryMap.put("week", week);
+			queryMap.put("schoolTime",time);
+			queryMap.put("seatType", CourseConstants.SEAT_TYPE_1);
 			List<SeatBo> seatsList=SeatService.findAllList(queryMap);
 			if(null!=seatsList&&seatsList.size()>0){
 				env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList.get(0)));
+				env.setVariable("seatType", ObjectWrapper.DEFAULT_WRAPPER.wrap(CourseConstants.SEAT_TYPE_1_name));//培优座次
+			}else{//没有培优座位表，那显示班级座位表
+				Map<String,Object> map=new HashMap<String, Object>();
+				map.put("classRoom",classRoom);
+				map.put("seatType", CourseConstants.SEAT_TYPE_0);//日常座位表
+				//保存座位表类型
+				env.setVariable("seatType", ObjectWrapper.DEFAULT_WRAPPER.wrap(CourseConstants.SEAT_TYPE_0_NAME));//日常座次
+				seatsList=SeatService.findAllList(map);
+				if(!StringUtil.isNullOrEmpty(seatsList)&&seatsList.size()>0){
+					env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList.get(0)));
+				}
+
 			}
 			env.setVariable("seatsList", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList));
 		} catch (Exception e) {

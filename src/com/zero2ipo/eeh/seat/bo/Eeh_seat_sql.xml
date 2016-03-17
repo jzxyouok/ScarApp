@@ -11,6 +11,7 @@
 	<result property="classRoom" column="classRoom"/>
 	<result property="week" column="week"/>
 	<result property="schoolTime" column="schoolTime"/>
+	<result property="seatType" column="seatType"/>
 </resultMap>
 	<!--根据id查询查询-->
 	<select id='findSeatById' resultClass='SeatBo'>
@@ -22,7 +23,8 @@
 		seatNo,
 		classRoom,
 		schoolTime,
-		week
+		week,
+		seatType
 		FROM
 			eeh_Seat
 		WHERE  id=#id#
@@ -38,7 +40,8 @@ SELECT
 	seatNo,
 	classRoom,
 	schoolTime,
-	week
+	week,
+	seatType
 FROM
 	eeh_Seat
 <dynamic prepend="WHERE">
@@ -52,7 +55,10 @@ FROM
 		week=#week#
 	</isNotEmpty>
 	<isNotEmpty prepend="AND" property="schoolTime">
-		schoolTime=#schoolTime#
+		start &gt;=#schoolTime# and end &lt;=#schoolTime#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="seatType">
+		seatType=#seatType#
 	</isNotEmpty>
 </dynamic>
 </select>
@@ -73,7 +79,10 @@ FROM
 				week=#week#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="schoolTime">
-				schoolTime=#schoolTime#
+				start &lt;=#schoolTime# and end &gt;=#schoolTime#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="seatType">
+				seatType=#seatType#
 			</isNotEmpty>
 		</dynamic>
 	</select>
@@ -88,7 +97,8 @@ FROM
 		seatNo,
 		classRoom,
 		schoolTime,
-		week
+		week,
+		seatType
 	)VALUES(
 	    #id#,
 		#row#,
@@ -97,7 +107,8 @@ FROM
 		#seatNo#,
 		#classRoom#,
 		#schoolTime#,
-		#week#
+		#week#,
+		#seatType#
 	)
 </insert>
 <!--修改-->
@@ -108,7 +119,8 @@ FROM
 	row=#row#,
 	cell=#cell#,
 	name=#name#,
-	seatNo=#seatNo#
+	seatNo=#seatNo#,
+	seatType=#seatType#
  	WHERE
 	ID=#id#
 </update>

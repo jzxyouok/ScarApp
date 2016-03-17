@@ -12,6 +12,9 @@ public class SeatBo implements  java.io.Serializable {
    public String classRoom;//教室
    public String week;//星期
    public String schoolTime;//上课时间
+   public String seatType;//座位表类型 0:日常座位表 1：培优座位表
+   public String start;//上课开始时间
+   public String end;//上课结束时间
 
     public String getId() {
         return id;
@@ -75,5 +78,29 @@ public class SeatBo implements  java.io.Serializable {
 
     public void setSchoolTime(String schoolTime) {
         this.schoolTime = schoolTime;
+    }
+
+    public String getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(String seatType) {
+        this.seatType = seatType;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
     }
 }

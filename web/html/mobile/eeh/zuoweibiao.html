@@ -28,11 +28,11 @@
 <input type="hidden" id="courseDateday" />
 <section class="m0 hz-hid por" id="seatsContext">
     <div class="Right-main fl hz-hid">
-        <p>培优座次</p>
+        [@portal_seats gradeName="${gradename!''}"]
+        <p>${seatType!''}</p>
         <span class="jiangtai">讲台</span>
         <ul class="hz-hid">
-            [@portal_seats gradeName="${gradename!''}"]
-                [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
+            [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
                   [#list seatsList as seat]
                     [#if (seat_index+1)%firstSeat.cell==0]
                         <li data-name="${seat.name!''}"  class="mr-0">${seat.seatNo}</li>
@@ -41,9 +41,10 @@
                     [/#if]
 
                   [/#list]
-                [/#if]
-            [/@portal_seats]
+            [/#if]
         </ul>
+
+        [/@portal_seats]
     </div>
     <a href="" class="prev">上一节</a><a href="" class="next">下一节</a></section>
 [#include "foot.html"]
