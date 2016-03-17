@@ -1,7 +1,6 @@
 package com.zero2ipo.mobile.action;
 
 import com.zero2ipo.common.http.FmUtils;
-import com.zero2ipo.common.util.LocalMAC;
 import com.zero2ipo.core.WaterPageContants;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.classroom.bo.ClassRoomBo;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -55,15 +55,18 @@ public class DynamicMobilePageAct {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
+	@RequestMapping(value = "/wrap/{classRoom}.html", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model) throws SocketException, UnknownHostException {
+							  HttpServletResponse response, ModelMap model,@PathVariable("classRoom") String classRoom) throws Exception, UnknownHostException {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(WaterPageContants.INDEX_PAGE);
 		mv.addObject("type", CommonConstant.NAV_TYPE_KEBIAO);
-		getCurrentGradeByMacAddress(request);//将班级和所在班主任保存到缓存中
-
+		String sessionClassRoom=SessionHelper.getStringAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY);
+		//判断传递过来的教室和缓存中存放的教室是否一致，如果不一致，那么再重新查询
+		if(StringUtil.isNullOrEmpty(sessionClassRoom)||!sessionClassRoom.equals(classRoom)){
+			getCurrentGradeByMacAddress(request,classRoom);//将班级和所在班主任保存到缓存中
+		}
 		return mv;
 	}
 
@@ -72,12 +75,10 @@ public class DynamicMobilePageAct {
 	 * @throws SocketException
 	 * @throws UnknownHostException
 	 */
-	public void getCurrentGradeByMacAddress(HttpServletRequest request) throws SocketException, UnknownHostException {
-		//获取本机mac地址
-		String mac= LocalMAC.getLocalMac();
+	public void getCurrentGradeByMacAddress(HttpServletRequest request,String sno) throws Exception, UnknownHostException {
 		//根据mac地址查询所在班级
 		Map<String,Object> map=new HashMap<String, Object>();
-		map.put("ip", mac);
+		map.put("ip", sno);
 		List<ClassRoomBo> list=new ArrayList<ClassRoomBo>();
 		list= classRoomService.findAllList(map);
 		ClassRoomBo classRoomBo=new ClassRoomBo();
@@ -86,11 +87,13 @@ public class DynamicMobilePageAct {
 			classRoomBo=list.get(0);
 			gradeName=classRoomBo.getName();
 		}
+		SessionHelper.removeAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY);
 		SessionHelper.setAttribute(request,CommonConstant.DEFAULT_GRADE_NAME_kEY,gradeName);
 		//根据gradename查询班级信息
 		map.put("name",gradeName);
 		List<GradeBo> listGrade=GradeService.findAllList(map);
 		if(null!=listGrade&&listGrade.size()>0){
+			SessionHelper.removeAttribute(request,CommonConstant.MAIN_TEACHER_NAME_kEY);
 			SessionHelper.setAttribute(request,CommonConstant.MAIN_TEACHER_NAME_kEY,listGrade.get(0).getTeacherName());
 		}
 	}

@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -11,30 +10,23 @@
                         click: function () {
                             $("#courseDateday").val(AddDays($("#courseDateday").val().replace(/-/g, '/'), -1).Format("yyyy-MM-dd"));
                             $("#seatsInfo").html("");
-                            //initCourseHtml($("#courseDateday").val());
                         }
                     });
                     $("#seatsContext").find(".next").bind({
                         click: function () {
                             $("#courseDateday").val(AddDays($("#courseDateday").val().replace(/-/g, '/'), 1).Format("yyyy-MM-dd"));
                             $("#seatsInfo").html("");
-                            initCourseHtml($("#courseDateday").val());
                         }
                     });
-
                     $("#courseDateday").val(new Date().Format("yyyy-MM-dd"));
-                    //initCourseHtml($("#courseDateday").val());
                 });
     </script>
 </head>
 <body>
-
 <!--header-->
 [#include "head.html"]
-
 <input type="hidden" id="courseDateday" />
 <section class="m0 hz-hid por" id="seatsContext">
-
     <div class="Right-main fl hz-hid">
         <p>培优座次</p>
         <span class="jiangtai">讲台</span>
@@ -69,19 +61,14 @@
             <p>班主任  : <label id="xmainTeacher">${mainTeacher!''}</label></p>
         </div>
     </section>
-
     <section class="exam-2">
         签到成功
     </section>
-
     <ul class="exam-ul">
         <li>我的课表</li>
         <li>班级课表</li>
-
     </ul>
 </section>
-
-
 <script>
     $(function () {
         var li=$('.Right-main ul>li');
@@ -93,7 +80,5 @@
         })
     })
 </script>
-
-
 </body>
 </html>

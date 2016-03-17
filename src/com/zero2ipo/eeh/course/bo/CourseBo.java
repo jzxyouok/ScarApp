@@ -40,7 +40,7 @@ public class CourseBo implements  java.io.Serializable {
     }
 
     public String getTeacher() {
-        return teacher;
+        return teacher==null?"":teacher;
     }
 
     public void setTeacher(String teacher) {

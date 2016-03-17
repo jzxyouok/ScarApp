@@ -35,7 +35,7 @@
         $("#week"+index).addClass("current");
         //通过week和教室查询课程表
         var classRoom="${gradename}";
-        var data={"classRoom":classRoom,"week":week};
+        var data={"classRoom":classRoom,"week":week,"weekIndex":index};
         $.ajax({
             url :  '${base}/Course/findAllList.html',
             type : 'POST',

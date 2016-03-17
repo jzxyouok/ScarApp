@@ -48,7 +48,11 @@ $(document).ready(
                 $("#classMienContext").fadeOut();
             }
         });
-
+        $(".back").bind('click',function(){
+            $("#classStar9").fadeOut();
+            $("#classTeam").fadeOut();
+            $("#classMienContext").fadeOut();
+        })
        // initClassMien();
     });
 function showStar(index){
