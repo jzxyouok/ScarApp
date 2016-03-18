@@ -2,6 +2,7 @@ package com.zero2ipo.eeh.article.bizc.impl;
 
 import com.zero2ipo.eeh.article.bizc.IArticleService;
 import com.zero2ipo.eeh.article.bo.ArticleBo;
+import com.zero2ipo.eeh.utils.ListUtils;
 import com.zero2ipo.framework.exception.BaseException;
 import com.zero2ipo.framework.log.BaseLog;
 import com.zero2ipo.mobile.dao.base.IbatisBaseDao;
@@ -83,21 +84,16 @@ public class ArticleServiceImpl extends IbatisBaseDao implements IArticleService
     @Override
     public List<ArticleBo> findAllList(Map<String, Object> queryMap, int skip, int max) {
         List<ArticleBo> list = null;
+        List<ArticleBo> fs=null;
         try {
             list = (List<ArticleBo>) this.queryAll(FINDALLLIST, queryMap);
-            int size=list.size();
-            for(int i=0;i<size;i++){
-               // String tbId=list.get(i).getTbId();
-                //根据教学楼id查询教学楼名称
-                //TeachingBuildingBo teachingBuildingBo=teachingBuildingService.findById(tbId);
-                //list.get(i).setTeachingBuildingBo(teachingBuildingBo);
-            }
+            fs = ListUtils.getSubListPage(list, (Integer.valueOf(skip) - 1) * max, max);
         } catch (Exception e) {
             e.printStackTrace();
             BaseLog.e(this.getClass(), "findAllList 查询列表", e);
             throw new BaseException("查询列表出错！", e);
         }
-        return list;
+        return fs;
     }
 
     @Override
@@ -114,7 +110,7 @@ public class ArticleServiceImpl extends IbatisBaseDao implements IArticleService
         ArticleBo bo=null;
         try {
             Map<String,Object> queryMap=new HashMap<String,Object>();
-            queryMap.put("id", id);
+            queryMap.put("articleId", id);
             bo = (ArticleBo) this.query(FINDBYID, queryMap);
         } catch (Exception e) {
             e.printStackTrace();

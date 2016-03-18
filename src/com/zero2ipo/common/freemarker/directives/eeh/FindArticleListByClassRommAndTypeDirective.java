@@ -51,6 +51,9 @@ public class FindArticleListByClassRommAndTypeDirective implements TemplateDirec
 			}
 			env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList));
 			//if(ArticleContants.ARTICLE_TYPE_03.equals(type)){//只有班级风采需要分页
+				if(StringUtil.isNullOrEmpty(pageNo)){
+					pageNo="1";
+				}
 				List<ArticleBo> fs = ListUtils.getSubListPage(articleList, (Integer.valueOf(pageNo) - 1) * PAGESIZE, PAGESIZE);
 				env.setVariable("articleList", ObjectWrapper.DEFAULT_WRAPPER.wrap(fs));
 				env.setVariable("recordCount", ObjectWrapper.DEFAULT_WRAPPER.wrap(articleList.size()));

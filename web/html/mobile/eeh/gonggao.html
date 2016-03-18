@@ -4,6 +4,7 @@
 <head>
     <title>公告</title>
     [#include "common.html"]
+    <script src="${js}/tongzhi.js"></script>
 <body>
 
 <!--header-->
@@ -13,12 +14,12 @@
     [@portal_articlelist_bytype type="2" pageNo="${pageNo!'1'}" gradeName="${gradename!''}"]
     [#if articleList?? &&articleList?size>0]
     [#list articleList as arc]
-    <li>
+    <li id="arc${arc_index}" onclick="noteDetail('${arc.articleId}')" data-title="${arc.title!''}">
         <i>
             ${arc.time?string[0..3]}
             <br/><strong>${arc.time?string[5..6]}/${arc.time?string[8..9]}</strong>
         </i>
-        <a href="">${(arc.title)}!''</a>
+        <a href="javascript:noteDetail('${arc.articleId}')">${(arc.title)}!''</a>
     </li>
     [/#list]
     [/#if]
@@ -28,6 +29,24 @@
 [@pag.pagination pageNo=pageNo pageSize=pageSize recordCount=recordCount toURL="${base}/tongzhi.html"/]
 <!--<a href="" class="load-more"></a>-->
 [#include "foot.html"]
+<!--内容详情页面-->
+<section class="slide" id="classMienContext" style="display: none;">
+    <a href="javascript:void (0)" class="back" id="back">返回</a>
+    <div class="bd">
+        <ul class="hz-hid">
+            <li>
+                <div class="slide-0 hz-hid" style="">
+                    <div class="slide-title" id="slideTitle">篮球友谊赛事</div>
+                    <div class="slide-txt hz-hid" style="position:relative; height:200px; overflow:auto">
+                        <div class="txt hz-hid"  id="slideContent">篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事篮球友谊赛事...</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <!--<a class="prev"></a>
+    <a class="next"></a>-->
+</section>
 
 </body>
 </html>

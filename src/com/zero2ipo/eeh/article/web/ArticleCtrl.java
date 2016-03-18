@@ -3,7 +3,6 @@ package com.zero2ipo.eeh.article.web;
 import com.zero2ipo.common.web.BaseCtrl;
 import com.zero2ipo.eeh.article.bizc.IArticleService;
 import com.zero2ipo.eeh.article.bo.ArticleBo;
-import com.zero2ipo.eeh.common.CommonConstant;
 import com.zero2ipo.framework.exception.BaseException;
 import com.zero2ipo.framework.log.BaseLog;
 import com.zero2ipo.framework.util.StringUtil;
@@ -45,9 +44,9 @@ public class ArticleCtrl extends BaseCtrl {
      * @param curSize
      * @return
      */
-    @RequestMapping("findAllList.shtml")
+    @RequestMapping("findAllList.html")
     @ResponseBody
-    public Map<String,Object> findAllList(String curNo, String curSize){
+    public Map<String,Object> findAllList(String curNo, String curSize,String type){
         Map<String,Object> jsonMap = new HashMap<String, Object>();
         try {
             /************* 分页处理 ************/
@@ -61,15 +60,16 @@ public class ArticleCtrl extends BaseCtrl {
             max = Integer.parseInt(curSize);
             /************  分页处理结束 ***********/
             Map<String, Object> map = new HashMap<String, Object>();
-
+            map.put("type",type);
             int total=0;
             total=ArticleService.getTotal(map);
             List<ArticleBo> list= null;
             if(total>0){
                 list = ArticleService.findAllList(map, (skip-1)*max, max);
+            }else{
+                list=new ArrayList<ArticleBo>();
             }
             jsonMap.put("Rows", list);
-            jsonMap.put("Total", total);
         } catch (Exception e) {
             BaseLog.e(this.getClass(), "forLinkTypeinitAjax.shtml:管理人分类信息初始化有误", e);
         }
@@ -108,25 +108,14 @@ public class ArticleCtrl extends BaseCtrl {
     }
     /******************************************修改*********************************************************/
     /**
-     * 新增页面初始化
+     * 根据articleid查询文章信息
      * @return
      */
-    @RequestMapping("forUpdateInitPage.shtml")
-    public ModelAndView forUpdateInitPage(String id) {
-        ModelAndView mv = new ModelAndView("/eeh/Article/update.jsp");
-        ArticleBo bo=ArticleService.findById(id);
-        mv.addObject("bo",bo);
-        /**
-         * 查询所在教学楼
-         */
-        //楼层数
-        List<Integer> floorList=new ArrayList<Integer>();
-        int floorSize= CommonConstant.FLOOR_SIZE;
-        for(int i=1;i<=floorSize;i++){
-            floorList.add(i);
-        }
-        mv.addObject("floorList",floorList);//便于页面foreach遍历
-        return mv;
+    @RequestMapping("findById.html")
+    @ResponseBody
+    public ArticleBo forUpdateInitPage(String articleId) {
+        ArticleBo bo=ArticleService.findById(articleId);
+        return bo;
     }
     /**
      * 修改保存数据

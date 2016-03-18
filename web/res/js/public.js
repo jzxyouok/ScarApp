@@ -21,7 +21,7 @@ $(document).ready(
                 $("#divSeats").slideUp();
             }
         });
-        $("#navHeard").children().bind({
+        $(".nav").children().bind({
             click: function (i) {
                 $("#navHeard").children().removeClass("current");
                 $(this).addClass("current");
