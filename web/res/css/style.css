@@ -4,7 +4,7 @@
 }
 @font-face {
     font-family: 'zhscnmt';
-    src:url('../font/zhscnmt.TTF')
+
 }
 body{
     font-family: 'zhscnmt','microsoft yahei';
@@ -161,7 +161,7 @@ header .t-0{
     color:#747474;
     font-size: 0.36rem;
     position: relative;
-    z-index: 2;
+
 }
 .ke>li i{
     text-align: right;
