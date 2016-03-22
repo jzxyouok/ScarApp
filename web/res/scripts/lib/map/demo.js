@@ -26,7 +26,7 @@ function getMyCurrentLocation(){
 			var addComp = rs.addressComponents;
 			//alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 			/**初始化定位赋值*/
-			$("#maplocation").html(addComp.district + "" + addComp.street + "" + addComp.streetNumber);
+			$("#maplocation").val(addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 			$("#washAddr").val(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 			//获取地址    end
 		});
@@ -42,7 +42,7 @@ function getMyCurrentLocation(){
 				/**地址点击事件重新赋值*/
 				alert("dianj");
 				alert(addComp.province);
-				$("#maplocation").html(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
+				$("#maplocation").val(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 				//$("#maplocation").html(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 			});
 		});
@@ -77,7 +77,7 @@ function initLocation(){
 					var addComp = rs.addressComponents;
 					//alert(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 					/**初始化定位赋值*/
-					$("#maplocation").html(addComp.district + "" + addComp.street + "" + addComp.streetNumber);
+					$("#maplocation").val(addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 					$("#washAddr").val(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 					//获取地址    end
 				})
@@ -151,7 +151,7 @@ function queryAreaLogin(lng,lat){
 }
 //点击位置时加载地图信息
 function loadMapData(){
-	$("#maplocation").html($("#washAddr").val());
+	$("#maplocation").val($("#washAddr").val());
 	var map = new BMap.Map("allmap");
 	var point = new BMap.Point(121.531453,38.963268);
 	var mk;//当前描点
@@ -199,7 +199,7 @@ function loadMapData(){
 				geoc.getLocation(pt, function(rs){
 					var addComp = rs.addressComponents;
 					/**地址点击事件重新赋值*/
-					$("#maplocation").html(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
+					$("#maplocation").val(addComp.province + "" + addComp.city + "" + addComp.district + "" + addComp.street + "" + addComp.streetNumber);
 					//$("#maplocation").html(addComp.province + ", " + addComp.city + ", " + addComp.district + ", " + addComp.street + ", " + addComp.streetNumber);
 				});
 			});
