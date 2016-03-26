@@ -18,4 +18,7 @@ public interface ICourseService {
     public List<CourseBo> findAllList(Map<String, Object> queryMap, int skip, int max);
     public int getTotal(Map<String, Object> queryMap);
     public CourseBo findById(String id);
+    public  CourseBo getCourseBoByMap(Map<String,Object> queryMap);
+    public CourseBo getCurrentCourse(String classRoom);
+    public CourseBo getCurrentRiChangCourse(String classRoom);
 }

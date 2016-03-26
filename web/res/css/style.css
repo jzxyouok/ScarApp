@@ -438,15 +438,15 @@ footer{
     cursor: pointer;
 }
 .slide .back{
-    width:0.88rem;
-    height:0.46rem;
+    width:0.48rem;
+    height:0.36rem;
     text-align: center;
     color:#fff;
     line-height: 0.46rem;
-    font-size: 0.27rem;
+    font-size: 0.17rem;
     position: absolute;
     top:0.17rem;
-    right:0.22rem;
+    right:0.1rem;
     border-radius: 0.1rem;
     background: #209280;
 }
@@ -482,7 +482,7 @@ footer{
     line-height: 0.67rem;
     text-align: center;
     color: #fcf9f9;
-    font-size: 0.24rem;
+    font-size: 0.22rem;
     font-weight: 700;
     font-family: 'Microsoft Yahei';
     background: #28B39D;

@@ -43,7 +43,6 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 			queryMap.put("seatType", CourseConstants.SEAT_TYPE_1);
 			List<SeatBo> seatsList=SeatService.findAllList(queryMap);
 			if(null!=seatsList&&seatsList.size()>0){
-				env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList.get(0)));
 				env.setVariable("seatType", ObjectWrapper.DEFAULT_WRAPPER.wrap(CourseConstants.SEAT_TYPE_1_name));//培优座次
 			}else{//没有培优座位表，那显示班级座位表
 				Map<String,Object> map=new HashMap<String, Object>();
@@ -52,12 +51,15 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 				//保存座位表类型
 				env.setVariable("seatType", ObjectWrapper.DEFAULT_WRAPPER.wrap(CourseConstants.SEAT_TYPE_0_NAME));//日常座次
 				seatsList=SeatService.findAllList(map);
-				if(!StringUtil.isNullOrEmpty(seatsList)&&seatsList.size()>0){
-					env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList.get(0)));
-				}
-
 			}
 			env.setVariable("seatsList", ObjectWrapper.DEFAULT_WRAPPER.wrap(seatsList));
+			if(!StringUtil.isNullOrEmpty(seatsList)&&seatsList.size()>0){
+				SeatBo firstSeat=seatsList.get(0);
+				if(firstSeat.getCell()<=8){
+					firstSeat.setFlg(1);
+				}
+				env.setVariable("firstSeat", ObjectWrapper.DEFAULT_WRAPPER.wrap(firstSeat));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

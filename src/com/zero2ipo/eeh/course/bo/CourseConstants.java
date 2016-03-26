@@ -1,5 +1,8 @@
 package com.zero2ipo.eeh.course.bo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Administrator on 2016/2/24.
  */
@@ -7,6 +10,15 @@ public class CourseConstants {
    public static final int  SEAT_STATUS_0=0;//座位未导入
    public static final int  SEAT_STATUS_1=1;//座位已导入
    public  static final String weeks[]={"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
+   public final static Map weekMap = new HashMap() {{
+      put("周一", "星期一");
+      put("周二", "星期二");
+      put("周三", "星期三");
+      put("周四", "星期四");
+      put("周五", "星期五");
+      put("周六", "星期六");
+      put("周日", "星期日");
+   }};
    public  static final String courses[]={"","第一节","第二节","第三节","第四节","第五节","第六节","第七节","第八节","第九节"};
    public  static final String courseNames[]={"","firstClass","secondClass","threeClass","fourClass","fiveClass","sixClass","sevenClass","eightClass","nineClass"};
    public static final int  SEAT_TYPE_0=0;//日常座位表

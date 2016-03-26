@@ -32,5 +32,6 @@
 	<sqlMap resource="com/zero2ipo/eeh/time/bo/Eeh_time_sql.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/eeh/Timetable/bo/Eeh_timetable_sql.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/eeh/teacher/bo/Eeh_teacher_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/eeh/Attendance/bo/Eeh_attendance_sql.xml"></sqlMap>
 
 </sqlMapConfig>

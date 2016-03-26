@@ -19,6 +19,9 @@ function noteDetail(id){
          success : function (res) {
              var title=res.title;
              var content=res.content;
+            // if(title.length>10){
+               //  title=title.substring(0,10)+"...";
+             //}
              $("#slideTitle").html(title);
              $("#slideContent").html(content);
              $("#classMienContext").fadeIn();

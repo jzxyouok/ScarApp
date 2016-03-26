@@ -37,6 +37,14 @@
                         [#if (seat_index+1)%firstSeat.cell==0 && firstSeat.flg==0]
                             <li data-name="${seat.name!''}"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
                         [#else]
+                           <!-- [@portal_kaoqin classRoom="${gradename!''}"]
+                                [#if status?? && status=='1' || status=='2' || status=='3' || status=='4' || status=='5']
+                                     <li data-name="${seat.name!''}" style="background: red"> [#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
+                                    [#else]
+                                      <li data-name="${seat.name!''}"> [#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
+                                     [/#if]
+                            [/@portal_kaoqin]
+                            -->
                          <li data-name="${seat.name!''}"> [#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
 
             [/#if]

@@ -15,6 +15,15 @@ public class SeatBo implements  java.io.Serializable {
    public String seatType;//座位表类型 0:日常座位表 1：培优座位表
    public String start;//上课开始时间
    public String end;//上课结束时间
+   public int flg=0;//标志，列数-行数
+
+    public int getFlg() {
+        return flg;
+    }
+
+    public void setFlg(int flg) {
+        this.flg = flg;
+    }
 
     public String getId() {
         return id;

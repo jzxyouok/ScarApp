@@ -78,6 +78,7 @@
 				<entry key="portal_articlelist_bytype" value-ref="portal_articlelist_bytype"></entry>
 				<entry key="portal_gradestarts" value-ref="portal_gradestarts"></entry>
 				<entry key="portal_seats" value-ref="portal_seats"></entry>
+				<entry key="portal_kaoqin" value-ref="portal_kaoqin"></entry>
 			</map>
 		</property>
 		<property name="templateLoaderPath">
@@ -103,10 +104,11 @@
 	<bean id="getcurrentWeekList" class="com.zero2ipo.common.freemarker.directives.FindCurrentWeekDirective"/>
 	<!--根据当前机器mac地址获取所在班级-->
     <bean id="portal_current_classroom" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentClassRoomDirective"/>
-    <bean id="portal_current_grade" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentGradeByMacDirective"/>
+    <bean id="portal_current_grade" class="com.zero2ipo.common.freemarker.directives.eeh.FindCurrentGradeDirective"/>
     <bean id="portal_articlelist_bytype" class="com.zero2ipo.common.freemarker.directives.eeh.FindArticleListByClassRommAndTypeDirective"/>
     <bean id="portal_gradestarts" class="com.zero2ipo.common.freemarker.directives.eeh.FindGradeStarsByGradeNameDirective"/>
     <bean id="portal_seats" class="com.zero2ipo.common.freemarker.directives.eeh.FindSeatListByClassRoomDirective"/>
+    <bean id="portal_kaoqin" class="com.zero2ipo.common.freemarker.directives.eeh.FindKaoQinStatusDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">

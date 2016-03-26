@@ -5,6 +5,7 @@ import com.zero2ipo.eeh.Timetable.bizc.ITimetableService;
 import com.zero2ipo.eeh.Timetable.bo.TimetableBo;
 import com.zero2ipo.eeh.classroom.bizc.IClassRoomService;
 import com.zero2ipo.eeh.course.bizc.ICourseService;
+import com.zero2ipo.eeh.course.bo.ComparatorCourse;
 import com.zero2ipo.eeh.course.bo.CourseBo;
 import com.zero2ipo.eeh.course.bo.CourseConstants;
 import com.zero2ipo.eeh.teacher.bizc.ITeacherService;
@@ -20,12 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.terracotta.statistics.Time;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 教学楼ctrl
@@ -104,16 +101,12 @@ public class CourseCtrl extends BaseCtrl {
             List<CourseBo> list= null;
             if(total>0){//查询培优课程
                 list = CourseService.findAllList(map);
+                List<CourseBo> richangCourseList=getRiChangCourseList(weekIndex, classRoom);
+                list.addAll(richangCourseList);
+                ComparatorCourse comparator=new ComparatorCourse();
+                Collections.sort(list, comparator);
             }else{//培优课程不存在，再查询日常课程
-                Map<String,Object> queryMap=new HashMap<String, Object>();
-                queryMap.put("gradeName",classRoom);
-                queryMap.put("week", CourseConstants.weeks[weekIndex]);
-               List<TimetableBo> ll= TimetableService.findAllList(queryMap);
-               //根据星期和教室查询出来的日常课程表肯定只有一个
-                if(null!=ll&&ll.size()>0){
-                    TimetableBo timetableBo=ll.get(0);
-                    list=getCourseListByTimeTable(timetableBo);
-                }
+                list = getRiChangCourseList(weekIndex, classRoom);
             }
             jsonMap.put("result", list);
         } catch (Exception e) {
@@ -121,6 +114,26 @@ public class CourseCtrl extends BaseCtrl {
             BaseLog.e(this.getClass(), "forLinkTypeinitAjax.html:管理人分类信息初始化有误", e);
         }
         return jsonMap;
+    }
+
+    /**
+     * 查询日常课程列表
+     * @param weekIndex
+     * @param classRoom
+     * @return
+     */
+    private List<CourseBo> getRiChangCourseList(int weekIndex, String classRoom) {
+        List<CourseBo> list=null;
+        Map<String,Object> queryMap=new HashMap<String, Object>();
+        queryMap.put("gradeName",classRoom);
+        queryMap.put("week", CourseConstants.weeks[weekIndex]);
+        List<TimetableBo> ll= TimetableService.findAllList(queryMap);
+        //根据星期和教室查询出来的日常课程表肯定只有一个
+        if(null!=ll&&ll.size()>0){
+            TimetableBo timetableBo=ll.get(0);
+            list=getCourseListByTimeTable(timetableBo);
+        }
+        return list;
     }
 
     /**
