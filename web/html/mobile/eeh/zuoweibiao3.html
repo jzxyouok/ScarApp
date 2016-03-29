@@ -26,11 +26,6 @@
 <!--header-->
 [#include "head.html"]
 <input type="hidden" id="courseDateday" />
-[@portal_current_course classRoom="${gradename!''}"]
-    [#if currentCourseName??]
-        <input type="hidden" id="courseName" name="courseName" value="${currentCourseName!''}"/>
-    [/#if]
-[/@portal_current_course]
 <section class="m0 hz-hid por" id="seatsContext">
     <div class="Right-main fl hz-hid">
         [@portal_seats gradeName="${gradename!''}"]
@@ -40,44 +35,15 @@
             [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
                   [#list seatsList as seat]
                         [#if (seat_index+1)%firstSeat.cell==0 && firstSeat.flg==0]
-
-                                [#if seat.kaoqin_flg=='1']
-                                 <li data-name="${seat.name!''}" style="background: red"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if seat.kaoqin_flg=='2']
-                                 <li data-name="${seat.name!''}" style="background: gray"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if  seat.kaoqin_flg=='3']
-                                 <li data-name="${seat.name!''}" style="background: gray"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if  seat.kaoqin_flg=='5']
-                                 <li data-name="${seat.name!''}" style="background: blue"    class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                 [/#if]
-                                 [#if seat.kaoqin_flg=='4']
-                                 <li data-name="${seat.name!''}" style="background: gray"    class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                 [/#if]
+                            <li data-name="${seat.name!''}"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
                         [#else]
-                                    [#if seat.kaoqin_flg=='1']
-                                    <li data-name="${seat.name!''}" style="background: red"   >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if  seat.kaoqin_flg=='2']
-                                    <li data-name="${seat.name!''}" style="background: gray"  >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if seat.kaoqin_flg=='3']
-                                    <li data-name="${seat.name!''}" style="background: gray"  >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if  seat.kaoqin_flg=='5']
-                                    <li data-name="${seat.name!''}" style="background: blue"    >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if  seat.kaoqin_flg=='4']
-                                    <li data-name="${seat.name!''}" style="background: gray"    >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-
+                         <li data-name="${seat.name!''}"> [#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
 
             [/#if]
                   [/#list]
             [/#if]
         </ul>
+
         [/@portal_seats]
     </div>
     <a href="" class="prev">上一节</a><a href="" class="next">下一节</a></section>

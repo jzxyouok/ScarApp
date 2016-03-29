@@ -18,4 +18,6 @@ public interface IAttendanceService {
     public List<AttendanceBo> findAllList(Map<String, Object> queryMap, int skip, int max);
     public int getTotal(Map<String, Object> queryMap);
     public AttendanceBo findById(String id);
+
+    public AttendanceBo findByMap(Map<String, Object> m);
 }

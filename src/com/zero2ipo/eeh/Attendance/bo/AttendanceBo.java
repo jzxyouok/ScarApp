@@ -12,6 +12,25 @@ public class AttendanceBo implements  java.io.Serializable {
     public String schoolTime;//上课时间
     public String type;//类型 迟到，请假，早退，缺勤
     public String dayTime;//日期
+    public String gradeName;//所在班级
+    public String studentName;//学生姓名
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getGradeName() {
+        return gradeName;
+    }
+
+    public void setGradeName(String gradeName) {
+        this.gradeName = gradeName;
+    }
+
     public int getId() {
         return id;
     }

@@ -10,6 +10,8 @@
 		<result property="schoolTime" column="schoolTime"/>
 		<result property="type" column="type"/>
 		<result property="dayTime" column="dayTime"/>
+		<result property="gradeName" column="gradeName"/>
+		<result property="studentName" column="studentName"/>
 	</resultMap>
 	<!--根据id查询查询-->
 	<select id='findAttendanceById' resultClass='AttendanceBo'>
@@ -20,10 +22,30 @@
 		classRoom,
 		schoolTime,
 		type,
-		dayTime
+		dayTime,
+		gradeName,
+		studentName
 		FROM
 		eeh_Attendance
 		WHERE  id=#id#
+	</select>
+	<select id='findAttendanceByMap' resultClass='AttendanceBo'>
+		SELECT
+		id,
+		cardNo,
+		courseName,
+		classRoom,
+		schoolTime,
+		type,
+		dayTime,
+		gradeName,
+		studentName
+		FROM
+		eeh_Attendance
+		WHERE  gradeName=#gradeName#
+		AND  studentName=#studentName#
+		AND  dayTime=#dayTime#
+		AND  courseName=#courseName#
 	</select>
 
 	<!--查询-->
@@ -35,12 +57,20 @@
 		classRoom,
 		schoolTime,
 		type,
-		dayTime
+		dayTime,
+		gradeName,
+		studentName
 		FROM
 		eeh_Attendance
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="cardNo">
 				cardNo=#cardNo#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="studentName">
+				studentName=#studentName#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="gradeName">
+				gradeName=#gradeName#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="courseName">
 				courseName=#courseName#

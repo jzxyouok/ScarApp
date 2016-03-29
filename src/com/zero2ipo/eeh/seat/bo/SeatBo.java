@@ -16,6 +16,15 @@ public class SeatBo implements  java.io.Serializable {
    public String start;//上课开始时间
    public String end;//上课结束时间
    public int flg=0;//标志，列数-行数
+   public String kaoqin_flg="4";//考勤标志 默认缺勤
+
+    public String getKaoqin_flg() {
+        return kaoqin_flg==null?"4":kaoqin_flg;
+    }
+
+    public void setKaoqin_flg(String kaoqin_flg) {
+        this.kaoqin_flg = kaoqin_flg;
+    }
 
     public int getFlg() {
         return flg;

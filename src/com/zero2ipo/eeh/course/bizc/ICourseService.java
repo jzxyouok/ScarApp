@@ -21,4 +21,5 @@ public interface ICourseService {
     public  CourseBo getCourseBoByMap(Map<String,Object> queryMap);
     public CourseBo getCurrentCourse(String classRoom);
     public CourseBo getCurrentRiChangCourse(String classRoom);
+    public String getCurrentRiChangOrPeiYouCourse(String classRoom);
 }

@@ -220,6 +220,28 @@ public class CourseServiceImpl extends IbatisBaseDao implements ICourseService {
         }
       return currentCourse;
     }
+
+    @Override
+    public String getCurrentRiChangOrPeiYouCourse(String classRoom) {
+        String currentCourseName="";
+        try {
+            //首先根据当前教室，去查询当前培优课程
+            CourseBo current=this.getCurrentCourse(classRoom);
+            if(StringUtil.isNullOrEmpty(current)){//如果不存在培优课程，再查询日常课程
+                current=this.getCurrentRiChangCourse(classRoom);
+            }
+            if(StringUtil.isNullOrEmpty(current)){
+                currentCourseName="-999999";//假设一个不存在的课程
+            }else{
+                currentCourseName=current.getCourseName();//当前课程
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return currentCourseName;
+    }
+
     /**
      * 日常课程表转化培优课list
      * @return
