@@ -73,7 +73,7 @@ public class AttendanceBo implements  java.io.Serializable {
     }
 
     public String getType() {
-        return type;
+        return type==null?"4":type;
     }
 
     public void setType(String type) {

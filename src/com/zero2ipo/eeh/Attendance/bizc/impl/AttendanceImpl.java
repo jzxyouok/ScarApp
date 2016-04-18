@@ -128,9 +128,6 @@ public class AttendanceImpl extends IbatisBaseDao implements IAttendanceService 
         AttendanceBo bo=null;
         try {
             bo = (AttendanceBo) this.query(FINDBYMAP, m);
-            if(bo==null){
-                bo=new AttendanceBo();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

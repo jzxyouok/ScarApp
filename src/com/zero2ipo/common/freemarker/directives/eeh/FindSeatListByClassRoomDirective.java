@@ -104,7 +104,11 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 				m.put("dayTime", day);
 				//if(!StringUtil.isNullOrEmpty(courseName)){
 				attendanceBo = attendanceService.findByMap(m);
-				seatsList.get(i).setKaoqin_flg(attendanceBo.getType());
+				if(!StringUtil.isNullOrEmpty(attendanceBo)){
+					seatsList.get(i).setKaoqin_flg(attendanceBo.getType());
+					System.out.println("考勤标志==================="+attendanceBo.getType());
+
+				}
 				//}
 
 			}
