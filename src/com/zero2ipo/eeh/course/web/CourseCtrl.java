@@ -102,7 +102,9 @@ public class CourseCtrl extends BaseCtrl {
             if(total>0){//查询培优课程
                 list = CourseService.findAllList(map);
                 List<CourseBo> richangCourseList=getRiChangCourseList(weekIndex, classRoom);
-                list.addAll(richangCourseList);
+                if(null!=richangCourseList){
+                    list.addAll(richangCourseList);
+                }
                 ComparatorCourse comparator=new ComparatorCourse();
                 Collections.sort(list, comparator);
             }else{//培优课程不存在，再查询日常课程
