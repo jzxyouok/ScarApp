@@ -66,7 +66,7 @@ public class UserAction {
 		Map<String,Object> map=new HashMap<String, Object>();
 		String openId= SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 		Users user = userServices.saveUserCore(openId, mobile, userPassword,userIrId);
-		if(user != null) 
+		if(user != null)
 		{
 			//如果用户存在，将用户添加进Session中
 			SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, user);
@@ -75,8 +75,8 @@ public class UserAction {
 		}else{
 			map.put("success", false);
 		}
-		
-	
+
+
 		return map;
 	}
 	/**
@@ -160,7 +160,7 @@ public class UserAction {
 	}
 
 	/**
-	 * 用户登录处理POST
+	 * 用户登录处理POST 用户号码+密码登陆方式
 	 */
 	@RequestMapping(value = "/user/login.html", method = RequestMethod.POST)
 	@AvoidDuplicateSubmission(needRemoveToken = true)
@@ -171,15 +171,14 @@ public class UserAction {
 		Map<String,Object> map=new HashMap<String, Object>();
 		String page = "/";
 		Users user = userServices.findUserByUsernameAndPassword(mobile, userPassword);
-		
 		if (user != null) {
-			//更新用户opendi 
+			//更新用户opendi
 			String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 			if(!StringUtil.isNullOrEmpty(openid)){
 				user.setOpenId(openid);
 				userServices.updateUser(user);
 			}
-			
+
 			String preUrl=SessionHelper.getStringAttribute(request, MobileContants.PAGE_SESSION_KEY);
 			if(!StringUtil.isNullOrEmpty(preUrl)){
 				page=preUrl;
@@ -197,6 +196,55 @@ public class UserAction {
 		return map;
 	}
 	/**
+	 * 用户登陆操作：手机号码+验证码登录方式
+	 */
+	@RequestMapping(value = "/user/loginForCode.html", method = RequestMethod.POST)
+	@AvoidDuplicateSubmission(needRemoveToken = true)
+	@ResponseBody
+	public Map<String,Object> loginPostForMobileCode(HttpServletRequest request,
+										HttpServletResponse response, ModelMap model, String mobile) {
+		Map<String,Object> map=new HashMap<String, Object>();
+		String page = "/";
+		Users user = userServices.findUserByUsernameAndPassword(mobile,"");
+		String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
+		if (user != null) {
+			//更新用户opendi
+			if(!StringUtil.isNullOrEmpty(openid)){
+				user.setOpenId(openid);
+				userServices.updateUser(user);
+			}
+			String preUrl=SessionHelper.getStringAttribute(request, MobileContants.PAGE_SESSION_KEY);
+			if(!StringUtil.isNullOrEmpty(preUrl)){
+				page=preUrl;
+			}
+			//登陆成功后进去洗车券购买页面
+			//page="/pay/buycouponPage.html";
+			map.put("user",user);
+			map.put("success",true);
+			SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, user);
+		} else {
+			//去数据库里面查询
+			List<Users> userses=userServices.findUserByMobile(mobile);
+			int total=0;
+			if(!StringUtil.isNullOrEmpty(userses)&&userses.size()>0){
+				total=userses.size();
+			}
+			if(total>0){
+				user=userses.get(0);
+				user.setOpenId(openid);
+				userServices.updateUser(user);
+			}else {
+				user = userServices.saveUserCore(openid,mobile,"","");
+			}
+			//登陆成功，保存session
+			map.put("user",user);
+			SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, user);
+			map.put("success",true);
+		}
+		map.put("page", page);
+		return map;
+	}
+	/**
 	 * 洗车工登陆之后主页面
 	 */
 	@RequestMapping(value = "/adminIdex.html", method = RequestMethod.GET)
@@ -207,7 +255,7 @@ public class UserAction {
 		}else{
 			model.put("status", "1");
 		}
-	   
+
 		return FmUtils.fmHtmlPage(request, model, MobilePageContants.ADMIN_INDEX_PAGE);
 	}
 	/**
@@ -229,7 +277,7 @@ public class UserAction {
 			queryMap.put("userPwd", MD5PwdEncoder.generatePassword(userPwd));
 		}
 		AdminBo admin = userServices.findAdminLoginMessage(queryMap);
-		
+
 		if (admin != null) {
 			//洗车工首次登录才登陆成功之后，自动绑定微信
 			String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
@@ -239,7 +287,7 @@ public class UserAction {
 					userServices.updateAdmin(admin);
 				}
 			}
-			
+
 			String preUrl=SessionHelper.getStringAttribute(request, MobileContants.PAGE_SESSION_KEY);
 			if(!StringUtil.isNullOrEmpty(preUrl)){
 				page=preUrl;

@@ -140,7 +140,7 @@
 						手机
 					</td>
 					<td colspan="2">
-						<input class='input-text' id='mobile' name="mobile" value="${bo.mobile!''}" readonly="readonly"
+						<input class='input-text' id='mobile' name="mobile" value="${bo.mobile!''}"
 							type='text'  />
 					</td>
 				 </tr>
@@ -292,14 +292,7 @@
             	<div style="width:100%;min-height:350px; border-top:1px #CCC solid; background-color: #F7F7F7" id="nav">
 					<ul style="padding:10px 0px 10px 25px; height:350px;overflow: auto; width:320px" id="book_time_area1">
 					[#list preDates as list]
-					[@pretime_car date=list]
-						[#if precar?? && precar.preTime?? && precar.preTime!='' &&precar.preTime=list]
-							<li class="avtion">${list}<span class="is_use">【已排满】</span></li>
-							[#else]
-							<li class="nopre"><a href="javascript:void(0);" class="time1" data="${list}">${list}</a></li>
-						[/#if]
-					[/@pretime_car]
-
+						<li class="nopre"><a href="javascript:void(0);" class="time1" data="${list}">${list}</a></li>
 					[/#list]
 
 					</ul>

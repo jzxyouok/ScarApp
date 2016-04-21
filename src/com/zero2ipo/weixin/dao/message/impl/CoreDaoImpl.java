@@ -127,11 +127,13 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                 if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
                     // 事件KEY值，与创建自定义菜单时指定的KEY值对应
                     String eventKey = requestMap.get("EventKey");
+                    System.out.println("eventKey==========================="+eventKey);
                     if(eventKey.equals("2")){
                     	respContent=getValue(CodeCommon.CLICK_KEY_ZHAOGONG);
                     }
                     if(eventKey.equals(CodeCommon.CLICK_KEY_1)){
                         respContent=getValue(CodeCommon.CLICK_KEY_1);
+                        System.out.println("resContent==========================="+respContent);
                     }
                     if(eventKey.equals(CodeCommon.CLICK_KEY_2)){
                         respContent=getValue(CodeCommon.CLICK_KEY_2);

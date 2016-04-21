@@ -1,10 +1,10 @@
-<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
     "http://ibatis.apache.org/dtd/sql-map-2.dtd">
 <sqlMap namespace="zero2ipo.mobile.admin">
-	
+
 	<!-- 系统用户信息实体类(User) -->
 	<typeAlias alias="adminBo" type="com.zero2ipo.common.entity.AdminBo"/>
-	
+
 	<!-- 系统用户信息实体映射集合 -->
 	<resultMap id="userList" class="adminBo">
 		<result property="userId" column="USER_ID"/>
@@ -24,7 +24,7 @@
 		<result property="expHintDate" column="EXP_HINT_DATE"/>
 		<result property="remark" column="REMARK"/>
 	</resultMap>
-	
+
 	<!-- 系统用户列表信息查询 -->
 	<select id="findUserInfoList" resultMap="userList">
 		 SELECT U.USER_ID,
@@ -43,7 +43,7 @@
 		      U.ADD_USER,
 		      U.EXP_HINT_DATE,
 		      U.REMARK
-		 FROM 
+		 FROM
 		 	S9_SYS_USER U
 		 <dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="userNo">
@@ -54,6 +54,9 @@
 			</isNotEmpty>
 			 <isNotEmpty prepend="AND" property="orderId">
 				 U.USER_ID=(SELECT user_id FROM BSB_SEND_ORDER  WHERE order_id=#orderId#  )
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="roleNo">
+				 U.USER_ID in (SELECT user_id FROM S9_SYS_USER_ROLE_RELA  WHERE ROLE_ID=(SELECT ROLE_ID FROM S9_SYS_ROLE WHERE ROLE_NO=#roleNo# )  )
 			 </isNotEmpty>
 			 <isNotEmpty prepend="AND" property="userPwd">
 				 U.USER_PWD=#userPwd#
@@ -69,8 +72,8 @@
 			 </isNotEmpty>
 
 		</dynamic>
-	</select>	
-	
+	</select>
+
 		<select id="findUserList" resultMap="userList">
 		 SELECT U.USER_ID,
 		      U.USER_NO,
@@ -88,10 +91,10 @@
 		      U.ADD_USER,
 		      U.EXP_HINT_DATE,
 		      U.REMARK
-		 FROM 
+		 FROM
 		 	S9_SYS_USER U
-	</select>	
-	
+	</select>
+
 	<!-- 根据用户标识查询系统用户信息 -->
 	<select id="findUserById" resultMap="userList">
 		 SELECT U.USER_ID,
@@ -110,7 +113,7 @@
 		      U.ADD_USER,
 		      U.EXP_HINT_DATE,
 		      U.REMARK
-		 FROM 
+		 FROM
 		 	S9_SYS_USER U
 		 	 <dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="userId">
@@ -126,14 +129,14 @@
 			    U.USER_PWD=#userPwd#
 			</isNotEmpty>
 		</dynamic>
-		
-	</select>	
-	
+
+	</select>
+
 	<!-- 用户信息列表    总条数查询 -->
     <select id="findUserInfoListCount" resultClass="java.lang.Integer">
-	   SELECT 
+	   SELECT
 		   	COUNT(0)
-		 FROM 
+		 FROM
 		 	S9_SYS_USER U
 		 <dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="userNo">
@@ -147,7 +150,7 @@
 			 </isNotEmpty>
 		</dynamic>
   	</select>
-  	
+
   	<!-- 用户信息    新增 -->
 	<insert id="addUser" parameterClass="adminBo">
 		INSERT INTO S9_SYS_USER
@@ -183,50 +186,50 @@
 		   #addDate#,
 		   #addUser#,
 		   #expHintDate#,
-		   #remark#)                   
+		   #remark#)
 	</insert>
-	 
 
-	
+
+
 	<!-- 用户信息	删除 -->
 	<delete id="delSysOper" parameterClass="java.util.Map">
-		DELETE FROM 
-				S9_SYS_USER 
-			WHERE 
-				USER_ID IN 
+		DELETE FROM
+				S9_SYS_USER
+			WHERE
+				USER_ID IN
 				<iterate property="userId" conjunction="," close=")" open="(">
 					#userId[]#
-				</iterate> 
+				</iterate>
 	</delete>
 
 	<!-- 用户信息	启用 -->
 	<update id="updUserEnStatus" parameterClass="java.util.Map">
-		UPDATE 
+		UPDATE
 		    	S9_SYS_USER
-		    SET  
+		    SET
 		  		CUR_STATUS_CODE = '01'
-			WHERE 
-			    CUR_STATUS_CODE = '02' 
-				AND USER_ID IN 
+			WHERE
+			    CUR_STATUS_CODE = '02'
+				AND USER_ID IN
 				<iterate property="userId" conjunction="," close=")" open="(">
 					#userId[]#
 				</iterate>
 	</update>
-	
+
 	<!-- 用户信息	停用 -->
 	<update id="updUserDisStatus" parameterClass="java.util.Map">
-		UPDATE 
+		UPDATE
 		    	S9_SYS_USER
-		    SET  
+		    SET
 		  		CUR_STATUS_CODE = '02'
-			WHERE 
-			    CUR_STATUS_CODE = '01' 
-				AND USER_ID IN 
+			WHERE
+			    CUR_STATUS_CODE = '01'
+				AND USER_ID IN
 				<iterate property="userId" conjunction="," close=")" open="(">
 					#userId[]#
-				</iterate> 
+				</iterate>
 	</update>
-	
+
 	<!-- 添加用户角色 -->
 	<insert id="addUserRole">
 		INSERT INTO S9_SYS_USER_ROLE_RELA
@@ -241,14 +244,14 @@
 			#roleId#
 		)
 	</insert>
-	
+
 	<!-- 根据用户ID查询用户角色 -->
 	<select id="returnUserRole" resultClass="java.lang.String">
-		SELECT 
+		SELECT
 			ROLE_ID
-		FROM 
+		FROM
 			S9_SYS_USER_ROLE_RELA
-		WHERE 
+		WHERE
 			USER_ID = #userId#
 	</select>
 	<!-- 用户信息	修改 -->
@@ -271,9 +274,9 @@
 	</update>
 	<!-- 删除用户角色 -->
 	<delete id="delUserRole">
-		DELETE FROM 
+		DELETE FROM
 			S9_SYS_USER_ROLE_RELA
 		WHERE USER_ID = #userId#
-		
+
 	</delete>
 </sqlMap>

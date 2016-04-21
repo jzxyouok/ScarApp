@@ -17,15 +17,15 @@
 
 <select id='findUsersList' resultMap='appUserMap'>
 SELECT
-	id,	
-	user_id,	
-	phone_num,	
-	account,	
-	password,	
-	create_time,	
+	id,
+	user_id,
+	phone_num,
+	account,
+	password,
+	create_time,
 	update_time,
 	open_id,
-	level	
+	level
 FROM users
 <dynamic prepend="WHERE">
 <isNotEmpty prepend="AND" property="mobile">
@@ -80,23 +80,25 @@ FROM users
 <insert id="addAppUsers" parameterClass="appUserBo">
 	INSERT INTO users(
 	user_id,
-	phone_num,	
-	account,	
-	password,	
-	create_time,	
-	update_time,	
+	phone_num,
+	account,
+	password,
+	create_time,
+	update_time,
 	level,
 	open_id
 )VALUES(
 	#userId#,
-	#phoneNum#,	
-	#account#,	
-	#password#,	
+	#phoneNum#,
+	#account#,
+	#password#,
 	now(),
 	now(),
 	#level#,
 	#openId#
-)
+)<selectKey resultClass='long' keyProperty='id' >
+	SELECT @@IDENTITY AS id
+</selectKey>
 </insert>
 <!--修改-->
 <update id="updAppUsers" parameterClass="appUserBo">
@@ -127,13 +129,13 @@ FROM users
 </update>
 <!--删除-->
 <delete id="delAppUsers" parameterClass="java.util.Map">
-	DELETE FROM 
+	DELETE FROM
 	users
 	WHERE
 	ID IN
 	<iterate property="id" conjunction="," close=")" open="(">
 	#id[]#
-	</iterate> 
+	</iterate>
 </delete>
 <!--修改密码-->
 <update id="updateUserPassword">

@@ -21,7 +21,7 @@ import java.util.*;
 
 @Component("userDao")
 public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
-	
+
 	//根据用户名、密码查找用户
 	private static final String FIND_USER_BY_USERNAME_PASSWORD = "com.app.mobile.user.findUsersByMap";
 	//根据手机号查找用户
@@ -63,10 +63,12 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	 */
 	public Users findUserByUsernameAndPassword(String username,
 											   String password) {
-		
+
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("mobile", username);
-		param.put("password", password);
+		if(!StringUtil.isNullOrEmpty(password)){
+			param.put("password", password);
+		}
 		Users entity=null;
 		try {
 			 entity=(Users)this.query(FIND_USER_BY_USERNAME_PASSWORD, param);
@@ -75,7 +77,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		}
 		return entity;
 	}
-	
+
 	/**
 	 * 根据用户手机号查找用户信息集合
 	 */
@@ -85,7 +87,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("mobile",mobile);
 			List<?> o = this.queryAll(FIND_USERS_BY_MOBILE, queryMap);
-			if(o != null) 
+			if(o != null)
 			{
 				List<Users> users = (List<Users>)o;
 				return users;
@@ -93,10 +95,10 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * 根据用户ID查找用户
 	 * @param mobile
@@ -116,33 +118,34 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	 * 注册用户信息
 	 * @return
 	 */
-	public void saveUser(Users user) {
+	public long saveUser(Users user) {
+		long id=0;
 		try{
-			this.insert(INSERT_USER, user);
+			id=(Long)this.insert(INSERT_USER, user);
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-
+		return id;
 	}
-	
+
 	/**
 	 * 注册个人用户信息
 	 * @return
 	 */
 	public void saveUserInfo(UserEntity user) {
-		
+
 		this.insert(INSERT_USERINFO, user);
 	}
-	
+
 	/**
 	 * 注册企业用户信息
 	 * @return
 	 */
 	public void saveOrgInfo(UserEntity user) {
-		
+
 		this.insert(INSERT_ORGINFO, user);
 	}
-	
+
 
 	/**
 	 * 更新个人用户信息
@@ -155,28 +158,28 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 更新机构用户信息
 	 */
 	public void updateOrgUserInfo(UserEntity user) {
-		
+
 		this.update(UPDATE_ORGUSERINFO, user);
 	}
-	
+
 	/**
 	 * 更新CRM用户信息
 	 */
 	public void updateCrmUserInfo(UserEntity user) {
-		
+
 		this.update(UPDATE_CRMUSERINFO, user);
 	}
-	
+
 	/**
 	 * 修改用户密码
 	 */
 	public void updateUserPassword(Users user) {
-		
+
 		this.update(UPDATE_USER_PASSWORD, user);
 	}
 
@@ -187,17 +190,17 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUserByEmail(String email) {
-		
+
 		Object o = this.queryAll(FIND_USERS_BY_EMAIL, email);
-		if(o != null) 
+		if(o != null)
 		{
 			List<UserEntity> users = (List<UserEntity>)o;
 			return users;
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * 更具手机好和密码查找用户
 	 * @param mobile
@@ -207,26 +210,26 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	@SuppressWarnings("unchecked")
 	public List<UserEntity> findUserByMobileAndPassword(String mobile,
 			String password) {
-		
+
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("mobile", mobile);
 		param.put("password", password);
-		
+
 		List<?> o = this.queryAll(FIND_USERS_BY_MOBILE_PWD, param);
-		if(o != null) 
+		if(o != null)
 		{
 			List<UserEntity> users = (List<UserEntity>)o;
 			return users;
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * 跟新用户登录次数
 	 */
 	public void updateUserLoginNum(UserEntity user) {
-		
+
 		user.setUserLoginnum(user.getUserLoginnum() + 1);
 		try {
 			this.update(UPDATE_USER_LOGINNUM, user);
@@ -234,7 +237,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
+
 	}
 	/**
 	 * 跟新用户信息
@@ -314,9 +317,11 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		AdminBo result=new AdminBo();
 		try{
 		//首先查询出所有的洗车工
-		//按照职务过滤
+		//按照职务过滤 此处应该根据角色过滤
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("position", CodeCommon.POSITION);
+		//洗车工角色编码
+			String  roleNo=CodeCommon.ROLE_NO;
+		queryMap.put("roleNo", roleNo);
 		List<AdminBo> adminBoList= (List<AdminBo>) this.queryAll(FIND_ALL_ADMINS,queryMap);
 		int size=adminBoList.size();
 		List<Double> areaList=new ArrayList<Double>();
@@ -325,8 +330,8 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 			for(int i=0;i<size;i++){
 				AdminBo bo=adminBoList.get(i);
 				//获取经纬度
-				String adminLat=bo.getEmail();//经度
-				String adminLng=bo.getRemark();//纬度
+				String adminLng=bo.getEmail();//经度
+				String adminLat=bo.getRemark();//纬度
 				//获取该经纬度和当前位置之间的距离
 				double lng1 = 0;
 				double lat1=0;

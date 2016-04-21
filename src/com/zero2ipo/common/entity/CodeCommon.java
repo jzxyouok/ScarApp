@@ -4,6 +4,7 @@ public class CodeCommon {
 	public static  String 	MESSAGE_PUSH="MESSAGE_PUSH";
 	public static  String 	CREATE_MENU="CREATE_MENU";
 	public static  String 	ROOT="999999";
+	public static  String 	ROLE_NO="1003";//洗车工角色编码
 	public static final  String  MENU_TYPE_CLICK="click";
 	public static final  String  MENU_TYPE_KEY="key";
 	public static final String MENU_SORT_CODE="SORT_MENU_CODE";

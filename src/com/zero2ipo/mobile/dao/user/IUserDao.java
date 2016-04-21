@@ -40,7 +40,7 @@ public interface IUserDao {
 	 * @param password
 	 * @return
 	 */
-	public void saveUser(Users user);
+	public long saveUser(Users user);
 
 	/**
 	 * 根据用户ID查找用户
@@ -57,7 +57,7 @@ public interface IUserDao {
 	 * @return
 	 */
 	public void saveUserInfo(UserEntity user);
-	
+
 	/**
 	 * 注册企业用户信息
 	 * @param userType
@@ -72,12 +72,12 @@ public interface IUserDao {
 	 * @param user
 	 */
 	public void updateUserInfo(Users user);
-	
+
 	/**
 	 * 更新机构用户信息
 	 */
 	public void updateOrgUserInfo(UserEntity user);
-	
+
 	/**
 	 * 更新CRM用户信息
 	 */
