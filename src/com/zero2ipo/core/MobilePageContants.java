@@ -28,6 +28,7 @@ public class MobilePageContants {
 	public static final String ADMIN_LOGIN_PAGE="mobile/admin/adminLogin";//洗车工登陆
 	public static final String RESET_PASSWORD_PAGE="mobile/user/resetPassword";//重置密码页面
 	public static final String QIANDAO_PAGE="mobile/user/qiandao";//重置密码页面
+	public static final String SELECT_CAR_TYPE_PAGE="mobile/user/carType";//选择车型
 
 
 	public static final String FM_USER_HOME = "mobile/user/vip";				//个人中心

@@ -49,7 +49,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,String couponId) {
+							  HttpServletResponse response, ModelMap model,String couponId,String carType) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		try {
@@ -103,10 +103,15 @@ public class DynamicMobilePageAct {
 					car.setCarNo(user.getAccount());
 				}
 				car.setMobile(user.getPhoneNum());
+				//保存车型
+				if(!StringUtil.isNullOrEmpty(carType)){
+					car.setCarType(carType);
+				}
 				mv.addObject("bo",car);
 			}else{
 				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,6 +259,21 @@ public class DynamicMobilePageAct {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.QIANDAO_PAGE);
+		return mv;
+	}
+	/**
+	 * 选择车型
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/selectCarType.html", method = RequestMethod.GET)
+	public ModelAndView selectCarType(HttpServletRequest request,
+								HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
 		return mv;
 	}
 	/**

@@ -56,6 +56,12 @@
 				var value=$("#maplocation").val();
 				$("#washAddr").val(value);
 			}
+			//选择车型
+			function selectCarType(){
+				var url="${base}/selectCarType.html";
+				window.location.href=url;
+			}
+
 			$( document ).ready(function(e) {
 				$("#carColor").val("${bo.carColor!''}");
 				$("#carType option").each(function (){
@@ -170,18 +176,14 @@
 						<img src="${res}/images/ggwash/car_model.png" />
 						车型
 					</td>
-					<td colspan='2' >
-						 <select class="input-text" style="width:125px" id="carType" name="carType">
-						 	 <option value="">请选择车型</option>
-							 [#if bo.carType?exists && bo.carType=='0']
-							 	<option value="0" selected="selected">吉普</option>
-							 	<option value="1">轿车</option>
-							 [#else]
-							 	<option value="1" selected="selected">轿车</option>
-							 	<option value="0">吉普</option>
-							 [/#if]
-                        </select>
+					<td colspan='1' >
+						 <input class="input-text"  readonly="readonly" placeholder="请选择车型" style="width:125px" id="carType" name="carType" value="${(bo.carType)!''}">
+                        </input>
 					</td>
+					<td>
+						<input type="button" class="ui-btn green" value="选择" onclick="javascript:selectCarType()" style="cursor: pointer;width:50px;float:right"/>
+					</td>
+
 				</tr>
 				<tr>
 					<td class="lable">
@@ -277,7 +279,6 @@
 
 			</table>
 		</div>
-
 		        <!--填出层-->
      <div id="imgBox" style="display: none; float: left; border: 1px solid rgb(204, 204, 204); width: 350px; margin: 0px;">
   			<div style="margin:0 auto;background-color:#FFF;">
