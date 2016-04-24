@@ -597,28 +597,29 @@ public class CarAction {
 	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
 		Map<String,Object> result=new HashMap<String, Object>();
 		Order order=new Order();
-		order.setId(Integer.parseInt(orderId));
+		int id=Integer.parseInt(orderId);
+		order.setId(id);
 		order.setOrderStatus(MobileContants.status_1);//已支付
 		boolean flag=orderService.updateStatus(order);
 		System.out.println("修改订单状态结果=================="+flag);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
-		Order o=orderService.findById(queryMap);
-		System.out.println("根据订单id查询出来的订单信息为========="+o);
+		 order=orderService.findById(queryMap);
+		System.out.println("根据订单id查询出来的订单信息为========="+order);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 			//根据经纬度派单给最近的洗车工师父
 			SendOrder sendOrder=new SendOrder();
-			order.setOrderId(orderId+"");
+			order.setId(id);
 			//根据经纬度获取最近的洗车工师父
-			AdminBo bo=userServices.findAdminByLatLng(o.getLat(),o.getLon());
+			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
 			sendOrder.setCarNo(order.getCarNum());
-			sendOrder.setOrderId(orderId+"");
-			sendOrder.setName(o.getCarType());
-			sendOrder.setPreTime(o.getWashTime());
-			sendOrder.setMobile(o.getMobile());
+			sendOrder.setOrderId(id+"");
+			sendOrder.setName(order.getCarType());
+			sendOrder.setPreTime(order.getWashTime());
+			sendOrder.setMobile(order.getMobile());
 			sendOrder.setSendOrderTime(com.zero2ipo.framework.util.DateUtil.getCurrentTime());
 			sendOrder.setUserId(bo.getUserId());
 			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
@@ -649,7 +650,7 @@ public class CarAction {
 						mobile=u.getPhoneNum();
 					}
 
-					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,order.getOrderId(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),mobile,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
+					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,id+"", com.zero2ipo.framework.util.DateUtil.getCurrentTime(),mobile,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
 					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
