@@ -107,13 +107,13 @@ ul a {
 }
 .infotable tr{
     height: 52px;
-    width:100%; 
+    width:100%;
 }
 .infotable td{
 	border-bottom: 1px solid #bfbfbf;
     text-align: left;
     vertical-align:middle;
-    
+
 }
 .infotable .lable{
     text-align:left;
@@ -145,10 +145,10 @@ ul a {
 	opacity: 0.7;  /* ͸���� */
 	width: 100%;
 	height: 100%;
-	z-index: 100; /* �˴���ͼ��Ҫ����ҳ�� */  
+	z-index: 100; /* �˴���ͼ��Ҫ����ҳ�� */
 }
 #pay_dialog{
-    z-index: 101;  
+    z-index: 101;
 }
 .btn_back {
     position: absolute;
@@ -169,6 +169,7 @@ ul a {
     float: left;
     height: 30px;
     -webkit-border-radius:  2px;
+    width:123px;
     border-radius:  2px;
     border: 1px solid #CCCCCC;
    /* -webkit-appearance: none;*/
@@ -253,7 +254,7 @@ ul a {
     margin:5px;
 	border: 1px solid #bfbfbf;
 	background-color : #fff;
-	border-radius: 6px;   
+	border-radius: 6px;
 }
 
 #list { width: 100%; height: 100%; top:0;left:0; display: none; position: absolute; background: #fff; overflow: hidden; z-index:999;}

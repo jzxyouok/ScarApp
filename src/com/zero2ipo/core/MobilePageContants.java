@@ -30,6 +30,7 @@ public class MobilePageContants {
 	public static final String RESET_PASSWORD_PAGE="mobile/user/resetPassword";//重置密码页面
 	public static final String QIANDAO_PAGE="mobile/user/qiandao";//重置密码页面
 	public static final String SELECT_CAR_TYPE_PAGE="mobile/user/carType";//选择车型
+	public static final String PAY_BY_WEIXIN_PAGE="mobile/user/pay_by_weixin";//微信支付页面
 
 
 	public static final String FM_USER_HOME = "mobile/user/vip";				//个人中心

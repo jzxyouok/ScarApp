@@ -39,5 +39,7 @@ public boolean updateCoupon(UserCoupon coupon);
 public SendOrder findSendOrderByOrderId(Map<String, Object> map);
 
 public int findIsOrNotFirstOrder(Map<String, Object> queryMap);
+
+ public boolean updateStatus(Order order);
 }
 

@@ -10,7 +10,14 @@
     font-size: 14px;
     position: relative;
 }
-
+.btn_wx{
+    background-color: #1eb34f;
+    font-size: 1.57rem;
+    color: #ffffff;
+    border-radius: 0.4rem;
+    padding: 1% 3%;
+    float: right;
+}
 .ui-btn-group {
     margin: 2px;
     position: relative;

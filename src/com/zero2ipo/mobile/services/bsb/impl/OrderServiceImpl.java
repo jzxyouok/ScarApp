@@ -48,5 +48,10 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.findIsOrNotFirstOrder(queryMap);
 	}
 
+	@Override
+	public boolean updateStatus(Order order) {
+		return orderDao.updateStatus(order);
+	}
+
 }
 
