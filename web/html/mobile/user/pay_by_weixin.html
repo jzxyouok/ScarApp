@@ -40,7 +40,7 @@
 				async : false,
 				success:function(data){
 					//支付成功之后跳转到订单详情页面
-					var url="${base}//my/order"+orderId+".html";
+					var url="${base}/my/order"+orderId+".html";
 					window.location.href=url;
 				},error:function(){
 
@@ -49,9 +49,9 @@
 		}
 		else
 		{
-			var msg='支付失败,请重新支付.';
-			alert(msg);
-			alert(res.err_code+" err_desc="+res.err_desc+" err_msg="+res.err_msg);
+			//var msg='支付失败,请重新支付.';
+			//alert(msg);
+			//alert(res.err_code+" err_desc="+res.err_desc+" err_msg="+res.err_msg);
 		}
 	};
 </script>
