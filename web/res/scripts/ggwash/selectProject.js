@@ -106,6 +106,8 @@ function getServicesProjectIds(){
     var ids="";
     $("img").each(function(){
         var src=$(this).attr("src");
+        var projectName=$(this).attr('fname');
+        $("#projectName").val(projectName);
         if(src.indexOf("radio_sel.png")>0){
             ids+=$(this).attr("ids")+",";
         }
