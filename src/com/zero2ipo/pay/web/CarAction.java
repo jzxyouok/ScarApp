@@ -591,11 +591,15 @@ public class CarAction {
 	//微信支付成功后调用此方法
 	@RequestMapping(value = "/order/wxpay_update", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,int  orderId) {
+	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
 		Map<String,Object> result=new HashMap<String, Object>();
+		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
+		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
+		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
+		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		Order order=new Order();
-		order.setId(orderId);
-		order.setStatus(MobileContants.status_1);//已支付
+		order.setOrderId(orderId);
+		order.setOrderStatus(MobileContants.status_1);//已支付
 		boolean flag=orderService.updateStatus(order);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();

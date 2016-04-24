@@ -212,6 +212,6 @@ select
 			order_status=#orderStatus#
 		</isNotEmpty>
 		WHERE
-		ID=#id#
+		order_id=#orderId#
 	</update>
 </sqlMap>
