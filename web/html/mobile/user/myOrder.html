@@ -64,15 +64,20 @@
 	                                [#if order.status=='2']
 	                               	 	<span class="orderstate color_orange">用户取消</span>
 	                                [/#if]
-	    							
+
 	    						[/#if]
 	    						[/@find_order_byid]
-				        
+
 				        </div>
 		        	</div>
 		        	<div class="btnoper clearfix">
 			        	<span class="amount">支付方式：
-			        		<font>洗车券支付
+			        		<font>
+								[#if (order.payType)?default('0')=='0']
+									洗车券支付
+								[#else]
+									微信支付
+								[/#if]
 			        		<!--
 			        			${order.total!''}
 			        		-->
@@ -82,7 +87,7 @@
 		        	</div>
 	        	</div>
         	</section>
-           
+
             [#else]
 	            <div class="userlist">
 			        	<div class="listinfo">
@@ -95,9 +100,9 @@
 					        	<!--<p class="username">洪宝洗车</p>-->
 					        	<p >  暂无订单<a href="/"><font color="green" >去下单</font></a></p>
 					        </div>
-					       
+
 					    </div>
-					    
+
 			     </div>
             [/#if]
         	</article>
@@ -114,7 +119,7 @@
         </article>
     </div>
     </div>
-    
+
 
 <div class="nav_fp">
 	<ul>

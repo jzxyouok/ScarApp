@@ -565,6 +565,7 @@ public class CarAction {
 				order.setCarType(car.getCarType());
 				order.setDiscription(car.getWashInfo());
 				order.setCarId(carId + "");
+				order.setPayType(MobileContants.status_1);//微信支付
 				//order.setOrderStatus(MobileContants.ORDER_PAY_STATUS_DEFAULT);
 				order.setOrderStatus(MobileContants.status_fu_1);//现金支付订单状态默认未支付
 				order.setLon(lng);
@@ -595,10 +596,6 @@ public class CarAction {
 	@ResponseBody
 	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
 		Map<String,Object> result=new HashMap<String, Object>();
-		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》"+orderId);
-		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
-		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
-		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		Order order=new Order();
 		order.setId(Integer.parseInt(orderId));
 		order.setOrderStatus(MobileContants.status_1);//已支付
