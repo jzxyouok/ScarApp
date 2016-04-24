@@ -31,11 +31,12 @@
 			//showPayResult();
 			//支付成功后修改订单状态，并发送派单通知
 			var orderId="${orderId!''}";
+			alert(orderId);
 			var status="2";//付款成功
 			var url="${base}/order/wxpay_update";
 			$.ajax({
 				type:"post",
-				data:{"status":status,"orderId":"${orderId!''}"},
+				data:{"status":status,"orderId":orderId},
 				url: url,
 				async : false,
 				success:function(data){

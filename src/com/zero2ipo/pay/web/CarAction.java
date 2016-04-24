@@ -480,6 +480,7 @@ public class CarAction {
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
 		mv.addObject("orderId", orderId);
+		System.out.println("页面会写的orderId========================"+orderId);
 		//根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
@@ -593,7 +594,7 @@ public class CarAction {
 	@ResponseBody
 	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
 		Map<String,Object> result=new HashMap<String, Object>();
-		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
+		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》"+orderId);
 		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
@@ -603,7 +604,8 @@ public class CarAction {
 		boolean flag=orderService.updateStatus(order);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		Order o=orderService.findById(map);
+		queryMap.put("orderId",orderId);
+		Order o=orderService.findById(queryMap);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){

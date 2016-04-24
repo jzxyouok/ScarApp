@@ -109,7 +109,10 @@ select
 		</isNotEmpty>
 		<isNotEmpty prepend="AND" property="userId">
 			user_id=#userId#
-	</isNotEmpty>
+	    </isNotEmpty>
+		<isNotEmpty prepend="AND" property="orderId">
+			order_id=#orderId#
+	    </isNotEmpty>
 	</dynamic>
 </select>
 <!-- 查询是否首单 -->
