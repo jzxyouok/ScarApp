@@ -507,7 +507,7 @@ public class CarAction {
 		Map<String,Object> resultMap=new HashMap<String,Object>();
 		boolean flag=false;
 		//FmUtils.FmData(request, model);
-		int orderId=-1;
+		String orderId="";
 		int carId=-1;
 		String jsParam="";
 		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
@@ -580,11 +580,12 @@ public class CarAction {
 				//获取微信支付参数
 				 jsParam=getWXJsParamForNative(request,total_price);
 				order.setJsParam(jsParam);
-				orderId=orderService.add(order);
+				orderId=orderService.add(order)+"";
 				order.setOrderId(orderId+"");
 			}
 		}
 		//mv.addObject("orderId",orderId);
+		System.out.println("orderId================================"+orderId);
 		String url="redirect:/order/wxpay.html?orderId="+orderId;
 		return url;
 
@@ -599,13 +600,15 @@ public class CarAction {
 		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		System.out.println("支付成功之后回调方法开始》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》》");
 		Order order=new Order();
-		order.setOrderId(orderId);
+		order.setId(Integer.parseInt(orderId));
 		order.setOrderStatus(MobileContants.status_1);//已支付
 		boolean flag=orderService.updateStatus(order);
+		System.out.println("修改订单状态结果=================="+flag);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("orderId",orderId);
+		queryMap.put("id",orderId);
 		Order o=orderService.findById(queryMap);
+		System.out.println("根据订单id查询出来的订单信息为========="+o);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){

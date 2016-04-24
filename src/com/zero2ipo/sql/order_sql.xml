@@ -216,6 +216,6 @@ select
 		</isNotEmpty>
 		</dynamic>
 		WHERE
-		order_id=#orderId#
+		id=#id#
 	</update>
 </sqlMap>
