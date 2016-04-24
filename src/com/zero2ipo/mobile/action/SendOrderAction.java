@@ -417,12 +417,12 @@ public class SendOrderAction {
 		TemplateData data1=new TemplateData();
 		data1.setValue("已完成");
 		data1.setColor("#040188");
-		paramMap.put("keynote1",data1);
+		paramMap.put("keyword1",data1);
 
 		TemplateData rmTime=new TemplateData();
 		rmTime.setValue(DateUtil.getCurrentDate());
 		rmTime.setColor("#040188");
-		paramMap.put("keynote2",rmTime);
+		paramMap.put("keyword2",rmTime);
 		temp.setData(paramMap);
 		TemplateData remark=new TemplateData();
 		remark.setValue("感谢您选择我们的服务,请您点击连接对此次服务进行评价");

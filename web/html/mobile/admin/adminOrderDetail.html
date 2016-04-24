@@ -118,7 +118,7 @@
 					<div class="d_tb">
 						<div  class="c_fllf c_imgsize c_moreimg"><img src="${res}/images/ggwash/car_model.png" width="22px" height="22px"/></div>
 						<span  class='c_vtext'>车型</span>
-						<span  class='c_vtext'>[#if order.carType!=null&&order.carType!=''][#if '0'==order.carType]轿车[#else]吉普[/#if][/#if]</span>
+						<span  class='c_vtext'>${(order.carType)!''}</span>
 					</div>
 					<div class="d_tb">
 						<div  class="c_fllf c_imgsize c_moreimg"><img src="${res}/images/ggwash/car_model.png" width="22px" height="22px"/></div>
@@ -140,12 +140,11 @@
 							<div id='d_subrow' class='clear'>
 						<div id="d_nimg" class="c_fllf c_imgsize c_moreimg"></div>
 							<span id="s_note" class='c_vtext'>备注信息</span>
-							${order.description!''}
+							${order.discription!''}
 							</div>
 						<div id="d_snotemore"></div>
 					</div>
 				</div>
-
     			    [@send_order orderId="${orderId}"]
     	[#if sendOrder??]
   	 <div class="login_sc">

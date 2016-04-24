@@ -29,7 +29,7 @@ public class ServiceProjectListDirective implements TemplateDirectiveModel{
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			list=serviceProject.findAllList(queryMap);
 			if(!StringUtil.isNullOrEmpty(list)&&list.size()>0){
-				env.setVariable("couponList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
+				env.setVariable("fwxmList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
 			}
 
 		} catch (Exception e) {

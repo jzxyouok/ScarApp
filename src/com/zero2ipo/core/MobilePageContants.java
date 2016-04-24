@@ -16,6 +16,7 @@ public class MobilePageContants {
 
 	public static final String FM_PAGE_MAIN = "mobile/xc/index";    	//主页
 	public static final String CAR_DETAIL_PAGE = "mobile/xc/xzfw";    	//主页
+	public static final String SELECT_SERVICE_PROJECT_PAEG = "mobile/xc/xzfw2";    	//选择服务项目
 	public static final String ADMIN_ORDER_DETAIL_PAGE = "mobile/admin/adminOrderDetail";    	//主页
 	public static final String MY_DETAIL_PAGE = "mobile/xc/xzfw";    	//主页
 	public static final String MY_ORDER_PAGE = "mobile/user/myOrder";    	//主页

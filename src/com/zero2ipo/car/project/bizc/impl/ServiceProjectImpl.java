@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Component("serviceProject")
 public class ServiceProjectImpl extends IbatisBaseDao implements IServiceProject {
-
+	public final  static String FINDALLLIST="mobile.goodses.findGoodsesList";
 	@Override
 	public String add(ServiceProject bo) {
 		String backInfo= "1";
@@ -53,8 +53,9 @@ public class ServiceProjectImpl extends IbatisBaseDao implements IServiceProject
 		List<ServiceProject> orderInfoList = new ArrayList<ServiceProject>();
 		try {
 			//设置数据库类型: 网站全局库(01)
-    		orderInfoList = (List<ServiceProject>)this.queryAll("findServiceProjectList", queryMap);
+    		orderInfoList = (List<ServiceProject>)this.queryAll(FINDALLLIST, queryMap);
 		} catch (Exception e) {
+			e.printStackTrace();
 			BaseLog.e(this.getClass(), "queryOrderInfoList 查询列表失败", e);
 		}
 		return orderInfoList;

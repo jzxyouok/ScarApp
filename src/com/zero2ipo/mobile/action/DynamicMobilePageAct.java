@@ -276,6 +276,22 @@ public class DynamicMobilePageAct {
 		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
 		return mv;
 	}
+
+	/**
+	 * 选择服务项目
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/fwxm.html", method = RequestMethod.GET)
+	public ModelAndView selectServiceProjectPage(HttpServletRequest request,
+									  HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(MobilePageContants.SELECT_SERVICE_PROJECT_PAEG);
+		return mv;
+	}
 	/**
 	 * 重置密码
 	 * @param request

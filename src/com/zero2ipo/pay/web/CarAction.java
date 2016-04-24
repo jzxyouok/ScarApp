@@ -61,8 +61,13 @@ public class CarAction {
 	@RequestMapping(value = "/renwu/order{id}/f{flag}.html")
 	public ModelAndView updateSendOrderSuccessPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,@PathVariable("id") String id,@PathVariable("flag") String flag,RedirectAttributes  attr)
 	{
-		ModelAndView mv=new ModelAndView(MobilePageContants.ADMIN_ORDER_DETAIL_PAGE);
 		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView(MobilePageContants.ADMIN_ORDER_DETAIL_PAGE);
+		//如果没有登录的话，则跳转到洗车工登录页面
+		AdminBo adminBo= (AdminBo) SessionHelper.getAttribute(request,MobileContants.ADMIN_SESSION_KEY);
+		if(StringUtil.isNullOrEmpty(adminBo)){
+			mv.setViewName(MobilePageContants.ADMIN_LOGIN_PAGE);
+		}
 		mv.addObject("orderId", id);
 		mv.addObject("flag", flag);
 		return mv;
@@ -431,7 +436,11 @@ public class CarAction {
 							String openId=bo.getTel();//获取洗车工绑定的微信openid
 							String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 							String washType=order.getWashType();
-							WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,"",orderNo, com.zero2ipo.framework.util.DateUtil.getCurrentTime(),isExsit.getName(),isExsit.getCarNo(),isExsit.getWashAddr(),order.getWashTime(),washType);
+							//查询域名
+							String  domain=coreService.getValue(CodeCommon.DOMAIN);
+							String url=domain+"/renwu/order"+orderId+".html";
+
+							WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,orderNo, com.zero2ipo.framework.util.DateUtil.getCurrentTime(),isExsit.getName(),isExsit.getCarNo(),isExsit.getWashAddr(),order.getWashTime(),washType);
 							//发送模板消息
 							String appId=coreService.getValue(CodeCommon.APPID);
 							String appsecret=coreService.getValue(CodeCommon.APPSECRET);

@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Component("orderDao")
 public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
-   
+
 	private static final String ADD = "bsb.mobile.order.add";
 	private static final String UPDATE = "bsb.mobile.order.update";
 	private static final String FIND_ALL_LIST = "bsb.mobile.order.findAllList";
@@ -25,7 +25,7 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 		int primkey=-1;
 		try {
 			primkey=(Integer) this.insert(ADD, bo);
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -59,7 +59,6 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 		try{
 			order=(Order) this.query(FIND_BYID,queryMap);
 		}catch(Exception e){
-			order=new Order();
 			e.printStackTrace();
 		}
 		return order;

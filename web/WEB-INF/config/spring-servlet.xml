@@ -82,6 +82,7 @@
 				<entry key="find_comment_orderId" value-ref="find_comment_orderId"></entry>
 				<entry key="find_user_byId" value-ref="find_user_byId"></entry>
 				<entry key="find_config_bykey" value-ref="find_config_bykey"></entry>
+				<entry key="serviceProjectListDirective" value-ref="serviceProjectListDirective"></entry>
 
 			</map>
 		</property>
@@ -117,6 +118,7 @@
 	<bean id="find_comment_orderId" class="com.zero2ipo.common.freemarker.directives.FindCommentByorderIdDirective"/>
 	<bean id="find_user_byId" class="com.zero2ipo.common.freemarker.directives.FindUserByUserIdDirective"/>
 	<bean id="find_config_bykey" class="com.zero2ipo.common.freemarker.directives.FindConfigByConfigKeyDirective"/>
+	<bean id="serviceProjectListDirective" class="com.zero2ipo.common.freemarker.directives.ServiceProjectListDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
