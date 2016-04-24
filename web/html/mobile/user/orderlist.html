@@ -56,6 +56,9 @@
 		        	</div>
 		        	<div class="btnoper clearfix">
 			        	<span class="amount">总价：<font>${order.price!''}元</font></span>
+						[#if order.status=='-1']
+							<span class="btn_rectangle greyframe color_blue f_r vieworder" onclick="window.location.href='/order/wxpay.html?orderId=${order.id}.html'">支付</span>
+						[/#if]
 			        	<span class="btn_rectangle greyframe color_blue f_r vieworder" onclick="window.location.href='/f/order${order.id}.html'">查看</span>
 		        	</div>
 	        	</div>
@@ -73,9 +76,9 @@
 					        	<!--<p class="username">洪宝洗车</p>-->
 					        	<p >  暂无订单<a href="/"><font color="green" >去下单</font></a></p>
 					        </div>
-					       
+
 					    </div>
-					    
+
 			     </div>
             [/#if]
             [/@order_list]
@@ -92,11 +95,11 @@
             </div>
         </article>
     </div>
-    
+
     <div style="padding-bottom:129px;"></div>
     </div>
-    
-    
+
+
 <div class="nav_fp">
 	<ul>
         <li><a href="${base}/" class="nav_cpjxa">上门洗车</a></li>

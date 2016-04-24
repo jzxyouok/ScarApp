@@ -485,7 +485,10 @@ public class CarAction {
 		queryMap.put("id",orderId);
 		Order order=orderService.findById(queryMap);
 		if(!StringUtil.isNullOrEmpty(order)){
-			mv.addObject("jsParam",order.getJsParam());
+			//重新生成微信支付参数，防止订单过期
+			float toatl=order.getPrice();
+			String jsParam=getWXJsParamForNative(request,toatl);
+			mv.addObject("jsParam",jsParam);
 		}
 		return mv;
 
@@ -671,7 +674,7 @@ public class CarAction {
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		float b = (float) (Math.round(total_free * 100)) / 100;
 		prePay.setTotal_fee((int) (b * 100) + "");
-		prePay.setTrade_type("NATIVE");
+		prePay.setTrade_type("JSAPI");
 		String openid = SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 		System.out.println("当前用户openid==============================================================" + openid);
 		prePay.setOpenid(openid);
