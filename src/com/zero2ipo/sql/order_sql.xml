@@ -210,10 +210,11 @@ select
 	<update id="updateStatus" parameterClass="orderEntity">
 		UPDATE
 			orders
-		SET
+		<dynamic prepend="SET">
 		<isNotEmpty prepend="," property="orderStatus">
 			order_status=#orderStatus#
 		</isNotEmpty>
+		</dynamic>
 		WHERE
 		order_id=#orderId#
 	</update>

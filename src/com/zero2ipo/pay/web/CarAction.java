@@ -479,7 +479,7 @@ public class CarAction {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
-		mv.addObject("orderId", orderId);
+		mv.addObject("orderId", orderId.replace(".html",""));
 		System.out.println("页面会写的orderId========================"+orderId);
 		//根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
