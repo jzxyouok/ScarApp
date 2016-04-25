@@ -19,6 +19,15 @@ public class Goodses{
 	private String cardList;
    private int washCount;//洗满几次后价格调整为
    private float discountPrice;//折扣价格
+   private float firstPrice;//折扣价格
+
+	   public float getFirstPrice() {
+		   return firstPrice;
+	   }
+
+	   public void setFirstPrice(float firstPrice) {
+		   this.firstPrice = firstPrice;
+	   }
 
 	   public int getWashCount() {
 		   return washCount;
