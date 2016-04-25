@@ -86,12 +86,11 @@ public class DynamicMobilePageAct {
 				Car edite=(Car) SessionHelper.getAttribute(request, MobileContants.CAR_SESSION_KEY);
 				if(list.size()>0){
 					car=list.get(0);
-
 					if(!StringUtil.isNullOrEmpty(edite)&&!StringUtil.isNullOrEmpty(edite.getCarNo())){//保存刚刚录入的car信息
 						edite.setId(car.getId());
 						car=edite;
 					}
-					car.setCarNo(user.getAccount());
+					//car.setCarNo(user.getAccount());
 
 				}else{
 
@@ -100,7 +99,7 @@ public class DynamicMobilePageAct {
 					}else{
 						car =new Car();
 					}
-					car.setCarNo(user.getAccount());
+					//car.setCarNo(user.getAccount());
 				}
 				car.setMobile(user.getPhoneNum());
 				//保存车型
@@ -270,10 +269,28 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/selectCarType.html", method = RequestMethod.GET)
 	public ModelAndView selectCarType(HttpServletRequest request,
-								HttpServletResponse response, ModelMap model) {
+								HttpServletResponse response, ModelMap model,Car car ) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
+		//mv.addObject("bo",car);//保存刚刚录入的车辆信息
+		SessionHelper.setAttribute(request,MobileContants.CAR_SESSION_KEY,car);
+		return mv;
+	}
+	/**
+	 * 选择车型
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/selectCarType.html", method = RequestMethod.POST)
+	public ModelAndView selectCarTypeForPost(HttpServletRequest request,
+									  HttpServletResponse response, ModelMap model,Car car ) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
+		SessionHelper.setAttribute(request,MobileContants.CAR_SESSION_KEY,car);
 		return mv;
 	}
 

@@ -55,8 +55,13 @@
 			}
 			//选择车型
 			function selectCarType(){
+				//选择车型的时候，要把手机号码，称呼，车牌号同时传递到后台
+				var mobile=$("#mobile").val();
+				var name=$("#name").val();
+				var carNo=$("#carNo").val();
 				var url="${base}/selectCarType.html";
-				window.location.href=url;
+				$("#myform").attr('action',url);
+				$("#myform").submit();
 			}
 
 			$( document ).ready(function(e) {
@@ -266,7 +271,11 @@
 								   					<!--执行原价-->
 								  					 <span class="f_r color_orange" id="default_${project_index+1}">${(project.carPrice)?if_exists?string.number}￥</span>
 								  		        [/#if]
-								   			[/#if]
+								   			[#else]
+								   					<!--首次洗车-->
+								  					 <span class="f_r color_orange" id="default_${project_index+1}">0.01￥</span>
+
+								   [/#if]
 								   		[/@FindWashCountByUserId]
 
 								   [#else]

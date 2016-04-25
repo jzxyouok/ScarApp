@@ -15,7 +15,6 @@
         $(function(){
             $(".category-item").bind('click',function(){
                 var carType=$(this).attr('data-name');
-
                 //把此carType赋值到页面
                 var url="${cmsReq}?carType="+carType;
                 window.location.href=url;
@@ -32,7 +31,7 @@
 
             <li class="item">
 						<span class="category">
-                            <span class="left">A</span>
+                            <span class="left"><img width="32px" height="32px" style="vertical-align: middle" src="../../../res/images/carType/a32e1245-91b3-4a26-9044-203bd5d69cfa.jpg">奥迪</span>
 						<span class="right"><i class="icon iconfont"></i></span>
 						<span class="clear"></span>
 						</span>

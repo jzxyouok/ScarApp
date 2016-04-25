@@ -27,10 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2015/8/31.
@@ -479,7 +476,7 @@ public class CarAction {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
-		mv.addObject("orderId", orderId.replace(".html",""));
+		mv.addObject("orderId", orderId.replace(".html", ""));
 		//根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
@@ -491,7 +488,31 @@ public class CarAction {
 			mv.addObject("jsParam",jsParam);
 		}
 		return mv;
+	}
 
+	/**
+	 * ajax获取微信支付参数
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(value = "/order/getJsParam.html", method = RequestMethod.POST)
+	@ResponseBody
+	public String getJsParam(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
+		//根据orderId查询订单
+		String jsParam="";
+		Map<String,Object> queryMap=new HashMap<String, Object>();
+		queryMap.put("id",orderId);
+		Order order=orderService.findById(queryMap);
+		if(!StringUtil.isNullOrEmpty(order)){
+			//重新生成微信支付参数，防止订单过期
+			float toatl=order.getPrice();
+			jsParam=getWXJsParamForNative(request,toatl);
+
+		}
+		return jsParam;
 	}
 		/**
          * 首页下单Ajax 微信支付下单
@@ -640,16 +661,19 @@ public class CarAction {
 					//查询域名
 					String  domain=coreService.getValue(CodeCommon.DOMAIN);
 					String url=domain+"/renwu/order"+orderId+".html";
-					String userId=order.getUserId();
+					String userId=order.getUserId();//order里面的userId存放的就是用户的手机号码
 					//根据用户userId查询用户信息
 
 					Users u=userServices.findUserByUserId(userId);
-					String mobile="";
-					if(!StringUtil.isNullOrEmpty(u)){
-						mobile=u.getPhoneNum();
-					}
+					String mobile=userId;
+					//if(!StringUtil.isNullOrEmpty(u)){
+					//	mobile=u.getPhoneNum();
+					//}
+					String chezhu=order.getUserName();
+					//Map<String,Object> queryMap1=new HashMap<String, Object>()
+					//Car car=historyCarService.findById();
 
-					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,id+"", com.zero2ipo.framework.util.DateUtil.getCurrentTime(),mobile,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
+					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,bo.getUserNo(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),chezhu,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
 					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
@@ -677,7 +701,7 @@ public class CarAction {
 		prePay.setPartnerKey(pay.getPartnerKey());
 		prePay.setMch_id(pay.getPartnerId());
 		prePay.setNotify_url(notifyUrl);
-		prePay.setOut_trade_no(OrderUtil.GetOrderNumber(""));
+		prePay.setOut_trade_no(OrderUtil.GetOrderNumber("abcdefg"));
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		float b = (float) (Math.round(total_free * 100)) / 100;
 		prePay.setTotal_fee((int) (b * 100) + "");

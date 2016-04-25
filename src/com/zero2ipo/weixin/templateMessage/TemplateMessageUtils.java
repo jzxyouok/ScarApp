@@ -11,7 +11,7 @@ public class TemplateMessageUtils {
      * 获取模板数据
      * @return
      */
-    public static WxTemplate getWxTemplateToAdmin(String openId,String msgTemplateId,String url,String orderNo,String sendOrderTime,String chezhu,String carNo,String washAddr,String preTime,String washType){
+    public static WxTemplate getWxTemplateToAdmin(String openId,String msgTemplateId,String url,String mobile,String sendOrderTime,String chezhu,String carNo,String washAddr,String preTime,String washType){
         WxTemplate temp = new WxTemplate();
         temp.setTouser(openId);
         temp.setTemplate_id(msgTemplateId);
@@ -23,11 +23,11 @@ public class TemplateMessageUtils {
         data0.setColor("#0099FF");
         paramMap.put("first",data0);
         TemplateData data1=new TemplateData();
-        data1.setValue(orderNo);
+        data1.setValue(sendOrderTime);
         data1.setColor("#0099FF");
         paramMap.put("keyword1",data1);
         TemplateData data2=new TemplateData();
-        data2.setValue(sendOrderTime);
+        data2.setValue(mobile);
         data2.setColor("#0099FF");
         paramMap.put("keyword2",data2);
         TemplateData remark=new TemplateData();

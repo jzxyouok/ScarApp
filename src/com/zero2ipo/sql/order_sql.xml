@@ -32,6 +32,7 @@
 	<result property="jsParam" column="JS_PARAM"/>
 	<result property="id" column="id"/>
 	<result property="carId" column="car_id"/>
+	<result property="userName" column="user_name"/>
 </resultMap>
 <!--查询-->
 
@@ -39,6 +40,7 @@
 SELECT
 	order_id,
 	user_id,
+	user_name,
 	goods_id,
 	car_num,
 	car_type,
@@ -87,6 +89,7 @@ order by
 select
 	order_id,
 	user_id,
+	user_name,
 	goods_id,
 	car_num,
 	car_type,
@@ -143,6 +146,7 @@ select
 	INSERT INTO orders(
 	order_id,
 	user_id,
+	user_name,
 	goods_id,
 	car_num,
 	car_type,
@@ -172,6 +176,7 @@ select
 	)VALUES(
 	#orderId#,
 	#userId#,
+	#userName#,
 	#goodsId#,
 	#carNum#,
 	#carType#,

@@ -3,6 +3,7 @@ package com.zero2ipo.common.entity;
 public class Order {
 	private String orderId;
 	private String userId;
+	private String userName;
 	private String goodsId;
 	private String cardsId;
 	private String carNum;
@@ -32,6 +33,14 @@ public class Order {
 	private int id;
 	private String status;
 	private String carId;
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	public String getCarId() {
 		return carId;
