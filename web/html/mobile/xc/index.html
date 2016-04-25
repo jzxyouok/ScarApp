@@ -261,10 +261,10 @@
 								   				<!--如果会员洗车的次数大于等于后台设定的优惠次数-->
 											[#if count gte project.washCount]
 													<!--执行优惠价格-->
-								  					 <span class="f_r color_orange" >${project.discountPrice!''}￥</span>
+								  					 <span class="f_r color_orange" id="default_${project_index+1}">${(project.discountPrice)?if_exists?string.number}￥</span>
 								   				[#else]
 								   					<!--执行原价-->
-								  					 <span class="f_r color_orange" >${project.carPrice!''}￥</span>
+								  					 <span class="f_r color_orange" id="default_${project_index+1}">${(project.carPrice)?if_exists?string.number}￥</span>
 								  		        [/#if]
 								   			[/#if]
 								   		[/@FindWashCountByUserId]

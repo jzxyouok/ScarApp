@@ -22,7 +22,8 @@ $(document).ready(function(e) {
     //单选按钮
     $( ".radio").click( function(){
         var current_click=$(this).attr('id');
-        var sum_price=$(this).attr('value');
+        var index=$(this).attr('ids');
+        var sum_price=$("#default_"+index).html();
         var name=$(this).attr('fname');
         $("#projectName").val(name);
         $(".radio").each(function(){

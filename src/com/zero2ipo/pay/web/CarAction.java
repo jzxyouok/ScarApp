@@ -579,8 +579,8 @@ public class CarAction {
 				order.setSendOrderStatus(MobileContants.status_0);
 				order.setUserId(user.getUserId());
 				//获取微信支付参数
-				 jsParam=getWXJsParamForNative(request,total_price);
-				order.setJsParam(jsParam);
+				 //jsParam=getWXJsParamForNative(request,total_price);
+				//order.setJsParam(jsParam);
 				orderId=orderService.add(order)+"";
 				order.setOrderId(orderId+"");
 			}
@@ -601,22 +601,18 @@ public class CarAction {
 		order.setId(id);
 		order.setOrderStatus(MobileContants.status_1);//已支付
 		boolean flag=orderService.updateStatus(order);
-		System.out.println("修改订单状态结果=================="+flag);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
 		 order=orderService.findById(queryMap);
-		System.out.println("根据订单id查询出来的订单信息为========="+order);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
-		System.out.println("自动派单标志============================="+autoPaiDan);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 			//根据经纬度派单给最近的洗车工师父
 			SendOrder sendOrder=new SendOrder();
 			order.setId(id);
 			//根据经纬度获取最近的洗车工师父
 			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
-			System.out.println("最近的洗车工师傅是====================="+bo);
 			sendOrder.setCarNo(order.getCarNum());
 			sendOrder.setOrderId(id+"");
 			sendOrder.setName(order.getCarType());
@@ -628,19 +624,17 @@ public class CarAction {
 			sendOrder.setOperatorId(user.getUserId());
 			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
 			sendOrderService.addSendOrder(sendOrder);
-			System.out.println("派单完成================================");
 			//派单完成后是否给管理员发送短信或者微信
 			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
 			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
 			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
 				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
-				System.out.println("发送信息的标志==================================="+sendMessageFlag);
 				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
 					//发送短信通知
 				}
 				if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
 					//发送微信通知
-					String openId=bo.getTel();//获取洗车工绑定的微信openid
+					String openId=bo.getIp();//获取洗车工绑定的微信openid
 					String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 					String washType=order.getWashType();
 					//查询域名
