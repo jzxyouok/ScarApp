@@ -13,6 +13,8 @@
 	<result property="createTime" column="create_time"/>
 	<result property="extra" column="extra"/>
 	<result property="cardList" column="card_list"/>
+	<result property="washCount" column="washCount"/>
+	<result property="discountPrice" column="discountPrice"/>
 </resultMap>
 <!--查询-->
 
@@ -27,7 +29,9 @@ SELECT
 	status,
 	create_time,
 	extra,
-	card_list
+	card_list,
+	discountPrice,
+	washCount
 FROM goodses
 <dynamic prepend="WHERE">
 <isNotEmpty prepend="AND" property="userId">

@@ -53,5 +53,10 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.updateStatus(order);
 	}
 
+	@Override
+	public int getTotal(Map<String, Object> queryMap) {
+		return orderDao.getTotal(queryMap);
+	}
+
 }
 

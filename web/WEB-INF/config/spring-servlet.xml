@@ -83,6 +83,7 @@
 				<entry key="find_user_byId" value-ref="find_user_byId"></entry>
 				<entry key="find_config_bykey" value-ref="find_config_bykey"></entry>
 				<entry key="serviceProjectListDirective" value-ref="serviceProjectListDirective"></entry>
+				<entry key="FindWashCountByUserId" value-ref="FindWashCountByUserId"></entry>
 
 			</map>
 		</property>
@@ -119,6 +120,7 @@
 	<bean id="find_user_byId" class="com.zero2ipo.common.freemarker.directives.FindUserByUserIdDirective"/>
 	<bean id="find_config_bykey" class="com.zero2ipo.common.freemarker.directives.FindConfigByConfigKeyDirective"/>
 	<bean id="serviceProjectListDirective" class="com.zero2ipo.common.freemarker.directives.ServiceProjectListDirective"/>
+	<bean id="FindWashCountByUserId" class="com.zero2ipo.common.freemarker.directives.FindWashCountByUserIdDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">

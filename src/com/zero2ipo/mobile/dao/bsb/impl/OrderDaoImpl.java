@@ -18,6 +18,7 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 	private static final String UPDATE = "bsb.mobile.order.update";
 	private static final String UPDATE_ORDER_STATUS = "bsb.mobile.order.updateStatus";
 	private static final String FIND_ALL_LIST = "bsb.mobile.order.findAllList";
+	private static final String FIND_ALL_FIRST_COUNT = "bsb.mobile.order.findAllListCount";
 	private static final String FIND_BYID = "bsb.mobile.order.findById";
 	private static final String INSERT_COUPON = "ggwash.couponbuy.addUserCoupon";
 	private static final String FIND_SEND_ORDER_BYID="ggwash.mobile.sendOrder.findSendOrderById";
@@ -110,6 +111,17 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 		}
 		return flag;
 
+	}
+
+	@Override
+	public int getTotal(Map<String, Object> queryMap) {
+		int count=0;
+		try{
+			count=(Integer) this.query(FIND_ALL_FIRST_COUNT,queryMap);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }

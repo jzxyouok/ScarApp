@@ -254,7 +254,25 @@
 								   <img class="radio i_b v_m" id="dfm_${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}" src="${res}/css/xc/img/radio_unsel.png">
 								   <span class="f_l">${project.name!''}</span>
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
-								   <span class="f_r color_orange" id="default_${project_index+1}">${project.carPrice!''}￥</span>
+								  	[#if project.washCount>1]
+								         <!--判断当前会员洗车次数-->
+								   		[@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
+								   			[#if count>0]
+								   				<!--如果会员洗车的次数大于等于后台设定的优惠次数-->
+											[#if count gte project.washCount]
+													<!--执行优惠价格-->
+								  					 <span class="f_r color_orange" >${project.discountPrice!''}￥</span>
+								   				[#else]
+								   					<!--执行原价-->
+								  					 <span class="f_r color_orange" >${project.carPrice!''}￥</span>
+								  		        [/#if]
+								   			[/#if]
+								   		[/@FindWashCountByUserId]
+
+								   [#else]
+								  		 <span class="f_r color_orange" id="default_${project_index+1}">${project.carPrice!''}￥</span>
+								   [/#if]
+
 							   </p>
 							   [/#list]
 							   [/#if]

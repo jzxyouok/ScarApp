@@ -6,6 +6,24 @@ public class ServiceProject{
 	private float orignPrice;
 	private String remark;
 	private String isMain;
+	private String washCount;//洗满几次后价格调整为
+	private String discountPrice;//折扣价格
+
+	public String getDiscountPrice() {
+		return discountPrice;
+	}
+
+	public void setDiscountPrice(String discountPrice) {
+		this.discountPrice = discountPrice;
+	}
+
+	public String getWashCount() {
+		return washCount;
+	}
+
+	public void setWashCount(String washCount) {
+		this.washCount = washCount;
+	}
 
 	public String getIsMain() {
 		return isMain;

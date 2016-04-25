@@ -71,6 +71,18 @@ where user_id=(select user_id from users where phone_num=#mobile#)
 order by
 	create_time desc
 </select>
+	<select id='findAllListCount' resultClass='java.lang.Integer'>
+		SELECT
+			count(0)
+		FROM
+		 	orders
+		where
+			user_id=#userId#
+		and
+			order_status='1'
+		and
+			pay_type='1'
+	</select>
 <select id='findById' resultMap='orderMap'>
 select
 	order_id,

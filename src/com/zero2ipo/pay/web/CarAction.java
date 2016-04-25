@@ -480,7 +480,6 @@ public class CarAction {
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
 		mv.addObject("orderId", orderId.replace(".html",""));
-		System.out.println("页面会写的orderId========================"+orderId);
 		//根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
@@ -575,6 +574,7 @@ public class CarAction {
 					total_price=Float.parseFloat(totalPrice);
 				}
 				order.setPrice(total_price);
+				System.out.println("传递过来的服务项目======================================="+projectName);
 				order.setWashType(projectName);
 				order.setSendOrderStatus(MobileContants.status_0);
 				order.setUserId(user.getUserId());
@@ -609,12 +609,14 @@ public class CarAction {
 		System.out.println("根据订单id查询出来的订单信息为========="+order);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+		System.out.println("自动派单标志============================="+autoPaiDan);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 			//根据经纬度派单给最近的洗车工师父
 			SendOrder sendOrder=new SendOrder();
 			order.setId(id);
 			//根据经纬度获取最近的洗车工师父
 			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
+			System.out.println("最近的洗车工师傅是====================="+bo);
 			sendOrder.setCarNo(order.getCarNum());
 			sendOrder.setOrderId(id+"");
 			sendOrder.setName(order.getCarType());
@@ -626,10 +628,13 @@ public class CarAction {
 			sendOrder.setOperatorId(user.getUserId());
 			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
 			sendOrderService.addSendOrder(sendOrder);
+			System.out.println("派单完成================================");
 			//派单完成后是否给管理员发送短信或者微信
 			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
 			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
 				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+				System.out.println("发送信息的标志==================================="+sendMessageFlag);
 				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
 					//发送短信通知
 				}
@@ -654,6 +659,7 @@ public class CarAction {
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
 					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
+					System.out.println("发送模板============================================="+wxTemplate);
 					coreService.send_template_message(appId,appsecret,openId,wxTemplate);
 
 				}

@@ -9,6 +9,8 @@
 	<result property="orignPrice" column="jeep_price"/>
 	<result property="remark" column="info"/>
 	<result property="isMain" column="status"/>
+	<result property="washCount" column="washCount"/>
+	<result property="discountPrice" column="discountPrice"/>
 </resultMap>
 <select id='findServiceProjectList' resultMap='projectMap'>
 SELECT
@@ -17,7 +19,9 @@ SELECT
 	car_price,
 	jeep_price,
 	info,
-	status
+	status,
+	discountPrice,
+	washCount
 FROM goodses
 
 </select>
@@ -28,7 +32,9 @@ SELECT
 	car_price,
 	jeep_price,
 	info,
-	status
+	status,
+	discountPrice,
+	washCount
 FROM goodses
 where id=#id#
 

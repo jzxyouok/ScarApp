@@ -23,7 +23,7 @@ import java.util.Map;
 
 /**
  * 验证码请求处理类
- * 
+ *
  * @author zhengyunfei
  *
  */
@@ -49,7 +49,7 @@ public class CodeAct {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 手机验证码
 	 * @param request
@@ -127,10 +127,10 @@ public class CodeAct {
 	@RequestMapping(value = "/code/getMobileCode.act")
 	@ResponseBody
 	public Map<String,Object> getMobileCode(HttpServletRequest request,
-			HttpServletResponse response, ModelMap model, String vcode) {
+			HttpServletResponse response, ModelMap model, String vcode,String mobile) {
 		Map<String,Object> map=new HashMap<String,Object>();
 		String code=(String) request.getSession().getAttribute(MobileContants.VERIFICATION_CODE);
-		if(vcode.equals(code)){
+		if(vcode.equals(code)||mobile.equals(MobileContants.ADMIN_MOBILE)){//管理员手机号免验证码登录
 			map.put("success", true);
 		}else{
 			map.put("success", false);
@@ -152,7 +152,7 @@ public class CodeAct {
 					json.put("result", "true");
 					json.put("error", "");
 				}
-				else 
+				else
 				{
 					json.put("result", "false");
 					//json.put("error", errorMessage);
@@ -169,19 +169,19 @@ public class CodeAct {
 	 */
 	//@Resource(name = "randomValidateCode")
 	//private RandomValidateCode randomValidateCode;
-	
+
 	/*
 	 * 手机验证码生成器注入
 	 */
 	//@Resource(name = "verificationCode")
 	//private VerificationCode verificationCode;
-	
+
 	/*
 	 * 短信记录服务接口注入
 	 */
-	//@Resource(name = "telMessageService") 
+	//@Resource(name = "telMessageService")
 	//private ITelMessageService telMessageService;
-	
+
 	/*
 	 * 发送处理类注入
 	 */

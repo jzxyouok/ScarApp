@@ -93,12 +93,8 @@ function xzfwxm(){
     //下单换成ajax方式
     var url="/order/wxpay.html";
     $("#myform").attr('action',url);
-   // $("#myform").attr('method','get');
     var data=$('#myform').serialize();
     $("#myform").submit();
-   // alert(url);
-   // return;
-   // ajax(url,data);
 
 }
 /*获取所有选中的服务*/
@@ -106,8 +102,6 @@ function getServicesProjectIds(){
     var ids="";
     $("img").each(function(){
         var src=$(this).attr("src");
-        var projectName=$(this).attr('fname');
-        $("#projectName").val(projectName);
         if(src.indexOf("radio_sel.png")>0){
             ids+=$(this).attr("ids")+",";
         }

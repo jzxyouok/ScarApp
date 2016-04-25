@@ -3,7 +3,7 @@ package com.zero2ipo.common.entity.app;
    /**
     * goodses 实体类
     * Sat Dec 19 18:43:43 GMT+08:00 2015 郑云飞
-    */ 
+    */
 
 
 public class Goodses{
@@ -17,7 +17,26 @@ public class Goodses{
 	private String createTime;
 	private String extra;
 	private String cardList;
-	public void setId(long id){
+   private int washCount;//洗满几次后价格调整为
+   private float discountPrice;//折扣价格
+
+	   public int getWashCount() {
+		   return washCount;
+	   }
+
+	   public void setWashCount(int washCount) {
+		   this.washCount = washCount;
+	   }
+
+	   public float getDiscountPrice() {
+		   return discountPrice;
+	   }
+
+	   public void setDiscountPrice(float discountPrice) {
+		   this.discountPrice = discountPrice;
+	   }
+
+	   public void setId(long id){
 	this.id=id;
 	}
 	public long getId(){
