@@ -168,7 +168,7 @@
 						车牌
 					</td>
 					<td colspan='2'>
-						<input class='input-text'  id='carNo' type='text' name="carNo" value="${(bo.carNo)!'辽B'}"
+						<input class='input-text'  id='carNo' type='text' name="carNo" value="${(bo.carNo)!'晋J'}"
 							 placeholder='请输入车牌号' />
 						<input id='carid' type='hidden' />
 					</td>
@@ -213,7 +213,9 @@
 							  placeholder='定位中，请稍后......' >${bo.washAddr!''}</textarea>
 
 					</td>
-					<td><input type="button" class="ui-btn green" value="定位" onclick="javascript:getMyCurrentLocation()" style="cursor: pointer;width:50px;float:right"></input></td>
+					<td>
+						<input type="button" class="ui-btn green" value="定位" onclick="javascript:getMyCurrentLocation()" style="cursor: pointer;width:50px;float:right"></input>
+					</td>
 					</tr>
 				    <tr>
 						<td class="lable" nowrap="nowrap">
@@ -273,9 +275,9 @@
 								  		        [/#if]
 								   			[#else]
 								   					<!--首次洗车-->
-								  					 <span class="f_r color_orange" id="default_${project_index+1}">0.01￥</span>
+								  					 <span class="f_r color_orange" id="default_${project_index+1}">${project.firstPrice!'1'}￥</span>
 
-								   [/#if]
+								          [/#if]
 								   		[/@FindWashCountByUserId]
 
 								   [#else]
@@ -318,7 +320,7 @@
 							<input id='o' type='button' style="display: block;width: 70px;float:left;background-color:red;"
 								class='ui-btn green' value='微信支付'
 								onclick="xzfwxm()" />
-							<input id='order' type='button' style="display: block;width:90px;margin-left: 75px"
+							<input id='order' type='button' style="display: block;width:85px;margin-left: 75px"
 								   class='ui-btn green' value='洗车券下单'
 								   onclick="save_order()"/>
 						</td>

@@ -85,7 +85,7 @@ public class GkkServiceImpl implements IGkkService {
 			 String hours=coreService.getValue(CodeCommon.PRE_TIME_HOURS);
 			 List<String> preDates=DateUtil.getLast2Hours(Integer.parseInt(days),Integer.parseInt(hours));
 			 model.put("preDates", preDates);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,11 +93,11 @@ public class GkkServiceImpl implements IGkkService {
 		System.out.println("查询出来的车轮======"+list.size());
 		if(list.size()>0){
 			car=list.get(0);
-			car.setCarNo(user.getAccount());
+			//car.setCarNo(user.getAccount());
 		}else{
 			car =new Car();
 			car.setMobile(user.getPhoneNum());
-			car.setCarNo(user.getAccount());
+			//car.setCarNo(user.getAccount());
 		}
 		model.put("bo",car);
 		mv.addObject("bo", "car");
@@ -126,7 +126,7 @@ public class GkkServiceImpl implements IGkkService {
 				}
 				 List<String> preDates=DateUtil.getLast2Hours();
 				 model.put("preDates", preDates);
-				
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

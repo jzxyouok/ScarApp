@@ -8,6 +8,15 @@ public class ServiceProject{
 	private String isMain;
 	private String washCount;//洗满几次后价格调整为
 	private String discountPrice;//折扣价格
+	private float firstPrice;//首次洗车价格
+
+	public float getFirstPrice() {
+		return firstPrice;
+	}
+
+	public void setFirstPrice(float firstPrice) {
+		this.firstPrice = firstPrice;
+	}
 
 	public String getDiscountPrice() {
 		return discountPrice;
