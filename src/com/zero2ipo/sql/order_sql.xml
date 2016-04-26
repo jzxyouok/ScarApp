@@ -82,8 +82,6 @@ order by
 			user_id=#userId#
 		and
 			order_status='1'
-		and
-			pay_type='1'
 	</select>
 <select id='findById' resultMap='orderMap'>
 select
