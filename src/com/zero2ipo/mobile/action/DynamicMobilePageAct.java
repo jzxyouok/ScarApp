@@ -214,7 +214,7 @@ public class DynamicMobilePageAct {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/myorderlist.html", method = RequestMethod.GET)
+	@RequestMapping(value = "/order/myorderlist.html", method = RequestMethod.GET)
 	public ModelAndView bmsuccess(HttpServletRequest request,
 								  HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);

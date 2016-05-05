@@ -11,11 +11,9 @@ public class OrderUtil {
 
 	@SuppressWarnings("deprecation")
 	private static String getIndex() {
-
 		Date n = new Date();
 		SimpleDateFormat outFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		String currTime = outFormat.format(n);
-
 		if (orderIndex > 0) {
 			if (n.getYear() == today.getYear() && n.getMonth() == today.getMonth() && n.getDay() == today.getDay()) {
 				orderIndex += 1;
@@ -36,7 +34,7 @@ public class OrderUtil {
 
 	/**
 	 * 生成订单号
-	 * 
+	 *
 	 * @param preFixString
 	 * @return
 	 */
@@ -47,7 +45,7 @@ public class OrderUtil {
 
 	/**
 	 * 获取时间戳
-	 * 
+	 *
 	 * @return
 	 */
 	public static String GetTimestamp() {
@@ -56,7 +54,7 @@ public class OrderUtil {
 
 	/**
 	 * 生成随机数
-	 * 
+	 *
 	 * @return
 	 */
 	public static String CreateNoncestr() {

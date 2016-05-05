@@ -125,7 +125,7 @@ public class CarAction {
 		return mv;
 	}
 
-	@RequestMapping(value = "/car/wait_washer.ht", method = RequestMethod.GET)
+	@RequestMapping(value = "/car/wait_washer.html", method = RequestMethod.GET)
 	public String add(HttpServletRequest request,
 					  HttpServletResponse response, ModelMap model,@PathVariable Car car){
 
@@ -592,7 +592,6 @@ public class CarAction {
 				order.setDiscription(car.getWashInfo());
 				order.setCarId(carId + "");
 				order.setPayType(MobileContants.status_1);//微信支付
-				//order.setOrderStatus(MobileContants.ORDER_PAY_STATUS_DEFAULT);
 				order.setOrderStatus(MobileContants.status_fu_1);//现金支付订单状态默认未支付
 				order.setLon(lng);
 				order.setLat(lat);
@@ -604,17 +603,11 @@ public class CarAction {
 				order.setWashType(projectName);
 				order.setSendOrderStatus(MobileContants.status_0);
 				order.setUserId(user.getUserId());
-				//获取微信支付参数
-				 //jsParam=getWXJsParamForNative(request,total_price);
-				//order.setJsParam(jsParam);
 				orderId=OrderUtil.GetOrderNumber("");
-				//orderId=UUID.randomUUID().toString().replace("-","");
 			    order.setOrderId(orderId);
 				orderService.add(order);
-				//order.setOrderId(orderId+"");
 			}
 		}
-		//mv.addObject("orderId",orderId);
 		String url="redirect:/order/wxpay.html?orderId="+orderId;
 		return url;
 

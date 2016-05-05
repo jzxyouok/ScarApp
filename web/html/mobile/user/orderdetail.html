@@ -3,7 +3,7 @@
 <html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>订单详情</title>
  <link href="../../res/css/xc/main.css" rel="stylesheet" />
 <link href="../../res/css/xc/orderlist.css" rel="stylesheet">
@@ -20,34 +20,34 @@ function wxpay(){
 	);
 }
 
-function callback(res){ 
-	//  返回 res.err_msg,取值 
-	// get_brand_wcpay_request:cancel   用户取消 
-    // get_brand_wcpay_request:fail  发送失败 
-    // get_brand_wcpay_request:ok 发送成功 
-     //WeixinJSBridge.log(res.err_msg); 	 
-     var status=-1;	     				 
+function callback(res){
+	//  返回 res.err_msg,取值
+	// get_brand_wcpay_request:cancel   用户取消
+    // get_brand_wcpay_request:fail  发送失败
+    // get_brand_wcpay_request:ok 发送成功
+     //WeixinJSBridge.log(res.err_msg);
+     var status=-1;
      if(res.err_msg=='get_brand_wcpay_request:ok')
      {
      	 status=1;
-     	 alert("支付成功"); 
+     	 alert("支付成功");
      	 $("#orderstate").html('');
-     	 $("#confirm").hide();   
+     	 $("#confirm").hide();
      	$("#orderstate").html("支付成功");
-     	
+
      }
      else if(res.err_msg=='get_brand_wcpay_request:cancel'){
      	status="2";
      }
-	else 
+	else
 	{
 	    status=0;
 		var msg='支付失败,请重新支付.';
 		alert(msg);
-		 
+
 	}
 	ajax(status,"/pay/update");
-	
+
 };
 function ajax(status,url){
       $.ajax({
@@ -57,9 +57,9 @@ function ajax(status,url){
 			async : false,
 			success:function(data){
           		$("#orderstate").html('');
-     	 		$("#confirm").hide();   
+     	 		$("#confirm").hide();
      			$("#orderstate").html("支付成功");
-             
+
         },error:function(){
 
         }
@@ -103,7 +103,7 @@ function ajax(status,url){
 	                               	 	<span class="orderstate color_orange">已取消</span>
 	                                [/#if]
                                 [/#if]
-                                
+
                         </div>
                     </div>
                     <div class="userinfo optionlist">
@@ -124,7 +124,7 @@ function ajax(status,url){
                                 <i class="colorlump">
                                 </i></span>
 								<span class="seatnum v_m">${order.carType?default('')}</span>
-                            </p>                            
+                            </p>
                         </div>
                     <div class="userinfo optionlist">
                             <p class="clearfix">${order.address?default('')}</p>
@@ -152,9 +152,9 @@ function ajax(status,url){
     <div class="nav_fp">
 	<ul>
         <li><a href="${base}/" class="nav_cpjxa">上门洗车</a></li>
-        <li><a href="${base}/myorderlist.html" class="nav_gkk">洗车订单</a></li>
+        <li><a href="${base}/order/myorderlist.html" class="nav_gkk">洗车订单</a></li>
         <li><a href="${base}/mycoupon.html" class="nav_grzxa">洗车券</a></li>
     </ul>
 </div>
-    
+
 </body></html>
