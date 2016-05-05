@@ -17,16 +17,21 @@ import com.zero2ipo.pay.util.OrderUtil;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateMessageUtils;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.xml.sax.InputSource;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.StringReader;
 import java.util.*;
 
 /**
@@ -34,7 +39,7 @@ import java.util.*;
  */
 @Controller
 public class CarAction {
-	String notifyUrl = "/order/wxpay_update";//微信支付成功回调方法,修改订单状态以及自动派单
+	String notifyUrl = "/order/wxpayHdMethod";//微信支付成功回调方法,修改订单状态以及自动派单
 	/**
 	 * 订单流程页面
 	 * */
@@ -595,7 +600,6 @@ public class CarAction {
 					total_price=Float.parseFloat(totalPrice);
 				}
 				order.setPrice(total_price);
-				System.out.println("传递过来的服务项目======================================="+projectName);
 				order.setWashType(projectName);
 				order.setSendOrderStatus(MobileContants.status_0);
 				order.setUserId(user.getUserId());
@@ -607,7 +611,6 @@ public class CarAction {
 			}
 		}
 		//mv.addObject("orderId",orderId);
-		System.out.println("orderId================================"+orderId);
 		String url="redirect:/order/wxpay.html?orderId="+orderId;
 		return url;
 
@@ -688,7 +691,144 @@ public class CarAction {
 		return result;
 	}
 
+	/**
+	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param map
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(value = "/order/wxpayHdMethod", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
+		String inputLine;
+		String notityXml = "";
+		String resXml = "";
+		try {
+			while ((inputLine = request.getReader().readLine()) != null) {
+				notityXml += inputLine;
+			}
+			request.getReader().close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map m = parseXmlToList2(notityXml);
+		String openid=m.get("openid")+"";
+		String return_code=m.get("return_code")+"";//付款成功与否的标志
+		String total_fee=m.get("total_fee")+"";//付款金额
+		String transaction_id=m.get("transaction_id")+"";//微信支付订单号
+		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
+		String attach=m.get("attach")+"";//商家数据包
+		String time_end=m.get("time_end")+"";//支付时间
 
+
+
+		Map<String,Object> result=new HashMap<String, Object>();
+		Order order=new Order();
+		int id=Integer.parseInt(out_trade_no);
+		order.setId(id);
+		if("SUCCESS".equals(return_code)){
+			order.setOrderStatus(MobileContants.status_1);//已支付
+		}
+		boolean flag=orderService.updateStatus(order);
+		//根据orderid查询Order
+		Map<String,Object> queryMap=new HashMap<String, Object>();
+		queryMap.put("id",orderId);
+		order=orderService.findById(queryMap);
+		//下完单后是否开启自动派单功能
+		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
+			//根据经纬度派单给最近的洗车工师父
+			SendOrder sendOrder=new SendOrder();
+			order.setId(id);
+			//根据经纬度获取最近的洗车工师父
+			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
+			sendOrder.setCarNo(order.getCarNum());
+			sendOrder.setOrderId(id+"");
+			sendOrder.setName(order.getCarType());
+			sendOrder.setPreTime(order.getWashTime());
+			sendOrder.setMobile(order.getMobile());
+			sendOrder.setSendOrderTime(com.zero2ipo.framework.util.DateUtil.getCurrentTime());
+			sendOrder.setUserId(bo.getUserId());
+			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+			sendOrder.setOperatorId(user.getUserId());
+			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
+			sendOrderService.addSendOrder(sendOrder);
+			//派单完成后是否给管理员发送短信或者微信
+			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
+			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
+				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
+					//发送短信通知
+				}
+				if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
+					//发送微信通知
+					String openId=bo.getIp();//获取洗车工绑定的微信openid
+					String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+					String washType=order.getWashType();
+					//查询域名
+					String  domain=coreService.getValue(CodeCommon.DOMAIN);
+					String url=domain+"/renwu/order"+orderId+".html";
+					String userId=order.getUserId();//order里面的userId存放的就是用户的手机号码
+					//根据用户userId查询用户信息
+
+					Users u=userServices.findUserByUserId(userId);
+					String mobile=userId;
+					//if(!StringUtil.isNullOrEmpty(u)){
+					//	mobile=u.getPhoneNum();
+					//}
+					String chezhu=order.getUserName();
+					//Map<String,Object> queryMap1=new HashMap<String, Object>()
+					//Car car=historyCarService.findById();
+
+					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,bo.getUserNo(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),chezhu,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
+					//发送模板消息
+					String appId=coreService.getValue(CodeCommon.APPID);
+					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
+					System.out.println("发送模板============================================="+wxTemplate);
+					coreService.send_template_message(appId,appsecret,openId,wxTemplate);
+
+				}
+			}
+
+		}
+		result.put("success",flag);
+		return result;
+	}
+	/**
+	 * description: 解析微信通知xml
+	 *
+	 * @param xml
+	 * @return
+	 * @author ex_yangxiaoyi
+	 * @see
+	 */
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
+	private static Map parseXmlToList2(String xml) {
+		Map retMap = new HashMap();
+		try {
+			StringReader read = new StringReader(xml);
+			// 创建新的输入源SAX 解析器将使用 InputSource 对象来确定如何读取 XML 输入
+			InputSource source = new InputSource(read);
+			// 创建一个新的SAXBuilder
+			SAXBuilder sb = new SAXBuilder();
+			// 通过输入源构造一个Document
+			Document doc = (Document) sb.build(source);
+			Element root = doc.getRootElement();// 指向根节点
+			List<Element> es = root.getChildren();
+			if (es != null && es.size() != 0) {
+				for (Element element : es) {
+					retMap.put(element.getName(), element.getValue());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retMap;
+	}
 	//获取微信支付参数信息
 	public String getWXJsParamForNative(HttpServletRequest request, float total_free) {
 		Map<String, Object> result = new HashMap<String, Object>();
