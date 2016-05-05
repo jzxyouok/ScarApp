@@ -484,7 +484,7 @@ public class CarAction {
 		mv.addObject("orderId", orderId.replace(".html", ""));
 		//根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("id",orderId);
+		queryMap.put("orderId",orderId);
 		Order order=orderService.findById(queryMap);
 		if(!StringUtil.isNullOrEmpty(order)){
 			//重新生成微信支付参数，防止订单过期
@@ -492,6 +492,7 @@ public class CarAction {
 			String jsParam=getWXJsParamForNative(request,toatl,orderId);
 			mv.addObject("jsParam",jsParam);
 		}
+		mv.addObject("order",order);
 		return mv;
 	}
 
@@ -606,7 +607,8 @@ public class CarAction {
 				//获取微信支付参数
 				 //jsParam=getWXJsParamForNative(request,total_price);
 				//order.setJsParam(jsParam);
-				orderId=OrderUtil.GetOrderNumber("");
+				//orderId=OrderUtil.GetOrderNumber("");
+				orderId=UUID.randomUUID().toString().replace("-","");
 			    order.setOrderId(orderId);
 				orderService.add(order);
 				//order.setOrderId(orderId+"");
@@ -733,13 +735,13 @@ public class CarAction {
 		Map<String,Object> result=new HashMap<String, Object>();
 		Order order=new Order();
 		//int id=Integer.parseInt(out_trade_no);
-		order.setOrderId(out_trade_no);
+		order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
 		if("SUCCESS".equals(return_code)){
 			order.setOrderStatus(MobileContants.status_1);//已支付
 			order.setTransactionId(transaction_id);
 		}
-		//根据orderId更新订单信息
-		boolean flag=orderService.updateStatus(order);
+		//根据outTradeNo更新订单信息
+		boolean flag=orderService.updateOrderByOutTradeNo(order);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("orderId",orderId);
@@ -860,7 +862,7 @@ public class CarAction {
 	/**
 	 * 动态获取wxPrepay
 	 */
-	private WXPrepay getWxPrepay(HttpServletRequest request,String outTradeNo) {
+	private WXPrepay getWxPrepay(HttpServletRequest request,String orderId) {
 		String partnerId = coreService.getValue(CodeCommon.PartnerKey);
 		String appid = coreService.getValue(CodeCommon.APPID);
 		String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
@@ -872,8 +874,13 @@ public class CarAction {
 		prePay.setBody(prePayBody);
 		prePay.setPartnerKey(partnerValue);
 		prePay.setMch_id(partnerId);
-		prePay.setNotify_url(domain+notifyUrl);
-		prePay.setOut_trade_no(outTradeNo);
+		prePay.setNotify_url(domain + notifyUrl);
+		String outTradeNo=UUID.randomUUID().toString().replace("_","");
+		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
+		Order order=new Order();
+		order.setOrderId(orderId);
+		order.setOutTradeNo(outTradeNo);
+		orderService.updateStatus(order);
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		String openid = SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 		prePay.setOpenid(openid);

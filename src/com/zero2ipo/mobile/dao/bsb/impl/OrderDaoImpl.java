@@ -17,6 +17,7 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 	private static final String ADD = "bsb.mobile.order.add";
 	private static final String UPDATE = "bsb.mobile.order.update";
 	private static final String UPDATE_ORDER_STATUS = "bsb.mobile.order.updateStatus";
+	private static final String UPDATE_ORDER_BY_OUTTRADENO = "bsb.mobile.order.updateOrderByOutTradeNo";
 	private static final String FIND_ALL_LIST = "bsb.mobile.order.findAllList";
 	private static final String FIND_ALL_FIRST_COUNT = "bsb.mobile.order.findAllListCount";
 	private static final String FIND_BYID = "bsb.mobile.order.findById";
@@ -122,6 +123,18 @@ public class OrderDaoImpl extends IbatisBaseDao  implements IOrderDao{
 			e.printStackTrace();
 		}
 		return count;
+	}
+
+	@Override
+	public boolean updateOrderByOutTradeNo(Order order) {
+		boolean flag=true;
+		try {
+			this.update(UPDATE_ORDER_BY_OUTTRADENO, order);
+		} catch (Exception e) {
+			e.printStackTrace();
+			flag=false;
+		}
+		return flag;
 	}
 
 }

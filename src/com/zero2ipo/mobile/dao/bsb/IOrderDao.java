@@ -37,5 +37,7 @@ public int findIsOrNotFirstOrder(Map<String, Object> queryMap);
  public boolean updateStatus(Order order);
 
  public int getTotal(Map<String, Object> queryMap);
+
+ public boolean updateOrderByOutTradeNo(Order order);
 }
 

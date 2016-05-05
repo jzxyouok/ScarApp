@@ -34,6 +34,15 @@ public class Order {
 	private String status;
 	private String carId;
 	private String transactionId;//微信支付成功之后返回商户订单号
+	private String outTradeNo;
+
+	public String getOutTradeNo() {
+		return outTradeNo;
+	}
+
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
 
 	public String getTransactionId() {
 		return transactionId;

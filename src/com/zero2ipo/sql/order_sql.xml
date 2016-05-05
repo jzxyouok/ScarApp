@@ -232,8 +232,28 @@ select
 		<isNotEmpty prepend="," property="transactionId">
 			transaction_id=#transactionId#
 		</isNotEmpty>
+			<isNotEmpty prepend="," property="outTradeNo">
+				out_trade_no=#outTradeNo#
+			</isNotEmpty>
 		</dynamic>
 		WHERE
 		order_id=#orderId#
+	</update>
+	<update id="updateOrderByOutTradeNo" parameterClass="orderEntity">
+			UPDATE
+				orders
+			SET
+			finish_time=now()
+			<isNotEmpty prepend="," property="orderStatus">
+				order_status=#orderStatus#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="transactionId">
+				transaction_id=#transactionId#
+			</isNotEmpty>
+				<isNotEmpty prepend="," property="outTradeNo">
+					out_trade_no=#outTradeNo#
+				</isNotEmpty>
+			WHERE
+			out_trade_no=#outTradeNo#
 	</update>
 </sqlMap>

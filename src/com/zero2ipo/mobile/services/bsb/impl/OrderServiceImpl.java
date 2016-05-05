@@ -58,5 +58,10 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.getTotal(queryMap);
 	}
 
+	@Override
+	public boolean updateOrderByOutTradeNo(Order order) {
+		return orderDao.updateOrderByOutTradeNo(order);
+	}
+
 }
 
