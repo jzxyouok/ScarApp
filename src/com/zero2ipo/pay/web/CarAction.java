@@ -607,8 +607,8 @@ public class CarAction {
 				//获取微信支付参数
 				 //jsParam=getWXJsParamForNative(request,total_price);
 				//order.setJsParam(jsParam);
-				//orderId=OrderUtil.GetOrderNumber("");
-				orderId=UUID.randomUUID().toString().replace("-","");
+				orderId=OrderUtil.GetOrderNumber("");
+				//orderId=UUID.randomUUID().toString().replace("-","");
 			    order.setOrderId(orderId);
 				orderService.add(order);
 				//order.setOrderId(orderId+"");
@@ -875,7 +875,7 @@ public class CarAction {
 		prePay.setPartnerKey(partnerValue);
 		prePay.setMch_id(partnerId);
 		prePay.setNotify_url(domain + notifyUrl);
-		String outTradeNo=UUID.randomUUID().toString().replace("_","");
+		String outTradeNo=UUID.randomUUID().toString().replace("-","");
 		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
 		Order order=new Order();
 		order.setOrderId(orderId);

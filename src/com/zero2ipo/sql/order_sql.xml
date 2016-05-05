@@ -250,9 +250,7 @@ select
 			<isNotEmpty prepend="," property="transactionId">
 				transaction_id=#transactionId#
 			</isNotEmpty>
-				<isNotEmpty prepend="," property="outTradeNo">
-					out_trade_no=#outTradeNo#
-				</isNotEmpty>
+
 			WHERE
 			out_trade_no=#outTradeNo#
 	</update>
