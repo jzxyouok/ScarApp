@@ -10,6 +10,55 @@
 <link href="${res}/css/xc/list.css" rel="stylesheet">
 <link href="${res}/images/foot/foot.css" rel="stylesheet">
 <script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
+<script>
+	//ajax微信付款，首先获取jsParam
+	function wxpay(){
+		var url="/order/getJsParam.html";
+		$.ajax({
+			type: "POST",
+			url: url,
+			data:{"orderId":"${order.id}"},
+			async : false,
+			dataType: "json",
+			success: function (data) {
+				var jsParam=data.jsParam;
+				var jsData= eval("("+jsParam+")");
+				WeixinJSBridge.invoke(
+						'getBrandWCPayRequest'
+						,jsData
+						,callback
+				);
+			},
+			error: function (msg) {
+				alert("error");
+			}
+		});
+
+	}
+
+	function callback(res){
+		//  返回 res.err_msg,取值
+		// get_brand_wcpay_request:cancel   用户取消
+		// get_brand_wcpay_request:fail  发送失败
+		// get_brand_wcpay_request:ok 发送成功
+		WeixinJSBridge.log(res.err_msg);
+		if(res.err_msg=='get_brand_wcpay_request:ok')
+		{
+			//showPayResult();
+			//支付成功后修改订单状态，并发送派单通知
+			var orderId="${orderId!''}";
+			//支付成功之后跳转到订单详情页面
+			var url="${base}/my/order"+orderId+".html";
+			window.location.href=url;
+		}
+		else
+		{
+			//var msg='支付失败,请重新支付.';
+			//alert(msg);
+			//alert(res.err_code+" err_desc="+res.err_desc+" err_msg="+res.err_msg);
+		}
+	};
+</script>
 </head>
 <body class="ui-mobile-viewport ui-overlay-c">
 <div data-role="page"  tabindex="0" class="ui-page ui-body-c ui-page-active" >

@@ -143,10 +143,10 @@ FROM users
 </update>
 <update id="updateUserOpenId" parameterClass="appUserBo">
 	UPDATE
-	users
+		users
 	set
-	open_id=#openId#
+		open_id=#openId#
 	where
-	USER_ID=#userId#
+		USER_ID=#userId#
 </update>
 </sqlMap>

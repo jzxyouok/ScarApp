@@ -62,12 +62,13 @@ public class Oauth2Servlet {
             String json = HttpUtil.getUrl(get_access_token_url);
             String openid="";
             //获取当前登录的用户id
-           
+
             JSONObject jsonObject = JSONObject.fromObject(json);
             if(jsonObject.has("openid")){
             	 openid = jsonObject.getString("openid");
             }
             System.out.println("第一个openid==="+openid);
+            Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
             if(!StringUtil.isNullOrEmpty(openid)){
             	//根据openid查询user
             	Map<String,Object> queryMap=new HashMap<String,Object>();
@@ -75,12 +76,17 @@ public class Oauth2Servlet {
             	Users u=userServices.findUserByMap(queryMap);
             	if(!StringUtil.isNullOrEmpty(u)&&null!=u){
             		SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, u);
-            	}
+            	}else{
+                    if(!StringUtil.isNullOrEmpty(user)){
+                        user.setOpenId(openid);
+                        userServices.updateUser(user);//更新用户openId
+                    }
+
+                }
             	SessionHelper.setAttribute(request, MobileContants.USER_OPEN_ID_KEY, openid);
             }
 
-            Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-           
+
             if(StringUtil.isNullOrEmpty(user)){
             	page=MobilePageContants.FM_USER_LOGIN;
             }else{
@@ -120,7 +126,7 @@ public class Oauth2Servlet {
                 page=MobilePageContants.FM_USER_LOGIN;
             }
             mv.setViewName(page);
-           
+
             mv.addObject("openId",openid);
             System.out.println("第一个用户oid========="+openid);
            // String access_token = jsonObject.getString("access_token");

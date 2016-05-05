@@ -706,7 +706,7 @@ public class CarAction {
 	 */
 	@RequestMapping(value = "/order/wxpayHdMethod.html")
 	@ResponseBody
-	public Map<String,Object> wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
+	public Map<String,Object> wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map) {
 		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 		String inputLine;
 		String notityXml = "";
@@ -734,7 +734,6 @@ public class CarAction {
 		System.out.println("微信支付回调函数进来了嘛out_trade_no=？。。。。。。。。"+out_trade_no);
 		Map<String,Object> result=new HashMap<String, Object>();
 		Order order=new Order();
-		//int id=Integer.parseInt(out_trade_no);
 		order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
 		if("SUCCESS".equals(return_code)){
 			order.setOrderStatus(MobileContants.status_1);//已支付
@@ -755,7 +754,7 @@ public class CarAction {
 			//根据经纬度获取最近的洗车工师父
 			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
 			sendOrder.setCarNo(order.getCarNum());
-			sendOrder.setOrderId(orderId);
+			sendOrder.setOrderId(order.getId()+"");
 			sendOrder.setName(order.getCarType());
 			sendOrder.setPreTime(order.getWashTime());
 			sendOrder.setMobile(order.getMobile());
@@ -780,10 +779,9 @@ public class CarAction {
 					String washType=order.getWashType();
 					//查询域名
 					String  domain=coreService.getValue(CodeCommon.DOMAIN);
-					String url=domain+"/renwu/order"+orderId+".html";
+					String url=domain+"/renwu/order"+order.getId()+".html";
 					String userId=order.getUserId();//order里面的userId存放的就是用户的手机号码
 					//根据用户userId查询用户信息
-
 					Users u=userServices.findUserByUserId(userId);
 					String mobile=userId;
 					//if(!StringUtil.isNullOrEmpty(u)){
@@ -792,7 +790,6 @@ public class CarAction {
 					String chezhu=order.getUserName();
 					//Map<String,Object> queryMap1=new HashMap<String, Object>()
 					//Car car=historyCarService.findById();
-
 					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,bo.getUserNo(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),chezhu,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
@@ -805,6 +802,7 @@ public class CarAction {
 
 		}
 		result.put("success",flag);
+		result.put("orderId",order.getId());
 		return result;
 	}
 	/**
@@ -841,7 +839,6 @@ public class CarAction {
 	//获取微信支付参数信息
 	public String getWXJsParamForNative(HttpServletRequest request, float total_free,String outTradeNo) {
 		Map<String, Object> result = new HashMap<String, Object>();
-
 		MdlPay pay = getMdlPay();
 		WXPrepay prePay = getWxPrepay(request,outTradeNo);
 		float b = (float) (Math.round(total_free * 100)) / 100;
@@ -882,7 +879,18 @@ public class CarAction {
 		order.setOutTradeNo(outTradeNo);
 		orderService.updateStatus(order);
 		prePay.setSpbill_create_ip(spbill_create_ip);
-		String openid = SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
+		String openid = "";
+		//首先从当前登录的账号信息中获取openid
+		Object o=  SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+		if(o instanceof Users){
+			Users u= (Users) o;
+			if(!StringUtil.isNullOrEmpty(u)){
+				openid=u.getOpenId();//如果数据库中不存在openid，再从缓存中读取
+				if(StringUtil.isNullOrEmpty(openid)){
+					openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);//从缓存中获取，这里有时会获取不到，所有要从数据库中读取
+				}
+			}
+		}
 		prePay.setOpenid(openid);
 		return prePay;
 	}
