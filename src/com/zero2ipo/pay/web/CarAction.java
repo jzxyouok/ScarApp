@@ -534,6 +534,7 @@ public class CarAction {
 		boolean flag=false;
 		//FmUtils.FmData(request, model);
 		String orderId="";
+		int id=0;
 		int carId=-1;
 		String jsParam="";
 		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
@@ -605,10 +606,10 @@ public class CarAction {
 				order.setUserId(user.getUserId());
 				orderId=OrderUtil.GetOrderNumber("");
 			    order.setOrderId(orderId);
-				orderService.add(order);
+				id=orderService.add(order);
 			}
 		}
-		String url="redirect:/order/wxpay.html?orderId="+orderId;
+		String url="redirect:/order/wxpay.html?orderId="+id;
 		return url;
 
 	}
