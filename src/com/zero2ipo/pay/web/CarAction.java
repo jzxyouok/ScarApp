@@ -738,6 +738,7 @@ public class CarAction {
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("outTradeNo",out_trade_no);
 		order=orderService.findById(queryMap);
+		System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+order);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
@@ -868,6 +869,7 @@ public class CarAction {
 		String outTradeNo=UUID.randomUUID().toString().replace("-","");
 		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
 		Order order=new Order();
+		System.out.println("更新outtradeno钱orderid==================="+orderId+"\touttradeNo========="+outTradeNo);
 		order.setOrderId(orderId);
 		order.setOutTradeNo(outTradeNo);
 		orderService.updateStatus(order);

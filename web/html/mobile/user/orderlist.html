@@ -22,9 +22,6 @@
 			dataType: "json",
 			success: function (data) {
 				var jsParam=data;
-				//alert(jsParam);
-				//var jsData= eval("("+jsParam+")");
-				//alert(jsData);
 				WeixinJSBridge.invoke(
 						'getBrandWCPayRequest'
 						,jsParam
@@ -84,7 +81,7 @@
 								[/@portal_picture]
 							</p>
 				        	<p>
-					        	<span>订单号:${order.orderId!''}</span>
+					        	<span>订单号:${order.orderId[0..14]}</span>
 				        	</p>
 				        	<p>
 					        	<span>车牌号：${order.carNum!''}</span>
