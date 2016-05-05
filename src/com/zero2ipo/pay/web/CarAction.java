@@ -39,7 +39,7 @@ import java.util.*;
  */
 @Controller
 public class CarAction {
-	String notifyUrl = "/order/wxpayHdMethod";//微信支付成功回调方法,修改订单状态以及自动派单
+	String notifyUrl = "/order/wxpayHdMethod.html";//微信支付成功回调方法,修改订单状态以及自动派单
 	/**
 	 * 订单流程页面
 	 * */
@@ -489,7 +489,7 @@ public class CarAction {
 		if(!StringUtil.isNullOrEmpty(order)){
 			//重新生成微信支付参数，防止订单过期
 			float toatl=order.getPrice();
-			String jsParam=getWXJsParamForNative(request,toatl);
+			String jsParam=getWXJsParamForNative(request,toatl,orderId);
 			mv.addObject("jsParam",jsParam);
 		}
 		return mv;
@@ -514,7 +514,7 @@ public class CarAction {
 		if(!StringUtil.isNullOrEmpty(order)){
 			//重新生成微信支付参数，防止订单过期
 			float toatl=order.getPrice();
-			jsParam=getWXJsParamForNative(request,toatl);
+			jsParam=getWXJsParamForNative(request,toatl,orderId);
 
 		}
 		return jsParam;
@@ -606,8 +606,10 @@ public class CarAction {
 				//获取微信支付参数
 				 //jsParam=getWXJsParamForNative(request,total_price);
 				//order.setJsParam(jsParam);
-				orderId=orderService.add(order)+"";
-				order.setOrderId(orderId+"");
+				orderId=OrderUtil.GetOrderNumber("");
+			    order.setOrderId(orderId);
+				orderService.add(order);
+				//order.setOrderId(orderId+"");
 			}
 		}
 		//mv.addObject("orderId",orderId);
@@ -700,9 +702,10 @@ public class CarAction {
 	 * @param orderId
 	 * @return
 	 */
-	@RequestMapping(value = "/order/wxpayHdMethod", method = RequestMethod.POST)
+	@RequestMapping(value = "/order/wxpayHdMethod.html")
 	@ResponseBody
 	public Map<String,Object> wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
+		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 		String inputLine;
 		String notityXml = "";
 		String resXml = "";
@@ -723,30 +726,34 @@ public class CarAction {
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
 
-
-
+		System.out.println("微信支付回调函数进来了嘛openid=？。。。。。。。。"+openid);
+		System.out.println("微信支付回调函数进来了嘛return_code=？。。。。。。。。"+return_code);
+		System.out.println("微信支付回调函数进来了嘛transaction_id=？。。。。。。。。"+transaction_id);
+		System.out.println("微信支付回调函数进来了嘛out_trade_no=？。。。。。。。。"+out_trade_no);
 		Map<String,Object> result=new HashMap<String, Object>();
 		Order order=new Order();
-		int id=Integer.parseInt(out_trade_no);
-		order.setId(id);
+		//int id=Integer.parseInt(out_trade_no);
+		order.setOrderId(out_trade_no);
 		if("SUCCESS".equals(return_code)){
 			order.setOrderStatus(MobileContants.status_1);//已支付
+			order.setTransactionId(transaction_id);
 		}
+		//根据orderId更新订单信息
 		boolean flag=orderService.updateStatus(order);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("id",orderId);
+		queryMap.put("orderId",orderId);
 		order=orderService.findById(queryMap);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 			//根据经纬度派单给最近的洗车工师父
 			SendOrder sendOrder=new SendOrder();
-			order.setId(id);
+			//order.setOrderId(orderId);
 			//根据经纬度获取最近的洗车工师父
 			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
 			sendOrder.setCarNo(order.getCarNum());
-			sendOrder.setOrderId(id+"");
+			sendOrder.setOrderId(orderId);
 			sendOrder.setName(order.getCarType());
 			sendOrder.setPreTime(order.getWashTime());
 			sendOrder.setMobile(order.getMobile());
@@ -830,25 +837,14 @@ public class CarAction {
 		return retMap;
 	}
 	//获取微信支付参数信息
-	public String getWXJsParamForNative(HttpServletRequest request, float total_free) {
+	public String getWXJsParamForNative(HttpServletRequest request, float total_free,String outTradeNo) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		String spbill_create_ip = request.getRemoteAddr();
+
 		MdlPay pay = getMdlPay();
-		WXPrepay prePay = new WXPrepay();
-		String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
-		prePay.setAppid(pay.getAppId());
-		prePay.setBody(prePayBody);
-		prePay.setPartnerKey(pay.getPartnerKey());
-		prePay.setMch_id(pay.getPartnerId());
-		prePay.setNotify_url(notifyUrl);
-		prePay.setOut_trade_no(OrderUtil.GetOrderNumber("abcdefg"));
-		prePay.setSpbill_create_ip(spbill_create_ip);
+		WXPrepay prePay = getWxPrepay(request,outTradeNo);
 		float b = (float) (Math.round(total_free * 100)) / 100;
 		prePay.setTotal_fee((int) (b * 100) + "");
 		prePay.setTrade_type("JSAPI");
-		String openid = SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
-		System.out.println("当前用户openid==============================================================" + openid);
-		prePay.setOpenid(openid);
 		String jsParam = "";
 		//此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
@@ -860,6 +856,28 @@ public class CarAction {
 		}
 		System.out.println("jsParam=======================================================================" + jsParam);
 		return jsParam;
+	}
+	/**
+	 * 动态获取wxPrepay
+	 */
+	private WXPrepay getWxPrepay(HttpServletRequest request,String outTradeNo) {
+		String partnerId = coreService.getValue(CodeCommon.PartnerKey);
+		String appid = coreService.getValue(CodeCommon.APPID);
+		String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
+		String spbill_create_ip = request.getRemoteAddr();
+		WXPrepay prePay = new WXPrepay();
+		String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
+		String domain=coreService.getValue(CodeCommon.DOMAIN);
+		prePay.setAppid(appid);
+		prePay.setBody(prePayBody);
+		prePay.setPartnerKey(partnerValue);
+		prePay.setMch_id(partnerId);
+		prePay.setNotify_url(domain+notifyUrl);
+		prePay.setOut_trade_no(outTradeNo);
+		prePay.setSpbill_create_ip(spbill_create_ip);
+		String openid = SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
+		prePay.setOpenid(openid);
+		return prePay;
 	}
 
 	/**

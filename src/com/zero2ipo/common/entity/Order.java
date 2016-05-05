@@ -33,6 +33,15 @@ public class Order {
 	private int id;
 	private String status;
 	private String carId;
+	private String transactionId;//微信支付成功之后返回商户订单号
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
 
 	public String getUserName() {
 		return userName;
