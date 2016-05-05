@@ -744,7 +744,7 @@ public class CarAction {
 		boolean flag=orderService.updateOrderByOutTradeNo(order);
 		//根据orderid查询Order
 		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("orderId",orderId);
+		queryMap.put("outTradeNo",out_trade_no);
 		order=orderService.findById(queryMap);
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
