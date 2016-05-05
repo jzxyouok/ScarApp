@@ -481,8 +481,8 @@ public class CarAction {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
-		mv.addObject("orderId", orderId.replace(".html", ""));
-		//根据orderId查询订单
+		mv.addObject("orderId", orderId);
+		/**根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("orderId",orderId);
 		Order order=orderService.findById(queryMap);
@@ -492,7 +492,7 @@ public class CarAction {
 			String jsParam=getWXJsParamForNative(request,toatl,orderId);
 			mv.addObject("jsParam",jsParam);
 		}
-		mv.addObject("order",order);
+		mv.addObject("order",order);**/
 		return mv;
 	}
 
@@ -698,8 +698,8 @@ public class CarAction {
 	 * @return
 	 */
 	@RequestMapping(value = "/order/wxpayHdMethod.html")
-	@ResponseBody
-	public Map<String,Object> wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map) {
+	public ModelAndView wxpayHdMethod(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mv=new ModelAndView();
 		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 		String inputLine;
 		String notityXml = "";
@@ -720,10 +720,6 @@ public class CarAction {
 		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
-
-		System.out.println("微信支付回调函数进来了嘛openid=？。。。。。。。。"+openid);
-		System.out.println("微信支付回调函数进来了嘛return_code=？。。。。。。。。"+return_code);
-		System.out.println("微信支付回调函数进来了嘛transaction_id=？。。。。。。。。"+transaction_id);
 		System.out.println("微信支付回调函数进来了嘛out_trade_no=？。。。。。。。。"+out_trade_no);
 		Map<String,Object> result=new HashMap<String, Object>();
 		Order order=new Order();
@@ -739,8 +735,16 @@ public class CarAction {
 		queryMap.put("outTradeNo",out_trade_no);
 		order=orderService.findById(queryMap);
 		System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+order);
+		System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+!StringUtil.isNullOrEmpty(order));
+		if(!StringUtil.isNullOrEmpty(order)){
+			System.out.println("orderid======================="+order.getId());
+			String url="redirect:/my/order"+order.getId()+".html";
+			mv.setViewName(url);
+			result.put("orderId",order.getId());
+		}
 		//下完单后是否开启自动派单功能
 		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+		System.out.println("自动派单标志================="+autoPaiDan);
 		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 			//根据经纬度派单给最近的洗车工师父
 			SendOrder sendOrder=new SendOrder();
@@ -796,8 +800,7 @@ public class CarAction {
 
 		}
 		result.put("success",flag);
-		result.put("orderId",order.getId());
-		return result;
+		return mv;
 	}
 	/**
 	 * description: 解析微信通知xml
@@ -870,8 +873,12 @@ public class CarAction {
 		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
 		Order order=new Order();
 		System.out.println("更新outtradeno钱orderid==================="+orderId+"\touttradeNo========="+outTradeNo);
-		order.setOrderId(orderId);
 		order.setOutTradeNo(outTradeNo);
+		if(orderId.length()>10){
+			order.setOrderId(orderId);
+		}else{
+			order.setId(Integer.parseInt(orderId));
+		}
 		orderService.updateStatus(order);
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		String openid = "";

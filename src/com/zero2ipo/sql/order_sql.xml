@@ -239,8 +239,15 @@ select
 				out_trade_no=#outTradeNo#
 			</isNotEmpty>
 		</dynamic>
-		WHERE
-		order_id=#orderId#
+
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="" property="orderId">
+				order_id=#orderId#
+			</isNotEmpty>
+			<isNotEmpty prepend="" property="id">
+				id=#id#
+			</isNotEmpty>
+		</dynamic>
 	</update>
 	<update id="updateOrderByOutTradeNo" parameterClass="orderEntity">
 			UPDATE
