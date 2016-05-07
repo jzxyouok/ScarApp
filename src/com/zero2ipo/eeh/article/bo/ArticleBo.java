@@ -27,7 +27,7 @@ public class ArticleBo{
 	this.thumbnail=thumbnail;
 	}
 	public String getThumbnail(){
-		return thumbnail;
+		return thumbnail.replace("//c","");
 	}
 	public void setType(String type){
 	this.type=type;

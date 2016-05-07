@@ -3,10 +3,7 @@ package com.zero2ipo.common.util;
 import com.zero2ipo.common.entity.eeh.WeekDate;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.zip.DataFormatException;
 
 public class WeekDateUtils {
@@ -93,6 +90,30 @@ public class WeekDateUtils {
         } catch (Exception var1) {
             throw new DataFormatException("源数据格式错误");
         }
+    }
+    //获得当前时间和当前时间前多少分钟的时间
+    public static String getBeforeMinutes(int minute){
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Calendar c = new GregorianCalendar();
+        Date date = new Date();
+        System.out.println("系统当前时间      ："+df.format(date));
+        c.setTime(date);//设置参数时间
+        c.add(Calendar.MINUTE,-minute);//把日期往后增加SECOND 秒.整数往后推,负数往前移动
+        date=c.getTime(); //这个时间就是日期往后推一天的结果
+        String str = df.format(date);
+       return str;
+    }
+    //获得当前时间和当前时间前多少分钟的时间
+    public static String getAfterMinutes(int minute){
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Calendar c = new GregorianCalendar();
+        Date date = new Date();
+        System.out.println("系统当前时间      ："+df.format(date));
+        c.setTime(date);//设置参数时间
+        c.add(Calendar.MINUTE,+minute);//把日期往后增加SECOND 秒.整数往后推,负数往前移动
+        date=c.getTime(); //这个时间就是日期往后推一天的结果
+        String str = df.format(date);
+        return str;
     }
 
 }

@@ -5,7 +5,6 @@ import com.zero2ipo.common.util.WeekDateUtils;
 import com.zero2ipo.eeh.Attendance.bizc.IAttendanceService;
 import com.zero2ipo.eeh.Attendance.bo.AttendanceBo;
 import com.zero2ipo.eeh.course.bizc.ICourseService;
-import com.zero2ipo.eeh.course.bo.CourseBo;
 import com.zero2ipo.eeh.course.bo.CourseConstants;
 import com.zero2ipo.eeh.seat.bizc.ISeatService;
 import com.zero2ipo.eeh.seat.bo.SeatBo;
@@ -41,8 +40,10 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 			String week= WeekDateUtils.getWeekOfDate(null);
 			//获取当前系统时间 时分
 			String time= WeekDateUtils.getDateNowHm();
+			String getAfterMinutes=WeekDateUtils.getBeforeMinutes(30);
 			queryMap.put("week", week);
-			queryMap.put("schoolTime",time);
+			queryMap.put("schoolTimeStart",getAfterMinutes);
+			queryMap.put("schoolTimeEnd",time);
 			queryMap.put("seatType", CourseConstants.SEAT_TYPE_1);
 			seatsList=SeatService.findAllList(queryMap);
 			String seatTypeName="";
@@ -78,21 +79,21 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 	private List<SeatBo> getKaoQinStatus(String classRoom, List<SeatBo> seatsList,int type) {
 		//查询当前课程
 		String courseName="";//当前课程名
-		if(type==CourseConstants.SEAT_TYPE_0){
-			CourseBo courseBo=courseService.getCurrentCourse(classRoom);
-			if(!StringUtil.isNullOrEmpty(courseBo))
-				courseName=courseBo.getCourseName();
-		}
-		if(type==CourseConstants.SEAT_TYPE_1){
-			CourseBo courseBo=courseService.getCurrentRiChangCourse(classRoom);
-			if(!StringUtil.isNullOrEmpty(courseBo))
-			courseName=courseBo.getCourseName();
-		}
+		//if(type==CourseConstants.SEAT_TYPE_0){
+			//CourseBo courseBo=courseService.getCurrentCourse(classRoom);
+			//if(!StringUtil.isNullOrEmpty(courseBo))
+				//courseName=courseBo.getCourseName();
+		//}
+		//if(type==CourseConstants.SEAT_TYPE_1){
+		//	CourseBo courseBo=courseService.getCurrentRiChangCourse(classRoom);
+		//	if(!StringUtil.isNullOrEmpty(courseBo))
+		//	courseName=courseBo.getCourseName();
+		//}
 		String day= DateUtil.getCurrentDate("yyyy-MM-dd");//今天日期
 		int total=seatsList.size();
 		Map<String,Object> m=null;
 		AttendanceBo attendanceBo=null;
-		if(!StringUtil.isNullOrEmpty(courseName)) {
+		//if(!StringUtil.isNullOrEmpty(courseName)) {
 			for (int i = 0; i < total; i++) {
 				m = new HashMap<String, Object>();
 				SeatBo seatBo = seatsList.get(i);
@@ -100,7 +101,7 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 				String gradeName = seatBo.getClassRoom();
 				m.put("studentName", name);
 				m.put("gradeName", gradeName);
-				m.put("courseName", courseName);
+				/*m.put("courseName", courseName);*/
 				m.put("dayTime", day);
 				//if(!StringUtil.isNullOrEmpty(courseName)){
 				attendanceBo = attendanceService.findByMap(m);
@@ -112,7 +113,7 @@ public class FindSeatListByClassRoomDirective implements TemplateDirectiveModel{
 				//}
 
 			}
-		}
+		//}
 		return seatsList;
 	}
 

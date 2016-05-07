@@ -54,8 +54,11 @@ FROM
 	<isNotEmpty prepend="AND" property="week">
 		week=#week#
 	</isNotEmpty>
-	<isNotEmpty prepend="AND" property="schoolTime">
-		start &gt;=#schoolTime# and end &lt;=#schoolTime#
+	<isNotEmpty prepend="AND" property="schoolTimeStart">
+		start &gt;=#schoolTimeStart#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="schoolTimeEnd">
+		end &lt;=#schoolTimeEnd#
 	</isNotEmpty>
 	<isNotEmpty prepend="AND" property="seatType">
 		seatType=#seatType#
@@ -78,8 +81,11 @@ FROM
 			<isNotEmpty prepend="AND" property="week">
 				week=#week#
 			</isNotEmpty>
-			<isNotEmpty prepend="AND" property="schoolTime">
-				start &lt;=#schoolTime# and end &gt;=#schoolTime#
+			<isNotEmpty prepend="AND" property="schoolTimeStart">
+				start &gt;=#schoolTimeStart#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="schoolTimeEnd">
+				 end &lt;=#schoolTimeEnd#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="seatType">
 				seatType=#seatType#

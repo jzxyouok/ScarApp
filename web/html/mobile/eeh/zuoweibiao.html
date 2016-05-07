@@ -39,42 +39,43 @@
         <ul class="hz-hid">
             [#if firstSeat?? &&seatsList?? &&seatsList?size gt 0]
                   [#list seatsList as seat]
-                        [#if (seat_index+1)%firstSeat.cell==0 && firstSeat.flg==0]
-
-                                [#if seat.kaoqin_flg=='1']
-                                 <li data-name="${seat.name!''}" style="background: red"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if seat.kaoqin_flg=='2']
-                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if  seat.kaoqin_flg=='3']
-                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"   class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                [/#if]
-                                [#if  seat.kaoqin_flg=='5']
-                                 <li data-name="${seat.name!''}" style="background: #31A290"    class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                 [/#if]
-                                 [#if seat.kaoqin_flg=='4']
-                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"    class="mr-0">[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                 [/#if]
-                        [#else]
-                                    [#if seat.kaoqin_flg=='1']
-                                    <li data-name="${seat.name!''}" style="background: red"   >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
+                       <!-- [#if seat.name??&&seat.name!='']-->
+                                    [#if (seat_index+1)%firstSeat.cell==0 && firstSeat.flg==0]
+                                                [#if seat.kaoqin_flg=='1']
+                                                     <li data-name="${seat.name!''}" style="background: red"   class="mr-0">${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if seat.kaoqin_flg=='2']
+                                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"   class="mr-0">${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if  seat.kaoqin_flg=='3']
+                                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"   class="mr-0">${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if  seat.kaoqin_flg=='5']
+                                                 <li data-name="${seat.name!''}" style="background: #31A290"    class="mr-0">${seat.seatNo}</li>
+                                                 [/#if]
+                                                 [#if seat.kaoqin_flg=='4']
+                                                 <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"    class="mr-0">${seat.seatNo}</li>
+                                                 [/#if]
+                                    [#else]
+                                                [#if seat.kaoqin_flg=='1']
+                                                <li data-name="${seat.name!''}" style="background: red"   >${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if  seat.kaoqin_flg=='2']
+                                                <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"  >${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if seat.kaoqin_flg=='3']
+                                                <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"  >${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if  seat.kaoqin_flg=='5']
+                                                <li data-name="${seat.name!''}" style="background: #31A290"    >${seat.seatNo}</li>
+                                                [/#if]
+                                                [#if  seat.kaoqin_flg=='4']
+                                                <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000">${seat.seatNo}</li>
+                                                [/#if]
                                     [/#if]
-                                    [#if  seat.kaoqin_flg=='2']
-                                    <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"  >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if seat.kaoqin_flg=='3']
-                                    <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"  >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if  seat.kaoqin_flg=='5']
-                                    <li data-name="${seat.name!''}" style="background: #31A290"    >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-                                    [#if  seat.kaoqin_flg=='4']
-                                    <li data-name="${seat.name!''}" style="background: #DBDBDB;color: #000000"    >[#if seat.name??&&seat.name!='']${seat.seatNo}[/#if]</li>
-                                    [/#if]
-
-
-            [/#if]
+                       <!-- [#else]
+                             <li data-name="${seat.name!''}" style="background: white;color: white"    >空</li>
+                        [/#if]-->
                   [/#list]
             [/#if]
         </ul>

@@ -45,7 +45,11 @@
 		WHERE  gradeName=#gradeName#
 		AND  studentName=#studentName#
 		AND  dayTime=#dayTime#
-		AND  courseName=#courseName#
+		<isNotEmpty prepend="AND" property="courseName">
+		  courseName=#courseName#
+		</isNotEmpty>
+		order by schoolTime desc
+		limit 0,1
 	</select>
 
 	<!--查询-->
