@@ -13,7 +13,6 @@
 <script>
 	//ajax微信付款，首先获取jsParam
 	function wxpay(id){
-		alert(id);
 		var url="/order/getJsParam.html";
 		$.ajax({
 			type: "POST",
@@ -122,7 +121,7 @@
 						[#if order.status=='-1']
 						<span class="btn_rectangle greyframe color_orange f_r vieworder" onclick="javascript:wxpay('${order.id}')">支付</span>
 						[/#if]
-						<span class="btn_rectangle greyframe color_blue f_r vieworder" onclick="window.location.href='/f/order${order.id}.html'">查看订单</span>
+						<span class="btn_rectangle greyframe color_blue f_r vieworder" onclick="window.location.href='/f/order${order.id}.html'">查看</span>
 		        	</div>
 	        	</div>
         	</section>

@@ -588,6 +588,7 @@ public class CarAction {
 				order.setAddress(car.getWashAddr());
 				order.setMobile(user.getPhoneNum());
 				order.setUserId(user.getUserId());
+				order.setUserName(car.getName());
 				order.setAddress(car.getWashAddr());
 				order.setCarType(car.getCarType());
 				order.setDiscription(car.getWashInfo());
@@ -662,19 +663,7 @@ public class CarAction {
 					//查询域名
 					String  domain=coreService.getValue(CodeCommon.DOMAIN);
 					String url=domain+"/renwu/order"+orderId+".html";
-					String userId=order.getUserId();//order里面的userId存放的就是用户的手机号码
-					//根据用户userId查询用户信息
-
-					Users u=userServices.findUserByUserId(userId);
-					String mobile=userId;
-					//if(!StringUtil.isNullOrEmpty(u)){
-					//	mobile=u.getPhoneNum();
-					//}
-					String chezhu=order.getUserName();
-					//Map<String,Object> queryMap1=new HashMap<String, Object>()
-					//Car car=historyCarService.findById();
-
-					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,bo.getUserNo(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),chezhu,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
+					WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId,templateMessageId,url,order,bo);
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
 					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
@@ -752,17 +741,29 @@ public class CarAction {
 			//order.setOrderId(orderId);
 			//根据经纬度获取最近的洗车工师父
 			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
+			System.out.println("调试11111111==================="+order.getCarNum());
 			sendOrder.setCarNo(order.getCarNum());
+			System.out.println("调试2222222==================="+order.getId());
 			sendOrder.setOrderId(order.getId()+"");
+			System.out.println("调试333333333===================" + order.getCarType());
 			sendOrder.setName(order.getCarType());
+			System.out.println("调试444444444===================" + order.getWashTime());
 			sendOrder.setPreTime(order.getWashTime());
+			System.out.println("调试55555555555===================" + order.getMobile());
 			sendOrder.setMobile(order.getMobile());
-			sendOrder.setSendOrderTime(com.zero2ipo.framework.util.DateUtil.getCurrentTime());
+			String  currentTime=com.zero2ipo.framework.util.DateUtil.getCurrentTime();
+			System.out.println("调试66666666666===================" + currentTime);
+			sendOrder.setSendOrderTime(currentTime);
 			sendOrder.setUserId(bo.getUserId());
 			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-			sendOrder.setOperatorId(user.getUserId());
+			if(!StringUtil.isNullOrEmpty(user)){
+				System.out.println("调试77777777777===================" + user.getUserId());
+				sendOrder.setOperatorId(user.getUserId());
+			}
 			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
+			System.out.println("调试77777777777===================保存派单信息start" );
 			sendOrderService.addSendOrder(sendOrder);
+			System.out.println("调试888888888888===================保存派单信息end" );
 			//派单完成后是否给管理员发送短信或者微信
 			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
 			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
@@ -779,17 +780,7 @@ public class CarAction {
 					//查询域名
 					String  domain=coreService.getValue(CodeCommon.DOMAIN);
 					String url=domain+"/renwu/order"+order.getId()+".html";
-					String userId=order.getUserId();//order里面的userId存放的就是用户的手机号码
-					//根据用户userId查询用户信息
-					Users u=userServices.findUserByUserId(userId);
-					String mobile=userId;
-					//if(!StringUtil.isNullOrEmpty(u)){
-					//	mobile=u.getPhoneNum();
-					//}
-					String chezhu=order.getUserName();
-					//Map<String,Object> queryMap1=new HashMap<String, Object>()
-					//Car car=historyCarService.findById();
-					WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,bo.getUserNo(), com.zero2ipo.framework.util.DateUtil.getCurrentTime(),chezhu,order.getCarNum(),order.getAddress(),order.getWashTime(),washType);
+					WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
 					//发送模板消息
 					String appId=coreService.getValue(CodeCommon.APPID);
 					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
