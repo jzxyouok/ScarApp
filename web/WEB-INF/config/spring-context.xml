@@ -57,6 +57,9 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+	<bean class="com.zero2ipo.mobile.dao.config.impl.ConfigDaoImpl">
+		<property name="sqlMapClient" ref="sqlMapClient"></property>
+	</bean>
 
 	<!--事物处理方式 -->
 	<bean id="txProxyTemplate" abstract="true"

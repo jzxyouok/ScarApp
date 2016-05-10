@@ -20,15 +20,18 @@ import com.zero2ipo.weixin.templateMessage.WxTemplate;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.xml.sax.InputSource;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.StringReader;
@@ -606,6 +609,9 @@ public class CarAction {
 				order.setSendOrderStatus(MobileContants.status_0);
 				order.setUserId(user.getUserId());
 				orderId=OrderUtil.GetOrderNumber("");
+				//保存微信jsParam
+				//jsParam=getWXJsParamForNative(request,total_price,orderId);
+				//order.setJsParam(jsParam);
 			    order.setOrderId(orderId);
 				id=orderService.add(order);
 			}
@@ -692,6 +698,8 @@ public class CarAction {
 	public ModelAndView wxpayHdMethod(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv=new ModelAndView();
 		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+		Map<String,Object> result=new HashMap<String, Object>();
+		boolean flag=false;
 		String inputLine;
 		String notityXml = "";
 		String resXml = "";
@@ -711,87 +719,80 @@ public class CarAction {
 		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
-		System.out.println("微信支付回调函数进来了嘛out_trade_no=？。。。。。。。。"+out_trade_no);
-		Map<String,Object> result=new HashMap<String, Object>();
-		Order order=new Order();
-		order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
-		if("SUCCESS".equals(return_code)){
-			order.setOrderStatus(MobileContants.status_1);//已支付
-			order.setTransactionId(transaction_id);
-		}
-		//根据outTradeNo更新订单信息
-		boolean flag=orderService.updateOrderByOutTradeNo(order);
-		//根据orderid查询Order
-		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("outTradeNo",out_trade_no);
-		order=orderService.findById(queryMap);
-		System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+order);
-		System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+!StringUtil.isNullOrEmpty(order));
-		if(!StringUtil.isNullOrEmpty(order)){
-			System.out.println("orderid======================="+order.getId());
-			String url="redirect:/my/order"+order.getId()+".html";
-			mv.setViewName(url);
-			result.put("orderId",order.getId());
-		}
-		//下完单后是否开启自动派单功能
-		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
-		System.out.println("自动派单标志================="+autoPaiDan);
-		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
-			//根据经纬度派单给最近的洗车工师父
-			SendOrder sendOrder=new SendOrder();
-			//order.setOrderId(orderId);
-			//根据经纬度获取最近的洗车工师父
-			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
-			System.out.println("调试11111111==================="+order.getCarNum());
-			sendOrder.setCarNo(order.getCarNum());
-			System.out.println("调试2222222==================="+order.getId());
-			sendOrder.setOrderId(order.getId()+"");
-			System.out.println("调试333333333===================" + order.getCarType());
-			sendOrder.setName(order.getCarType());
-			System.out.println("调试444444444===================" + order.getWashTime());
-			sendOrder.setPreTime(order.getWashTime());
-			System.out.println("调试55555555555===================" + order.getMobile());
-			sendOrder.setMobile(order.getMobile());
-			String  currentTime=com.zero2ipo.framework.util.DateUtil.getCurrentTime();
-			System.out.println("调试66666666666===================" + currentTime);
-			sendOrder.setSendOrderTime(currentTime);
-			sendOrder.setUserId(bo.getUserId());
-			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-			if(!StringUtil.isNullOrEmpty(user)){
-				System.out.println("调试77777777777===================" + user.getUserId());
-				sendOrder.setOperatorId(user.getUserId());
+		String wxpayKey=SessionHelper.getStringAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY);
+		if(!transaction_id.equals(wxpayKey)){
+			Order order=new Order();
+			order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
+			if("SUCCESS".equals(return_code)){
+				order.setOrderStatus(MobileContants.status_1);//已支付
+				order.setTransactionId(transaction_id);
 			}
-			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
-			System.out.println("调试77777777777===================保存派单信息start" );
-			sendOrderService.addSendOrder(sendOrder);
-			System.out.println("调试888888888888===================保存派单信息end" );
-			//派单完成后是否给管理员发送短信或者微信
-			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
-			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
-			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
-				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
-				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
-					//发送短信通知
-				}
-				if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
-					//发送微信通知
-					String openId=bo.getIp();//获取洗车工绑定的微信openid
-					String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
-					String washType=order.getWashType();
-					//查询域名
-					String  domain=coreService.getValue(CodeCommon.DOMAIN);
-					String url=domain+"/renwu/order"+order.getId()+".html";
-					WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
-					//发送模板消息
-					String appId=coreService.getValue(CodeCommon.APPID);
-					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
-					System.out.println("发送模板============================================="+wxTemplate);
-					coreService.send_template_message(appId,appsecret,openId,wxTemplate);
-
-				}
+			//根据outTradeNo更新订单信息
+			flag=orderService.updateOrderByOutTradeNo(order);
+			//根据orderid查询Order
+			Map<String,Object> queryMap=new HashMap<String, Object>();
+			queryMap.put("outTradeNo",out_trade_no);
+			order=orderService.findById(queryMap);
+			System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+order);
+			System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+!StringUtil.isNullOrEmpty(order));
+			if(!StringUtil.isNullOrEmpty(order)){
+				System.out.println("orderid======================="+order.getId());
+				String url="redirect:/my/order"+order.getId()+".html";
+				mv.setViewName(url);
+				result.put("orderId",order.getId());
 			}
+			//下完单后是否开启自动派单功能
+			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
+				//根据经纬度派单给最近的洗车工师父
+				SendOrder sendOrder=new SendOrder();
+				//根据经纬度获取最近的洗车工师父
+				AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
+				sendOrder.setCarNo(order.getCarNum());
+				sendOrder.setOrderId(order.getId() + "");
+				sendOrder.setName(order.getCarType());
+				sendOrder.setPreTime(order.getWashTime());
+				sendOrder.setMobile(order.getMobile());
+				String  currentTime=com.zero2ipo.framework.util.DateUtil.getCurrentTime();
+				sendOrder.setSendOrderTime(currentTime);
+				sendOrder.setUserId(bo.getUserId());
+				Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+				if(!StringUtil.isNullOrEmpty(user)){
+					sendOrder.setOperatorId(user.getUserId());
+				}
+				sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
+				sendOrderService.addSendOrder(sendOrder);
+				//派单完成后是否给管理员发送短信或者微信
+				String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+				System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
+				if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
+					String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+					if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
+						//发送短信通知
+					}
+					if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
+						//发送微信通知
+						String openId=bo.getIp();//获取洗车工绑定的微信openid
+						String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+						String washType=order.getWashType();
+						//查询域名
+						String  domain=coreService.getValue(CodeCommon.DOMAIN);
+						String url=domain+"/renwu/order"+order.getId()+".html";
+						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
+						//发送模板消息
+						String appId=coreService.getValue(CodeCommon.APPID);
+						String appsecret=coreService.getValue(CodeCommon.APPSECRET);
+						System.out.println("发送模板============================================="+wxTemplate);
+						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
 
+					}
+				}
+				//发送模板成功之后，将交易单号保存到缓冲中
+				SessionHelper.setAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY,transaction_id);
+
+			}
 		}
+
 		result.put("success",flag);
 		return mv;
 	}
@@ -850,13 +851,20 @@ public class CarAction {
 	 * 动态获取wxPrepay
 	 */
 	private WXPrepay getWxPrepay(HttpServletRequest request,String orderId) {
-		String partnerId = coreService.getValue(CodeCommon.PartnerKey);
-		String appid = coreService.getValue(CodeCommon.APPID);
-		String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
+		//String partnerId = coreService.getValue(CodeCommon.PartnerKey);
+		ServletContext application =request.getSession().getServletContext();
+		String partnerId =application.getAttribute(MobileContants.PARTNERID_KEY)+"";
+		//String appid = coreService.getValue(CodeCommon.APPID);
+		String appid =application.getAttribute(MobileContants.APPID_KEY)+"";
+		//String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
+		String partnerValue = application.getAttribute(MobileContants.PARTNERVALUE_KEY)+"";
 		String spbill_create_ip = request.getRemoteAddr();
 		WXPrepay prePay = new WXPrepay();
-		String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
-		String domain=coreService.getValue(CodeCommon.DOMAIN);
+		//String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
+		String prePayBody = application.getAttribute(MobileContants.PREPAYBODY_KEY)+"";
+		//String domain=coreService.getValue(CodeCommon.DOMAIN);
+		String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
+		System.out.println("从缓存中获取的appid==================="+appid);
 		prePay.setAppid(appid);
 		prePay.setBody(prePayBody);
 		prePay.setPartnerKey(partnerValue);

@@ -5,11 +5,12 @@ import com.zero2ipo.mobile.dao.base.IbatisBaseDao;
 import com.zero2ipo.mobile.dao.config.IConfigDao;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Component("configDao")
 public class ConfigDaoImpl extends IbatisBaseDao  implements IConfigDao{
-   
+
 	private static final String findConfValueByMap = "mobile.config.weixin.queryConfValue";
 
 
@@ -24,6 +25,15 @@ public class ConfigDaoImpl extends IbatisBaseDao  implements IConfigDao{
 		return confValue;
 	}
 
-	
+	public String getValue(String key) {
+		String result="";
+		Map<String, Object> m=new HashMap<String, Object>();
+		m.put("confKey",key);
+		ConfValue  confValue=(ConfValue) this.query(findConfValueByMap, m);;
+		result=confValue.getConfValue();
+		return result;
+	}
+
+
 }
 

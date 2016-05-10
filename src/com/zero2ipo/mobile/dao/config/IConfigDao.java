@@ -13,8 +13,9 @@ import java.util.Map;
 @Service
 public interface IConfigDao {
 	public ConfValue findConfValueByMap(Map<String, Object> m) ;
+	public String getValue(String key) ;
 
- 
- 
+
+
 }
 

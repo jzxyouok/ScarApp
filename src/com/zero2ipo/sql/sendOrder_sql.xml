@@ -17,7 +17,8 @@
 <!--查询-->
 <!-- 根据Id查信息 -->
 	<select id="findSendOrderById" resultMap="sendOrderMap">
-	 SELECT ID, ORDER_ID,
+	 SELECT
+		ID, ORDER_ID,
 		USER_ID, CONTENT, OPERATOR_ID,OPERATOR_DATE,FINISH_DATE,STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM BSB_SEND_ORDER
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="id">
@@ -26,8 +27,9 @@
 			<isNotEmpty prepend="AND" property="orderId">
 				ORDER_ID=#orderId#
 			</isNotEmpty>
-		</dynamic>	
-	</select>	
+		</dynamic>
+		limit 0,1
+	</select>
 		<!-- 派单列表信息查询 -->
 	<select id="findSendOrderList" resultMap="sendOrderMap">
 		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM
@@ -41,7 +43,7 @@
 			</isNotEmpty>
 		</dynamic>
 		order by OPERATOR_DATE desc
-	</select>	
+	</select>
 	<!--根据订单id查询派单信息-->
 	<select id="findSendOrderByOrderId" resultMap="sendOrderMap">
 		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM
@@ -67,9 +69,9 @@
 		)VALUES(#orderId#, #userId#, #content#, #operatorId#, #status#,now(),#finishDate#)
 	</insert>
 	<!-- 修改 -->
-	<update id="updSendOrder" parameterClass="sendOrder"> 
+	<update id="updSendOrder" parameterClass="sendOrder">
 	UPDATE
-		BSB_SEND_ORDER 
+		BSB_SEND_ORDER
 		set
 		OPERATOR_DATE=now(),
 		FINISH_DATE=now()
@@ -85,7 +87,7 @@
 			<isNotEmpty prepend="," property="afterPhoto">
 				AFTER_PHOTO=#afterPhoto#
 			</isNotEmpty>
-		WHERE 
+		WHERE
 			ORDER_ID=#orderId#
 		</update>
 
