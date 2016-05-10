@@ -663,13 +663,14 @@ public class CarAction {
 					//查询域名
 					String  domain=coreService.getValue(CodeCommon.DOMAIN);
 					String url=domain+"/renwu/order"+orderId+".html";
-					WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId,templateMessageId,url,order,bo);
-					//发送模板消息
-					String appId=coreService.getValue(CodeCommon.APPID);
-					String appsecret=coreService.getValue(CodeCommon.APPSECRET);
-					System.out.println("发送模板============================================="+wxTemplate);
-					coreService.send_template_message(appId,appsecret,openId,wxTemplate);
-
+					if(!order.getSendOrderStatus().equals(MobileContants.SEND_ORDER_STATUS_1)){
+						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId,templateMessageId,url,order,bo);
+						//发送模板消息
+						String appId=coreService.getValue(CodeCommon.APPID);
+						String appsecret=coreService.getValue(CodeCommon.APPSECRET);
+						System.out.println("发送模板============================================="+wxTemplate);
+						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
+					}
 				}
 			}
 

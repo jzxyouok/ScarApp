@@ -31,6 +31,11 @@ public class MobilePageContants {
 	public static final String QIANDAO_PAGE="mobile/user/qiandao";//重置密码页面
 	public static final String SELECT_CAR_TYPE_PAGE="mobile/user/carType";//选择车型
 	public static final String PAY_BY_WEIXIN_PAGE="mobile/user/pay_by_weixin";//微信支付页面
+	//我的钱包
+	public static final String MY_MONEY_PAGE="mobile/money/qianbao";//我的钱包
+	public static final String MY_COUPON_PAGE="mobile/money/youhuiquan";//我的优惠券
+	public static final String MY_HONGBAO_PAGE="mobile/money/hongbao";//我的红包
+	public static final String MY_CHOGNZHI_PAGE="mobile/money/chongzhi";//余额充值
 
 
 	public static final String FM_USER_HOME = "mobile/user/vip";				//个人中心
