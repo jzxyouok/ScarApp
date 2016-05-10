@@ -20,12 +20,10 @@ import com.zero2ipo.weixin.templateMessage.WxTemplate;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.ContextLoader;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.xml.sax.InputSource;
@@ -719,8 +717,11 @@ public class CarAction {
 		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
-		String wxpayKey=SessionHelper.getStringAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY);
-		if(!transaction_id.equals(wxpayKey)){
+		Map<String,Object> query=new HashMap<String, Object>();
+		query.put("transactionId",transaction_id);
+		Order count=orderService.findById(query);
+		System.out.println("1111111cong＝＝＝＝＝＝＝＝＝＝＝"+count);
+		if(StringUtil.isNullOrEmpty(count)){
 			Order order=new Order();
 			order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
 			if("SUCCESS".equals(return_code)){
@@ -782,13 +783,14 @@ public class CarAction {
 						//发送模板消息
 						String appId=coreService.getValue(CodeCommon.APPID);
 						String appsecret=coreService.getValue(CodeCommon.APPSECRET);
-						System.out.println("发送模板============================================="+wxTemplate);
 						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
 
 					}
 				}
 				//发送模板成功之后，将交易单号保存到缓冲中
+				System.out.println("保存到混存中＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝"+transaction_id);
 				SessionHelper.setAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY,transaction_id);
+				System.out.println("保存到混存中＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝"+SessionHelper.getAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY));
 
 			}
 		}

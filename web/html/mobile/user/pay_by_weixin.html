@@ -16,7 +16,7 @@
 		var url="/order/getJsParam.html";
 		 var jsParam=$("#jsParam").val();
 		if(''==jsParam||null==jsParam){
-			chongxinGetJsParam();
+			chongxinGetJsParam(id,url);
 		}else{
 			WeixinJSBridge.invoke(
 					'getBrandWCPayRequest'
@@ -27,7 +27,7 @@
 
 
 	}
-	function chongxinGetJsParam(){
+	function chongxinGetJsParam(id,url){
 		$.ajax({
 			type: "POST",
 			url: url,

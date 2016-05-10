@@ -43,11 +43,9 @@ public class CoreServiceImpl implements ICoreService {
 	public void send_template_message(String appId, String appSecret, String openId,WxTemplate template) {
 		//Token token = CommonUtil.getToken(appId, appSecret);
 		AccessToken token=TokenThread.accessToken;
-		System.out.println("获取token============================================="+token);
 		String access_token = token.getToken();
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
 		String jsonString = JSONObject.fromObject(template).toString();
-		System.out.println("模板消息============"+jsonString);
 		JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", jsonString);
 		int result = 0;
 		if (null != jsonObject) {

@@ -33,6 +33,7 @@
 	<result property="id" column="id"/>
 	<result property="carId" column="car_id"/>
 	<result property="userName" column="user_name"/>
+	<result property="transactionId" column="transaction_id"/>
 </resultMap>
 <!--查询-->
 
@@ -67,7 +68,8 @@ SELECT
 	car_color,
 	JS_PARAM,
 	id,
-	car_id
+	car_id,
+	transaction_id
 FROM orders
 where user_id=(select user_id from users where phone_num=#mobile# limit 0,1)
 order by
@@ -114,7 +116,8 @@ select
 	car_color,
 	JS_PARAM,
 	id,
-	car_id
+	car_id,
+	transaction_id
 	FROM orders
 	<dynamic prepend="WHERE">
 		<isNotEmpty prepend="AND" property="id">
@@ -125,6 +128,9 @@ select
 	    </isNotEmpty>
 		<isNotEmpty prepend="AND" property="orderId">
 			order_id=#orderId#
+	    </isNotEmpty>
+		<isNotEmpty prepend="AND" property="transactionId">
+			transaction_id=#transactionId#
 	    </isNotEmpty>
 		<isNotEmpty prepend="AND" property="outTradeNo">
 			out_trade_no=#outTradeNo#
