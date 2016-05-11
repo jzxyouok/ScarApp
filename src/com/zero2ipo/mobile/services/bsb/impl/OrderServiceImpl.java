@@ -63,5 +63,10 @@ public class OrderServiceImpl implements IOrderService{
 		return orderDao.updateOrderByOutTradeNo(order);
 	}
 
+	@Override
+	public void updateOuttradeNo(Order order) {
+		 orderDao.updateOuttradeNo(order);
+	}
+
 }
 

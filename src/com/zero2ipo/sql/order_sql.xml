@@ -256,6 +256,15 @@ select
 			</isNotEmpty>
 		</dynamic>
 	</update>
+	<!--更新订单的outtradeNo-->
+	<update id="updateOuttradeNo" parameterClass="orderEntity">
+		UPDATE
+			orders
+		SET
+				out_trade_no=#outTradeNo#
+		WHERE
+				order_id=#orderId#
+	</update>
 	<update id="updateOrderByOutTradeNo" parameterClass="orderEntity">
 			UPDATE
 				orders

@@ -618,7 +618,7 @@ public class CarAction {
 		return url;
 
 	}
-	//微信支付成功后调用此方法
+	/*//微信支付成功后调用此方法
 	@RequestMapping(value = "/order/wxpay_update", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
@@ -681,7 +681,7 @@ public class CarAction {
 		}
 		result.put("success",flag);
 		return result;
-	}
+	}*/
 
 	/**
 	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变
@@ -720,7 +720,6 @@ public class CarAction {
 		Map<String,Object> query=new HashMap<String, Object>();
 		query.put("transactionId",transaction_id);
 		Order count=orderService.findById(query);
-		System.out.println("1111111cong＝＝＝＝＝＝＝＝＝＝＝"+count);
 		if(StringUtil.isNullOrEmpty(count)){
 			Order order=new Order();
 			order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
@@ -734,10 +733,7 @@ public class CarAction {
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("outTradeNo",out_trade_no);
 			order=orderService.findById(queryMap);
-			System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+order);
-			System.out.println("根据outtradeno查询才回来的订单信息为＝＝＝＝＝＝＝＝＝＝＝"+!StringUtil.isNullOrEmpty(order));
 			if(!StringUtil.isNullOrEmpty(order)){
-				System.out.println("orderid======================="+order.getId());
 				String url="redirect:/my/order"+order.getId()+".html";
 				mv.setViewName(url);
 				result.put("orderId",order.getId());
@@ -787,11 +783,6 @@ public class CarAction {
 
 					}
 				}
-				//发送模板成功之后，将交易单号保存到缓冲中
-				System.out.println("保存到混存中＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝"+transaction_id);
-				SessionHelper.setAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY,transaction_id);
-				System.out.println("保存到混存中＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝"+SessionHelper.getAttribute(request,MobileContants.WEIXIN_PAY_TRANSACTION_ID_KEY));
-
 			}
 		}
 
@@ -853,20 +844,14 @@ public class CarAction {
 	 * 动态获取wxPrepay
 	 */
 	private WXPrepay getWxPrepay(HttpServletRequest request,String orderId) {
-		//String partnerId = coreService.getValue(CodeCommon.PartnerKey);
 		ServletContext application =request.getSession().getServletContext();
 		String partnerId =application.getAttribute(MobileContants.PARTNERID_KEY)+"";
-		//String appid = coreService.getValue(CodeCommon.APPID);
 		String appid =application.getAttribute(MobileContants.APPID_KEY)+"";
-		//String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
 		String partnerValue = application.getAttribute(MobileContants.PARTNERVALUE_KEY)+"";
 		String spbill_create_ip = request.getRemoteAddr();
 		WXPrepay prePay = new WXPrepay();
-		//String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
 		String prePayBody = application.getAttribute(MobileContants.PREPAYBODY_KEY)+"";
-		//String domain=coreService.getValue(CodeCommon.DOMAIN);
 		String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
-		System.out.println("从缓存中获取的appid==================="+appid);
 		prePay.setAppid(appid);
 		prePay.setBody(prePayBody);
 		prePay.setPartnerKey(partnerValue);
@@ -882,7 +867,7 @@ public class CarAction {
 		}else{
 			order.setId(Integer.parseInt(orderId));
 		}
-		orderService.updateStatus(order);
+		orderService.updateOuttradeNo(order);
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		String openid = "";
 		//首先从当前登录的账号信息中获取openid

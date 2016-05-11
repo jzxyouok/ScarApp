@@ -54,6 +54,7 @@
 			</isNotEmpty>
 		</dynamic>
 		order by OPERATOR_DATE desc
+		limit 0,1
 	</select>
 	<!-- 派单信息列表    总条数查询 -->
 	<select id="findSendOrderListCount" resultClass="java.lang.Integer">
