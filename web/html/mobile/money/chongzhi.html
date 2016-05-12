@@ -9,6 +9,50 @@
 		<link rel="stylesheet" href="${res}/css/money/css/frozen.min.css">
 		<link rel="stylesheet" href="${res}/css/money/css/dropload.css">
 		<link rel="stylesheet" href="${res}/css/money/css/gg.css">
+			<script src="${res}/scripts/xc/jquery.min.js"></script>
+		<script>
+			//ajax微信付款，首先获取jsParam
+			function wxpay(id){
+				var url="/order/getPayParam.html";
+				$.ajax({
+					type: "POST",
+					url: url,
+					async : false,
+					dataType: "json",
+					success: function (data) {
+						var jsParam=data;
+						WeixinJSBridge.invoke(
+								'getBrandWCPayRequest'
+								,jsParam
+								,callback
+						);
+					},
+					error: function (msg) {
+						alert("error");
+					}
+				});
+
+			}
+
+			function callback(res){
+				//  返回 res.err_msg,取值
+				// get_brand_wcpay_request:cancel   用户取消
+				// get_brand_wcpay_request:fail  发送失败
+				// get_brand_wcpay_request:ok 发送成功
+				if(res.err_msg=='get_brand_wcpay_request:ok')
+				{
+					//充值成功之后，保存充值记录到数据库中，然后跳转到我的钱包页面
+					var url="${base}/order/savechongzhi.html";
+					window.location.href=url;
+				}
+				else
+				{
+					//var msg='支付失败,请重新支付.';
+					//alert(msg);
+					//alert(res.err_code+" err_desc="+res.err_desc+" err_msg="+res.err_msg);
+				}
+			};
+		</script>
 	</head>
 	<body ontouchstart="" class="gg-body">
 		<div id="gg">
@@ -17,102 +61,40 @@
 				<section id="content">
 					<section id="gg_property_cash-content">
 						<ul class="ui-list">
-							<li class="gg_property_cash_buy">
-								<div class="gg_property_cash-flag">
-									<span class="gg-property_cash_style_min">￥</span>
-									<span class="gg-property_cash_style_max">300</span>
-								</div>
-								<div class="ui-list-info gg-property_cash-info">
-									<div class="gg-property_cash-info-bg">
-										<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
-											<span class="gg-property_cash_style_min">再送￥</span>
-											<span class="gg-property_cash_style_mid">150</span>
-											<span class="gg-property_cash_style_min">价值:￥450</span></h4>
-										<p class="ui-nowrap" style="padding-top: 10px">
-											<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：365天</span>
-										</p>
-									</div>
-								</div>
-								<div class="ui-list-action" style="width: 40px;">
-									<label class="ui-radio " style="margin-top: 6px">
-										<input type="radio" id="typeid_411" value="411" name="paytype" style="margin-left:10px;margin-top: 24px;" checked="true"> </label>
-								</div>
-								<label id="411" for="typeid_411" class="mask-event"></label>
-							</li>
-							<li class="gg_property_cash_buy">
-								<div class="gg_property_cash-flag">
-									<span class="gg-property_cash_style_min">￥</span>
-									<span class="gg-property_cash_style_max">500</span>
-								</div>
-								<div class="ui-list-info gg-property_cash-info">
-									<div class="gg-property_cash-info-bg">
-										<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
-											<span class="gg-property_cash_style_min">再送￥</span>
-											<span class="gg-property_cash_style_mid">300</span>
-											<span class="gg-property_cash_style_min">价值:￥800</span>
-										</h4>
-										<p class="ui-nowrap" style="padding-top: 10px">
-											<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：365天</span>
-										</p>
-									</div>
-								</div>
-								<div class="ui-list-action" style="width: 40px;">
-									<label class="ui-radio " style="margin-top: 6px">
-										<input type="radio" id="typeid_423" value="423" name="paytype" style="margin-left:10px;margin-top: 24px;"> </label>
-								</div>
-								<label id="423" for="typeid_423" class="mask-event"></label>
-							</li>
-							<li class="gg_property_cash_buy">
-								<div class="gg_property_cash-flag">
-									<span class="gg-property_cash_style_min">￥</span>
-									<span class="gg-property_cash_style_max">1000</span>
-								</div>
-								<div class="ui-list-info gg-property_cash-info">
-									<div class="gg-property_cash-info-bg">
-										<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
-											<span class="gg-property_cash_style_min">再送￥</span>
-											<span class="gg-property_cash_style_mid">900</span>
-											<span class="gg-property_cash_style_min">价值:￥1900</span>
-										</h4>
-										<p class="ui-nowrap" style="padding-top: 10px">
-											<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：730天</span>
-										</p>
-									</div>
-								</div>
-								<div class="ui-list-action" style="width: 40px;">
-									<label class="ui-radio " style="margin-top: 6px">
-										<input type="radio" id="typeid_435" value="435" name="paytype" style="margin-left:10px;margin-top: 24px;"> </label>
-								</div>
-								<label id="435" for="typeid_435" class="mask-event"></label>
-							</li>
-							<li class="gg_property_cash_buy">
-								<div class="gg_property_cash-flag">
-									<span class="gg-property_cash_style_min">￥</span>
-									<span class="gg-property_cash_style_max">2000</span>
-								</div>
-								<div class="ui-list-info gg-property_cash-info">
-									<div class="gg-property_cash-info-bg">
-										<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
-											<span class="gg-property_cash_style_min">再送￥</span>
-											<span class="gg-property_cash_style_mid">2000</span>
-											<span class="gg-property_cash_style_min">价值:￥4000</span>
-										</h4>
-										<p class="ui-nowrap" style="padding-top: 10px">
-											<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：1095天</span>
-										</p>
-									</div>
-								</div>
-								<div class="ui-list-action" style="width: 40px;">
-									<label class="ui-radio " style="margin-top: 6px">
-										<input type="radio" id="typeid_447" value="447" name="paytype" style="margin-left:10px;margin-top: 24px;"> </label>
-								</div>
-								<label id="447" for="typeid_447" class="mask-event"></label>
-							</li>
+							[@FindChongZhiList]
+								[#if chongzhiList?? &&chongzhiList?size>0]
+									[#list chongzhiList as chongzhi]
+										<li class="gg_property_cash_buy">
+											<div class="gg_property_cash-flag">
+												<span class="gg-property_cash_style_min">￥</span>
+												<span class="gg-property_cash_style_max">${chongzhi.money!''}</span>
+											</div>
+											<div class="ui-list-info gg-property_cash-info">
+												<div class="gg-property_cash-info-bg">
+													<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
+														<span class="gg-property_cash_style_min">再送￥</span>
+														<span class="gg-property_cash_style_mid">${chongzhi.zsmoney!''}</span>
+														<span class="gg-property_cash_style_min">价值:￥${chongzhi.totalMoney!''}</span></h4>
+													<p class="ui-nowrap" style="padding-top: 10px">
+														<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：365天</span>
+													</p>
+												</div>
+											</div>
+											<div class="ui-list-action" style="width: 40px;">
+												<label class="ui-radio " style="margin-top: 6px">
+													<input type="radio" id="typeid_${chongzhi.id!''}" value="${chongzhi.id!''}" name="paytype" style="margin-left:10px;margin-top: 24px;" [#if chongzhi_index==0]checked="true" [/#if]> </label>
+											</div>
+											<label id="${chongzhi.id!''}" for="typeid_${chongzhi.id!''}" class="mask-event"></label>
+										</li>
+									[/#list]
+								[/#if]
+							[/@FindChongZhiList]
+
 						</ul>
 					</section>
 					<footer class="ui-footer gg-footer gg-property_cash-footer" id="property-footer">
 						<div class="gg-property_cash_referral">
-							<input type="text" id="property_cash_referral_code" placeholder="请输入洗车员工号，没有请忽略"> </div>
+							<input type="text" id="empNo" name="empNo" placeholder="请输入洗车员工号，没有请忽略"> </div>
 						<div class="ui-row-flex">
 							<div class="ui-col ui-col-4">
 								<li class="ui-border-t">
@@ -131,7 +113,7 @@
 							<ul class="ui-tiled ui-border-t " id="g_property_bu">
 								<li id="coupon_buy_alipay" class="gg-property-r gg-property-t-buton-backgroud">
 									<div>
-										<img class="gg-property-r-text-div-text" src="${res}/css/money/css/img/weixin.png">&nbsp;&nbsp;微信支付
+										<img class="gg-property-r-text-div-text" src="${res}/css/money/img/weixin.png">&nbsp;&nbsp;微信支付
 									</div>
 								</li>
 							</ul>

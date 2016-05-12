@@ -38,6 +38,20 @@ function onComplete(data) {
 			map:map,
 			bubble:true
 		})
+		map.on('click',function(e){
+			var strs=e.lnglat;
+			lng=strs.lng;
+			lat=strs.lat;
+			$("#lng").val(lng);
+			$("#lat").val(lat);
+			marker.setPosition(e.lnglat);
+			geocoder.getAddress(e.lnglat,function(status,result){
+				if(status=='complete'){
+					$("#washAddr").val(result.regeocode.formattedAddress);
+					$("#maplocation").val($("#washAddr").val());
+				}
+			})
+		})
 	});
 	var lnglatXY=[lng, lat];//地图上所标点的坐标
 	geocoder.getAddress(lnglatXY, function(status, result) {
@@ -49,6 +63,7 @@ function onComplete(data) {
 			//获取地址失败
 		}
 	});
+
 
 }
 //解析定位错误信息

@@ -174,7 +174,7 @@ ul a {
    /* -webkit-appearance: none;*/
 }
 .input-text:focus{
-    border: 0px solid #32c8a2;
+    border: 1px solid #32c8a2;
 }
 .input-text.ui-state-disable,
 .input-text.ui-state-disabled {

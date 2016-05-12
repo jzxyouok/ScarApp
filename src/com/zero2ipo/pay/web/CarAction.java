@@ -17,6 +17,7 @@ import com.zero2ipo.pay.util.OrderUtil;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateMessageUtils;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
+import org.apache.http.protocol.HTTP;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -823,7 +824,7 @@ public class CarAction {
 	//获取微信支付参数信息
 	public String getWXJsParamForNative(HttpServletRequest request, float total_free,String outTradeNo) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		MdlPay pay = getMdlPay();
+		MdlPay pay = getMdlPay(request);
 		WXPrepay prePay = getWxPrepay(request,outTradeNo);
 		float b = (float) (Math.round(total_free * 100)) / 100;
 		prePay.setTotal_fee((int) (b * 100) + "");
@@ -893,12 +894,12 @@ public class CarAction {
 	 *
 	 * @return
 	 */
-	public MdlPay getMdlPay() {
+	public MdlPay getMdlPay(HttpServletRequest request) {
 		MdlPay pay = new MdlPay();
-		String partnerId = coreService.getValue(CodeCommon.PartnerKey);
-		String appid = coreService.getValue(CodeCommon.APPID);
-		//String prePayBody=coreService.getValue(CodeCommon.PREPAY_BODY);
-		String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
+		ServletContext application =request.getSession().getServletContext();
+		String partnerId =application.getAttribute(MobileContants.PARTNERID_KEY)+"";
+		String appid =application.getAttribute(MobileContants.APPID_KEY)+"";
+		String partnerValue = application.getAttribute(MobileContants.PARTNERVALUE_KEY)+"";
 		pay.setAppId(appid);
 		pay.setPartnerId(partnerId);
 		pay.setPartnerKey(partnerValue);
