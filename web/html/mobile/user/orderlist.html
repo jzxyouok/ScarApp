@@ -106,7 +106,7 @@
 		        	<div class="btnoper clearfix">
 			        	<span class="amount">总价：<font>${order.price?string("#.##")}元</font></span>
 						[#if order.status=='-1']
-							<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: right;background-color: red;" onclick="javascript:wxpay('${order.id}')">支付</span>
+							<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: right;background-color: #51AD8F;color:white" onclick="javascript:wxpay('${order.id}')">支付</span>
 						[#else]
 						<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: left;" onclick="window.location.href='/f/order${order.id}.html'">查看</span>
 						[/#if]
