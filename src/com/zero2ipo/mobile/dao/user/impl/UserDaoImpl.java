@@ -53,7 +53,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	private static final String UPDATE_USER_LOGINNUM = "zero2ipo.mobile.user.updateUserLoginNum";
 	private static final String UPDATE_USER_MOBILE = "com.app.mobile.user.updateUserMobile";
 	private static final String UPDATE_USER_OPENID = "com.app.mobile.user.updateUserOpenId";
-	private static final String FIND_ADMIN_BYMAP = "zero2ipo.mobile.admin.findUserInfoList";
+	private static final String FIND_ADMIN_BYMAP = "zero2ipo.mobile.admin.findUserById";
 	private static final String FIND_ALL_ADMINS = "zero2ipo.mobile.admin.findUserInfoList";
 	private static final String UPDATE_SEND_ORDER = "ggwash.mobile.sendOrder.updSendOrder";
 	private static final String UPDATE_ADMIN = "zero2ipo.mobile.admin.upSysOper";
@@ -282,7 +282,6 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		try{
 			admin=(AdminBo)this.query(FIND_ADMIN_BYMAP, queryMap);
 		}catch (Exception e){
-			//u=new UserEntity();
 			e.printStackTrace();
 		}
 		return admin;

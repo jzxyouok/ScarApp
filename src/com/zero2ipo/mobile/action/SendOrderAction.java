@@ -103,7 +103,7 @@ public class SendOrderAction {
 			String keyword3="";
 			String keyword4="";
 			if(!StringUtil.isNullOrEmpty(order)){
-				keyword1=order.getAddress();
+				keyword1=order.getOutTradeNo();
 				keyword2=order.getWashTime();
 				keyword3=order.getWashType();
 			}
@@ -442,7 +442,6 @@ public class SendOrderAction {
 		temp.setTemplate_id(msgTemplateId);
 		temp.setUrl(url);
 		temp.setTopcolor("#000000");
-
 		Map<String,TemplateData> paramMap=new HashMap<String, TemplateData>();
 		TemplateData data0=new TemplateData();
 		data0.setValue("尊敬的客户您好，师傅已开始为您的爱车服务");

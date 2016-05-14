@@ -63,19 +63,19 @@
     			[@find_order_byid id="${orderId}"]
 	    		[#if order??]
 	    			[#if order.sendOrderStatus?number lt 1]
-	    				 <div id='d_statussub2' class="c_fllf">
-	                    	<div class=" c_imgsize c_statusimg" id="d_status2"></div>
+	    				 <div  class="c_fllf">
+	                    	<div class=" c_imgsize c_statusimg" ></div>
 	                   		 <div class='c_statustip'>派单完成</div>
 			            </div>
 	    			[#else]
 	    			 <div id='d_statussub2' class="c_fllf0">
-	                    	<div class=" c_imgsize c_statusimg" id="d_status2"></div>
+	                    	<div class=" c_imgsize c_statusimg" ></div>
 	                   		 <div class='c_statustip'>派单完成</div>
 			            </div>
 	    			[/#if]
 	    			[#if order.sendOrderStatus?number lt 3]
-	    				   <div id='d_statussub3' class="c_fllf">
-                   			 <div class=" c_imgsize c_statusimg" id="d_status3"></div>
+	    				   <div  class="c_fllf">
+                   			 <div class=" c_imgsize c_statusimg" ></div>
                    			 <div class='c_statustip'>洗车开始</div>
            					 </div>
 	    			[#else]
@@ -85,14 +85,14 @@
 		           			 </div>
 	    			[/#if]
 	    			[#if order.sendOrderStatus?number lt 4]
-	    				    <div id='d_statussub4' class="c_fllf">
-			                    <div class=" c_imgsize c_statusimg" id="d_status4"></div>
+	    				    <div  class="c_fllf">
+			                    <div class=" c_imgsize c_statusimg" ></div>
 			                    <div class='c_statustip'>洗车完成</div>
 			           		 </div>
 
 	    			[#else]
 	    				   <div id='d_statussub4' class="c_fllf0">
-				                    <div class=" c_imgsize c_statusimg" id="d_status4"></div>
+				                    <div class=" c_imgsize c_statusimg" ></div>
 				                    <div class='c_statustip'>洗车完成</div>
 				            </div>
 

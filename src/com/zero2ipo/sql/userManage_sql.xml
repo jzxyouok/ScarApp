@@ -120,7 +120,7 @@
 			   U.USER_ID=#userId#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="orderId">
-			   U.USER_ID=(SELECT user_id FROM BSB_SEND_ORDER  WHERE order_id=#orderId#  )
+			   U.USER_ID in (SELECT user_id FROM BSB_SEND_ORDER  WHERE order_id=#orderId#  )
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="mobile">
 			    U.MOBILE=#mobile#
