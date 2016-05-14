@@ -74,6 +74,7 @@ public class Oauth2Servlet {
             	Map<String,Object> queryMap=new HashMap<String,Object>();
             	queryMap.put("openId", openid);
             	Users u=userServices.findUserByMap(queryMap);
+                System.out.println("从数据库中查询出来的openid=================="+u);
             	if(!StringUtil.isNullOrEmpty(u)&&null!=u){
             		SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, u);
             	}else{
@@ -112,6 +113,7 @@ public class Oauth2Servlet {
                     Map<String,Object> queryMap=new HashMap<String,Object>();
                     queryMap.put("openId", openid);
                     AdminBo bo=userServices.findAdminLoginMessage(queryMap);
+                    System.out.println("从数据库中查询出来的管理员===================="+bo);
                     if(!StringUtil.isNullOrEmpty(bo)&&null!=bo){
                         SessionHelper.setAttribute(request, MobileContants.ADMIN_SESSION_KEY, bo);
                         model.put("status", "0");

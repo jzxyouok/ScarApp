@@ -740,11 +740,18 @@ public class CarAction {
 		query.put("transactionId",transaction_id);
 		Order count=orderService.findById(query);
 		System.out.println("根据商户订单号查询出付款结果==================================="+count);
-		if(StringUtil.isNullOrEmpty(count)){
-			//从缓存中获取订单
-			ServletContext application =request.getSession().getServletContext();
-			Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+		//从缓存中获取订单
+		ServletContext application =request.getSession().getServletContext();
+		Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+		String url="";
+		if(!StringUtil.isNullOrEmpty(order)){
 			System.out.println("从缓存中获取到的订单信息======================"+order);
+			url="redirect:/my/order"+order.getId()+".html";
+			mv.setViewName(url);
+			result.put("orderId",order.getId());
+		}
+
+		if(StringUtil.isNullOrEmpty(count)){
 			if(!StringUtil.isNullOrEmpty(order)){
 				//更新订单支付状态，同时更新商户订单号和交易单号
 				order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
@@ -758,9 +765,6 @@ public class CarAction {
 				System.out.println("从缓存中获取的orderId=============="+order.getId());
 				flag=orderService.updateOrderByOutTradeNo(order);
 				System.out.println("更新订单状态========================="+flag);
-				String url="redirect:/my/order"+order.getId()+".html";
-				mv.setViewName(url);
-				result.put("orderId",order.getId());
 			}
 			//下完单后是否开启自动派单功能
 			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
@@ -796,8 +800,11 @@ public class CarAction {
 						String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 						String washType=order.getWashType();
 						//查询域名
-						String  domain=coreService.getValue(CodeCommon.DOMAIN);
-						String url=domain+"/renwu/order"+order.getId()+".html";
+						String  domain=application.getAttribute(CodeCommon.DOMAIN)+"";//首先从缓存中获取
+						if(StringUtil.isNullOrEmpty(domain)){//
+							  domain=coreService.getValue(CodeCommon.DOMAIN);
+						}
+						url=domain+"/renwu/order"+order.getId()+".html";
 						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
 						//发送模板消息
 						String appId=coreService.getValue(CodeCommon.APPID);

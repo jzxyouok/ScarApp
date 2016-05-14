@@ -282,10 +282,8 @@ public class UserAction {
 			//洗车工首次登录才登陆成功之后，自动绑定微信
 			String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 			if(!StringUtil.isNullOrEmpty(openid)){
-				if(StringUtil.isNullOrEmpty(admin.getIp())){
 					admin.setIp(openid);
 					userServices.updateAdmin(admin);
-				}
 			}
 
 			String preUrl=SessionHelper.getStringAttribute(request, MobileContants.PAGE_SESSION_KEY);
