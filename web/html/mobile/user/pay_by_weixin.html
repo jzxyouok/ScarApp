@@ -14,7 +14,8 @@
 	//ajax微信付款，首先获取jsParam
 	function wxpay(id){
 		var url="/order/getJsParam.html";
-		 var jsParam=$("#jsParam").val();
+		var jsParam='${order.jsParam}';
+		jsParam=eval("("+jsParam+")");
 		if(''==jsParam||null==jsParam){
 			chongxinGetJsParam(id,url);
 		}else{
@@ -76,20 +77,12 @@
     <div id="wrapper" >
         <div id="scroller">
         <article id="thelist">
-      	[#if orderId??]
-				[@find_order_byid id="${orderId}"]
 			    [#if order??]
             	 <section>
 	        	<div class="userlist">
 		        	<div class="listinfo">
-						[@portal_picture typeName="wx_logo"]
-						[#list pictures as pic]
-						<img class="avataricon" src="${pic.attachmentUrl!''}">
-						[/#list]
-						[/@portal_picture]
-			        	<div class="userinfo p_r">
+						<div class="userinfo p_r">
 				        	<p class="username">订单详情</p>
-							<input type="hidden" id="jsParam" name="jsParam" value="">
 	    						<p>
 					        		<span>订单号：</span>
 					        		<span>${order.orderId[0..14]}</span>
@@ -125,8 +118,6 @@
 	                               	 	<span class="orderstate color_orange">用户取消</span>
 	                                [/#if]
 
-	    						[/#if]
-	    						[/@find_order_byid]
 
 				        </div>
 		        	</div>
@@ -142,13 +133,7 @@
             [#else]
 	            <div class="userlist">
 			        	<div class="listinfo">
-							[@portal_picture typeName="wx_logo"]
-							[#list pictures as pic]
-							<img class="avataricon" src="${pic.attachmentUrl!''}">
-							[/#list]
-							[/@portal_picture]
 				        	<div class="userinfo p_r">
-					        	<!--<p class="username">洪宝洗车</p>-->
 					        	<p >  暂无订单<a href="/"><font color="green" >去下单</font></a></p>
 					        </div>
 

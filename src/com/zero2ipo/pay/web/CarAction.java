@@ -101,7 +101,15 @@ public class CarAction {
 		}else{
 			mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 		}
-		mv.addObject("orderId",id);
+		//首先从缓存中获取order
+		Order order= (Order) SessionHelper.getAttribute(request,MobileContants.CURRENT_ORDER_KEY);
+		if(StringUtil.isNullOrEmpty(order)){
+			//如过缓存中不存在再去查询数据库
+			Map<String,Object> map=new HashMap<String, Object>();
+			map.put("id",id);
+			order=orderService.findById(map);
+		}
+		mv.addObject("order",order);
 		return mv;
 	}
 	@RequestMapping(value = "/car", method = RequestMethod.GET)
@@ -483,7 +491,11 @@ public class CarAction {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+		Map<String,Object> queryMap=new HashMap<String,Object>();
+		queryMap.put("id", orderId);
 		mv.addObject("orderId", orderId);
+		Order order=orderService.findById(queryMap);
+		mv.addObject("order",order);
 		/**根据orderId查询订单
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("orderId",orderId);
@@ -514,10 +526,13 @@ public class CarAction {
 		Map<String,Object> queryMap=new HashMap<String, Object>();
 		queryMap.put("id",orderId);
 		Order order=orderService.findById(queryMap);
+		//此时将订单放到缓存中
+		ServletContext application =request.getSession().getServletContext();
+		application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
 		if(!StringUtil.isNullOrEmpty(order)){
 			//重新生成微信支付参数，防止订单过期
 			float toatl=order.getPrice();
-			jsParam=getWXJsParamForNative(request,toatl,orderId);
+			jsParam=getWXJsParamForNative(request,toatl);
 
 		}
 		return jsParam;
@@ -609,10 +624,15 @@ public class CarAction {
 				order.setUserId(user.getUserId());
 				orderId=OrderUtil.GetOrderNumber("");
 				//保存微信jsParam
-				//jsParam=getWXJsParamForNative(request,total_price,orderId);
-				//order.setJsParam(jsParam);
+				jsParam=getWXJsParamForNative(request,total_price);
+				order.setJsParam(jsParam);
 			    order.setOrderId(orderId);
 				id=orderService.add(order);
+				//下单完成后保存订单主键到缓存中，修改订单状态的时候要用
+				order.setId(id);
+				ServletContext application =request.getSession().getServletContext();
+				application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
+				System.out.print("保存缓存中的orderid==========================="+order.getId());
 			}
 		}
 		String url="redirect:/order/wxpay.html?orderId="+id;
@@ -688,9 +708,6 @@ public class CarAction {
 	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变
 	 * @param request
 	 * @param response
-	 * @param model
-	 * @param map
-	 * @param orderId
 	 * @return
 	 */
 	@RequestMapping(value = "/order/wxpayHdMethod.html")
@@ -719,22 +736,28 @@ public class CarAction {
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
 		Map<String,Object> query=new HashMap<String, Object>();
+		System.out.println("获取到的商户订单号============================"+transaction_id);
 		query.put("transactionId",transaction_id);
 		Order count=orderService.findById(query);
+		System.out.println("根据商户订单号查询出付款结果==================================="+count);
 		if(StringUtil.isNullOrEmpty(count)){
-			Order order=new Order();
-			order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
-			if("SUCCESS".equals(return_code)){
-				order.setOrderStatus(MobileContants.status_1);//已支付
-				order.setTransactionId(transaction_id);
-			}
-			//根据outTradeNo更新订单信息
-			flag=orderService.updateOrderByOutTradeNo(order);
-			//根据orderid查询Order
-			Map<String,Object> queryMap=new HashMap<String, Object>();
-			queryMap.put("outTradeNo",out_trade_no);
-			order=orderService.findById(queryMap);
+			//从缓存中获取订单
+			ServletContext application =request.getSession().getServletContext();
+			Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+			System.out.println("从缓存中获取到的订单信息======================"+order);
 			if(!StringUtil.isNullOrEmpty(order)){
+				//更新订单支付状态，同时更新商户订单号和交易单号
+				order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
+				if("SUCCESS".equals(return_code)){
+					order.setOrderStatus(MobileContants.status_1);//已支付
+					order.setTransactionId(transaction_id);
+					//付款成功之后将当前订单缓存key清楚
+					SessionHelper.removeAttribute(request,MobileContants.CURRENT_ORDER_KEY);
+				}
+				//根据order主键更新订单信息
+				System.out.println("从缓存中获取的orderId=============="+order.getId());
+				flag=orderService.updateOrderByOutTradeNo(order);
+				System.out.println("更新订单状态========================="+flag);
 				String url="redirect:/my/order"+order.getId()+".html";
 				mv.setViewName(url);
 				result.put("orderId",order.getId());
@@ -762,7 +785,6 @@ public class CarAction {
 				sendOrderService.addSendOrder(sendOrder);
 				//派单完成后是否给管理员发送短信或者微信
 				String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
-				System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
 				if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
 					String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
 					if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
@@ -822,10 +844,10 @@ public class CarAction {
 		return retMap;
 	}
 	//获取微信支付参数信息
-	public String getWXJsParamForNative(HttpServletRequest request, float total_free,String outTradeNo) {
+	public String getWXJsParamForNative(HttpServletRequest request, float total_free) {
 		Map<String, Object> result = new HashMap<String, Object>();
-		MdlPay pay = getMdlPay(request);
-		WXPrepay prePay = getWxPrepay(request,outTradeNo);
+		MdlPay pay = new MdlPay();
+		WXPrepay prePay = getWxPrepay(request);
 		float b = (float) (Math.round(total_free * 100)) / 100;
 		prePay.setTotal_fee((int) (b * 100) + "");
 		prePay.setTrade_type("JSAPI");
@@ -833,10 +855,9 @@ public class CarAction {
 		//此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
-		System.out.println("prepayid=========================================================" + prepayid);
 		if (!"".equals(prepayid) && prepayid != null && prepayid.length() > 10) {
 			// 生成微信支付参数，此处拼接为完整的JSON格式，符合支付调起传入格式
-			jsParam = WXPay.createPackageValue(pay.getAppId(), pay.getPartnerKey(), prepayid);
+			jsParam = WXPay.createPackageValue(prePay.getAppid(), prePay.getPartnerKey(), prepayid);
 		}
 		System.out.println("jsParam=======================================================================" + jsParam);
 		return jsParam;
@@ -844,7 +865,7 @@ public class CarAction {
 	/**
 	 * 动态获取wxPrepay
 	 */
-	private WXPrepay getWxPrepay(HttpServletRequest request,String orderId) {
+	private WXPrepay getWxPrepay(HttpServletRequest request) {
 		ServletContext application =request.getSession().getServletContext();
 		String partnerId =application.getAttribute(MobileContants.PARTNERID_KEY)+"";
 		String appid =application.getAttribute(MobileContants.APPID_KEY)+"";
@@ -860,15 +881,6 @@ public class CarAction {
 		prePay.setNotify_url(domain + notifyUrl);
 		String outTradeNo=UUID.randomUUID().toString().replace("-","");
 		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
-		Order order=new Order();
-		System.out.println("更新outtradeno钱orderid==================="+orderId+"\touttradeNo========="+outTradeNo);
-		order.setOutTradeNo(outTradeNo);
-		if(orderId.length()>10){
-			order.setOrderId(orderId);
-		}else{
-			order.setId(Integer.parseInt(orderId));
-		}
-		orderService.updateOuttradeNo(order);
 		prePay.setSpbill_create_ip(spbill_create_ip);
 		String openid = "";
 		//首先从当前登录的账号信息中获取openid
