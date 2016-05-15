@@ -128,6 +128,10 @@
 			<isNotEmpty prepend="AND" property="userPwd">
 			    U.USER_PWD=#userPwd#
 			</isNotEmpty>
+				 <isNotEmpty prepend="AND" property="openId">
+			    U.IP=#openId#
+			</isNotEmpty>
+
 		</dynamic>
 
 	</select>

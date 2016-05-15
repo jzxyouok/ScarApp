@@ -102,7 +102,8 @@ public class CarAction {
 			mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 		}
 		//首先从缓存中获取order
-		Order order= (Order) SessionHelper.getAttribute(request,MobileContants.CURRENT_ORDER_KEY);
+		ServletContext application =request.getSession().getServletContext();
+		Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
 		if(StringUtil.isNullOrEmpty(order)){
 			//如过缓存中不存在再去查询数据库
 			Map<String,Object> map=new HashMap<String, Object>();
@@ -748,7 +749,6 @@ public class CarAction {
 			System.out.println("从缓存中获取到的订单信息======================"+order);
 			url="redirect:/my/order"+order.getId()+".html";
 			mv.setViewName(url);
-			result.put("orderId",order.getId());
 		}
 
 		if(StringUtil.isNullOrEmpty(count)){
@@ -768,6 +768,7 @@ public class CarAction {
 			}
 			//下完单后是否开启自动派单功能
 			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+			System.out.println("自动派单标志=============================="+autoPaiDan);
 			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 				//根据经纬度派单给最近的洗车工师父
 				SendOrder sendOrder=new SendOrder();
@@ -797,18 +798,23 @@ public class CarAction {
 					if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
 						//发送微信通知
 						String openId=bo.getIp();//获取洗车工绑定的微信openid
-						String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+						//String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+						String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
 						String washType=order.getWashType();
 						//查询域名
-						String  domain=application.getAttribute(CodeCommon.DOMAIN)+"";//首先从缓存中获取
+						String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
+						System.out.println("从缓存中获取到的domain========================"+domain);
 						if(StringUtil.isNullOrEmpty(domain)){//
 							  domain=coreService.getValue(CodeCommon.DOMAIN);
+							  System.out.println("从数据库中获取到的domain===================="+domain);
 						}
 						url=domain+"/renwu/order"+order.getId()+".html";
+						System.out.println("派单给======================="+bo.getUserName());
+						System.out.println("openid===================="+openId);
 						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
 						//发送模板消息
-						String appId=coreService.getValue(CodeCommon.APPID);
-						String appsecret=coreService.getValue(CodeCommon.APPSECRET);
+						String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+						String appsecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
 						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
 
 					}

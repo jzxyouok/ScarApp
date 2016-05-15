@@ -30,11 +30,14 @@ public class InitServlet extends HttpServlet {
 		String partnerValue = coreService.getValue(CodeCommon.PartnerValue);
 		String prePayBody = coreService.getValue(CodeCommon.PREPAY_BODY);
 		String domain=coreService.getValue(CodeCommon.DOMAIN);
+		String paiDanTemplate=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 		wac.getServletContext().setAttribute(MobileContants.APPID_KEY,appid);//保存appid到缓存中
+		wac.getServletContext().setAttribute(MobileContants.APPSCRET_KEY,appid);//保存appid到缓存中
 		wac.getServletContext().setAttribute(MobileContants.PARTNERID_KEY,partnerId);//保存商户id到缓存中
 		wac.getServletContext().setAttribute(MobileContants.PARTNERVALUE_KEY,partnerValue);//保存商户秘钥到缓存中
 		wac.getServletContext().setAttribute(MobileContants.PREPAYBODY_KEY,prePayBody);//保存微信支付主体到缓存中
 		wac.getServletContext().setAttribute(MobileContants.DOMAIN_KEY,domain);//保存域名到缓存中
+		wac.getServletContext().setAttribute(MobileContants.PAIDAN_TEMPLATE_KEY,paiDanTemplate);//保存域名到缓存中
 
 		// 获取web.xml中配置的参数
 		//TokenThread.appid = getInitParameter("appid");
