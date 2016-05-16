@@ -15,6 +15,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -239,6 +241,9 @@ public class UserAction {
 			//登陆成功，保存session
 			map.put("user",user);
 			SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, user);
+			//登陆成功，保存user到全局session中
+			//WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+			//wac.getServletContext().setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY,user);
 			map.put("success",true);
 		}
 		map.put("page", page);

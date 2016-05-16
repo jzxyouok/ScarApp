@@ -25,7 +25,7 @@ public class WashCouponServiceImpl implements IWashCouponService{
 	@Override
 	public void delUserCouponById(String id) {
 		 washCouponDao.delUserCouponById(id);
-		
+
 	}
 	@Override
 	public UserCoupon findUserCouponById(Map<String, Object> queryMap) {
@@ -35,7 +35,7 @@ public class WashCouponServiceImpl implements IWashCouponService{
 	@Override
 	public void updateCouponNum(UserCoupon userCoupon) {
 		washCouponDao.updateCouponNum(userCoupon);
-		
+
 	}
 	@Override
 	public List<UserCoupon> findUserCouponList(Map<String, Object> queryMap) {
@@ -46,6 +46,11 @@ public class WashCouponServiceImpl implements IWashCouponService{
 	public List<UserCoupon> IsSd(Map<String, Object> queryMap) {
 		// TODO Auto-generated method stub
 		return washCouponDao.IsSd(queryMap);
+	}
+
+	@Override
+	public int findAllListCount(Map<String, Object> queryMap) {
+		 return washCouponDao.findAllListCount(queryMap);
 	}
 }
 

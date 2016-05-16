@@ -18,6 +18,7 @@ public class WashCouponDaoImpl extends IbatisBaseDao implements IWashCouponDao {
 	public final static String UPDATE_COUPON_NUM="ggwash.couponbuy.update";
 	public final static String FIND_USER_COUPON_LIST="ggwash.couponbuy.findUser_couponList";
 	public final static String FIND_USER_COUPON_ALL_LIST="ggwash.couponbuy.findAllList";
+	public final static String FIND_USER_COUPON_LIST_COUNT="ggwash.couponbuy.findAllListCount";
 	public final static String FIND_USER_COUPON_ALL_LIST_BYMOBILE="ggwash.couponbuy.findUserCouponByMoible";
 
 	@Override
@@ -50,8 +51,8 @@ public class WashCouponDaoImpl extends IbatisBaseDao implements IWashCouponDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 	}
 
 	@Override
@@ -73,7 +74,7 @@ public class WashCouponDaoImpl extends IbatisBaseDao implements IWashCouponDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -96,6 +97,17 @@ public class WashCouponDaoImpl extends IbatisBaseDao implements IWashCouponDao {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int findAllListCount(Map<String, Object> queryMap) {
+		int count=0;
+		try{
+			count=(Integer) this.query(FIND_USER_COUPON_LIST_COUNT, queryMap);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }

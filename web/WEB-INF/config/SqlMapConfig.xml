@@ -33,4 +33,5 @@
 	<sqlMap resource="com/zero2ipo/common/entity/app/Goodses_sql.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/car/chongzhi/bo/chongzhi_sql.xml"></sqlMap>
 	<sqlMap resource="com/zero2ipo/car/userchongzhi/bo/userchongzhi_sql.xml"></sqlMap>
+	<sqlMap resource="com/zero2ipo/car/vipcoupon/bo/Vip_coupon_sql.xml"></sqlMap>
 </sqlMapConfig>

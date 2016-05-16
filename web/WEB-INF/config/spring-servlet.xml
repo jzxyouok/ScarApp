@@ -84,7 +84,9 @@
 				<entry key="find_config_bykey" value-ref="find_config_bykey"></entry>
 				<entry key="serviceProjectListDirective" value-ref="serviceProjectListDirective"></entry>
 				<entry key="FindWashCountByUserId" value-ref="FindWashCountByUserId"></entry>
-				<entry key="FindChongZhiList" value-ref="FindChongZhiList"></entry>
+				<entry key="findChongZhiList" value-ref="findChongZhiList"></entry>
+				<entry key="findWashCouponCount" value-ref="findWashCouponCount"></entry>
+				<entry key="findVipCouponCount" value-ref="findVipCouponCount"></entry>
 
 			</map>
 		</property>
@@ -122,7 +124,9 @@
 	<bean id="find_config_bykey" class="com.zero2ipo.common.freemarker.directives.FindConfigByConfigKeyDirective"/>
 	<bean id="serviceProjectListDirective" class="com.zero2ipo.common.freemarker.directives.ServiceProjectListDirective"/>
 	<bean id="FindWashCountByUserId" class="com.zero2ipo.common.freemarker.directives.FindWashCountByUserIdDirective"/>
-	<bean id="FindChongZhiList" class="com.zero2ipo.common.freemarker.directives.qianbao.FindChongZhiListDirective"/>
+	<bean id="findChongZhiList" class="com.zero2ipo.common.freemarker.directives.qianbao.FindChongZhiListDirective"/>
+	<bean id="findWashCouponCount" class="com.zero2ipo.common.freemarker.directives.qianbao.FindWashCouponCountDirective"/>
+	<bean id="findVipCouponCount" class="com.zero2ipo.common.freemarker.directives.qianbao.FindCouponCountDirective"/>
 	<!-- 配置freeMarker视图解析器 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">

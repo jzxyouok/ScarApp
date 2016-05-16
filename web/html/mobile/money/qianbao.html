@@ -32,7 +32,7 @@
 							<li class="gg-property_index_moneyline">
 								<div class="ui-list-info">
 									<p class="gg-property_index_money_title">账户余额（元）</p>
-									<p class="gg-property_index_money_desc">0.00</p>
+									<p class="gg-property_index_money_desc">${_user_key.account!''}</p>
 								</div>
 								<div class="ui-list-action">
 									<button type="button" class="ui-btn gg-btn-green" id="property_index_charge">立即充值</button>
@@ -102,7 +102,11 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">洗车券</h4>
-									<div class="ui-txt-info">0张</div>
+									<div class="ui-txt-info">
+										[@findWashCouponCount userId="${_user_key.userId!''}"]
+										${washCouponCount!'0'}张
+										[/@findWashCouponCount]
+									</div>
 								</div>
 							</li>
 							<li class="ui-border-t gg-property_index_item" data-href="#act=property_discount">
@@ -111,7 +115,11 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">优惠券</h4>
-									<div class="ui-txt-info">0张</div>
+									<div class="ui-txt-info">
+										[@findVipCouponCount userId="${_user_key.userId!''}"]
+											${vipCouponCount!'0'}张
+										[/@findVipCouponCount]
+									</div>
 								</div>
 							</li>
 							<li class="ui-border-t gg-property_index_item" data-href="#act=property_wallet">
@@ -120,7 +128,7 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">红包</h4>
-									<div class="ui-txt-info">0.00元</div>
+									<div class="ui-txt-info">${_user_key.account!''}元</div>
 								</div>
 							</li>
 						</ul>

@@ -130,7 +130,7 @@ public class SendOrderAction {
 				}
 				String domain=getValue(CodeCommon.DOMAIN);
 				String url=domain+"/f/order"+orderId+".html";
-				String templateMessageId=getValue( CodeCommon.WASH_CAR_START_MESSAGE);
+				String templateMessageId=getValue(CodeCommon.WASH_CAR_START_MESSAGE);
 				WxTemplate wxTemplate=getStartWxTemplate(openId, templateMessageId, url, keyword1, keyword2,keyword3,keyword4);
 				String appid=getValue(CodeCommon.APPID);
 				String appscret=getValue(CodeCommon.APPSECRET);

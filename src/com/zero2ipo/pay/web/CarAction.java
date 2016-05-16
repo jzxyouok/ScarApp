@@ -765,6 +765,9 @@ public class CarAction {
 				System.out.println("从缓存中获取的orderId=============="+order.getId());
 				flag=orderService.updateOrderByOutTradeNo(order);
 				System.out.println("更新订单状态========================="+flag);
+				//更新订单成功之后，重新更新一下缓存
+				application.removeAttribute(MobileContants.CURRENT_ORDER_KEY);
+				application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
 			}
 			//下完单后是否开启自动派单功能
 			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);

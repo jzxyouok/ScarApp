@@ -9,6 +9,7 @@ package com.zero2ipo.core;
 public class MobileContants {
 
 	public static final String USER_SESSION_KEY = "_user_key";
+	public static final String USER_APPLICATION_SESSION_KEY = "_application_user_key";
 	public static final String ADMIN_SESSION_KEY = "_admin_key";
 	public static final String CAR_SESSION_KEY = "_car_key";
 	public static final String WEIXIN_PAY_TRANSACTION_ID_KEY = "_weixin_pay_key";

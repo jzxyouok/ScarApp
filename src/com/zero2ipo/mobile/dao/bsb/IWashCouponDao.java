@@ -21,5 +21,6 @@ public interface IWashCouponDao {
 	public List<UserCoupon> findUserCouponList(Map<String, Object> queryMap);
 
 	List<UserCoupon> IsSd(Map<String, Object> queryMap);
-	
+
+	public int findAllListCount(Map<String, Object> queryMap);
 }
