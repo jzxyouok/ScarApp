@@ -14,7 +14,8 @@ $( document ).ready(function(e) {
         //$("#book_time_stock").html($("#select_date").val());
     })
     /**选择优惠券**/
-    $("#selectCouponClickBtn").click(function(){
+    $("#selectVipCouponClickBtn").click(function(){
+        alert("点击");
     	//信息填写完成之后，才可以选择优惠券
     	            var carSeats=$("#carSeats").is(":checked");
 			        var carType=$("#carType").val();
@@ -25,37 +26,30 @@ $( document ).ready(function(e) {
 			        var name=$("#name").val();
 			         if(mobile==""||mobile==null){
 			            alert("请填写手机号码");
-			           // hideloading();
 			            return false;
 			        }
 			           if(name==""||name==null){
 			            alert("请填写称呼");
-			           // hideloading();
 			            return false;
 			        }
 			        if(carNo==""||carNo==null){
 			            alert("请填写车牌号");
-			           // hideloading();
 			            return false;
 			        }else if(carNo.length!=7){
 			        	alert("车牌号填写错误");
-			            //hideloading();
 			            return false;
 			        }
-			        
+
 			        if(carColor==""||carColor==null){
 			            alert("请填写车颜色");
-			           // hideloading();
 			            return false;
 			        }
 			        if(carType==""||carType==null){
 			            alert("请填写车型");
-			           // hideloading();
 			            return false;
 			        }
 			        if(washAddr==""||washAddr==null){
 			            alert("请填写洗车地点");
-			           // hideloading();
 			            return false;
 			        }
 			      var preTime=$("#preTime").val();
@@ -63,13 +57,71 @@ $( document ).ready(function(e) {
 			      	alert("请选择预约时间");
 			      	return false;
 			      }
-                var url="/mycoupon.html";
+                var url="/order/mycoupon.html";
                // url=timestamp(url);
                 url=url.replace(" ","%20").replace(":","%3A");
                 $("#myform").attr('method',"get");
                 $("#myform").attr('action',encodeURI(url));
                 $("#myform").submit();
     })
+    /**选择洗车券**/
+    $("#selectCouponClickBtn").click(function(){
+        //信息填写完成之后，才可以选择优惠券
+        var carSeats=$("#carSeats").is(":checked");
+        var carType=$("#carType").val();
+        var carColor=$("#carColor").val();
+        var carNo=$('#carNo').val();
+        var washAddr=$('#washAddr').val();
+        var mobile=$('#mobile').val();
+        var name=$("#name").val();
+        if(mobile==""||mobile==null){
+            alert("请填写手机号码");
+            // hideloading();
+            return false;
+        }
+        if(name==""||name==null){
+            alert("请填写称呼");
+            // hideloading();
+            return false;
+        }
+        if(carNo==""||carNo==null){
+            alert("请填写车牌号");
+            // hideloading();
+            return false;
+        }else if(carNo.length!=7){
+            alert("车牌号填写错误");
+            //hideloading();
+            return false;
+        }
+
+        if(carColor==""||carColor==null){
+            alert("请填写车颜色");
+            // hideloading();
+            return false;
+        }
+        if(carType==""||carType==null){
+            alert("请填写车型");
+            // hideloading();
+            return false;
+        }
+        if(washAddr==""||washAddr==null){
+            alert("请填写洗车地点");
+            // hideloading();
+            return false;
+        }
+        var preTime=$("#preTime").val();
+        if(preTime==""||preTime==null){
+            alert("请选择预约时间");
+            return false;
+        }
+        var url="/mycoupon.html";
+        // url=timestamp(url);
+        url=url.replace(" ","%20").replace(":","%3A");
+        $("#myform").attr('method',"get");
+        $("#myform").attr('action',encodeURI(url));
+        $("#myform").submit();
+    })
+
     /* 车颜色选择 */
     $( "#new_color_sel" ).change(function(){
         var colorvalue = $( this ).find( "option:selected" ).attr('data');
@@ -137,7 +189,7 @@ $( document ).ready(function(e) {
 
 
     });
-  
+
     // 选择某一地址
     $( ".dropdownmodal h1" ).live( "touchstart" , function(){
         event.preventDefault();
@@ -154,9 +206,9 @@ $( document ).ready(function(e) {
             $(".autoaddr").attr("style","display:none");
             $(".dropdownmodal").attr("style","display:none");
             $("#firstAddr").hide();
-           
+
             //select_addr($(this).attr('washAddr'));
-            
+
         }
     });
     /* 新增车辆 */
@@ -191,7 +243,7 @@ $( document ).ready(function(e) {
         getBookTime ();
     }
 
-    
+
 });
 
 
@@ -293,7 +345,7 @@ function ajax(url,data){
 					data:data,
 					type:"post",
 					dataType:'json',
-					async:false, 
+					async:false,
 					beforeSend:function(XMLHttpRequest){
 					},
 					success:function(msg){
@@ -305,11 +357,11 @@ function ajax(url,data){
 						}else{
 							alert("下单异常");
 						}
-						
+
 					},error:function(){
-						
+
 						return;
 					}
 				});
 	}
-	
+

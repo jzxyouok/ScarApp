@@ -22,6 +22,7 @@ public class MobileContants {
 	public static final String CURRENT_ORDER_KEY = "_current_order_key";
 	public static final String CURRENT_CHONGZHI_KEY = "_current_chongzhi_key";
 	public static final String PAIDAN_TEMPLATE_KEY = "_paidan_template_key";
+	public static final String PRE_DATES_KEY = "_pre_dates_key";
 	public static final String AREA_CODE_TYPE = "area_code";
 	public static final String DEFAULT_AREA_LONG = "1000";//默认1公里范围之内洗车有效
 	public static final String ADMIN_MOBILE = "13717625140";//默认1公里范围之内洗车有效

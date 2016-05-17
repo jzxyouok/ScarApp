@@ -29,7 +29,7 @@
 		<script src="${res}/scripts/xc/easydialog.js"></script>
 
 		<script src="${res}/scripts/xc/mobile_common.js"></script>
-		<script src="${res}/scripts/xc/pre_order.js"></script>
+		<script src="${res}/scripts/xc/pre_order.js?v=1"></script>
 		<script src="${res}/scripts/ggwash/selectProject.js"></script>
 		<link href="${res}/css/xc/style2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/main2.css" rel="stylesheet" />
@@ -241,7 +241,7 @@
 
 					<tr>
 						<td class="lable">
-							<img src="${res}/images/remark.png" width="20px" height="20px"/>
+							<img src="${res}/images/exclamation.png" width="20px" height="20px"/>
 							备注
 						</td>
 						<td colspan='2'>
@@ -297,7 +297,7 @@
 				   </tr>
 					<tr>
 						<td class="lable" nowrap="nowrap">
-							<img src="${res}/images/ggwash/order_notes.png" />
+							<img src="${res}/images/ggwash/property_index_coupon.png" style="width:42px;height:30px"/>
 							洗车券
 						</td>
 						<td colspan='2' >
@@ -310,6 +310,50 @@
 									   </span>
 						            </p>
 						        </div>
+						</td>
+					</tr>
+				<!--优惠券-->
+				<tr>
+					<td class="lable" nowrap="nowrap">
+						<img src="${res}/images/ggwash/property_index_discount.png" style="width:42px;height:30px"/>
+						优惠券
+					</td>
+					<td colspan='2' >
+						<div class="oneline appointmenttime">
+							<p class="clearfix bb_none">
+										<span class="f_r brandsel timesel p_r">
+											<font class="textwords v_m" id="couponName">${vipCouponMoney!''}</font>
+											<img class="i_b v_m arrow_down"  src="${res}/css/xc/img/arrow_down.png" id="selectVipCouponClickBtn">
+									   </span>
+							</p>
+						</div>
+					</td>
+				</tr>
+				<!--优惠券-->
+				<!--账户余额-->
+				<tr>
+					<td class="lable" colspan="3" nowrap="nowrap">
+						<p class="introwords clearfix" style="padding-top: 5px;padding-bottom: 5px">
+							<span>余额抵扣</span>
+						</p>
+						<article class="crashintro">
+							<p class="singleoption clearfix">
+								<img class=""   src="${res}/css/xc/img/radio_unsel.png">
+							</p>
+						</article>
+					</td>
+				</tr>
+				<!--账户余额-->
+					<tr>
+						<td colspan="3">
+							<section class="serviceoption">
+								<p class="payment clearfix">
+									<span class="deductions">
+										优惠券抵扣: <font class="deductprice color_green" id="coupon_price">0元</font>
+									</span>
+									<span class="sum">共计: <font class="color_orange"><span>0</span>￥</font></span>
+								</p>
+							</section>
 						</td>
 					</tr>
 					<tr >

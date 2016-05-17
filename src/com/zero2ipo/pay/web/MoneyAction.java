@@ -51,13 +51,14 @@ public class MoneyAction {
 	@RequestMapping(value = "/order/mymoney.html")
 	public ModelAndView mymoney(HttpServletRequest request, HttpServletResponse response, ModelMap model)
 	{
+		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView(MobilePageContants.MY_MONEY_PAGE);
 		//从全局缓存中获取当前登陆的账号
 		Users current= (Users) request.getSession().getAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
 		if(!StringUtil.isNullOrEmpty(current)){
 			mv.addObject("account",current.getAccount());
 		}
-		FmUtils.FmData(request, model);
+
 		return mv;
 	}
 	/**
@@ -65,10 +66,14 @@ public class MoneyAction {
 	 * @author zhengyunfei
 	 * */
 	@RequestMapping(value = "/order/mycoupon.html")
-	public ModelAndView mycoupon(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+	public ModelAndView mycoupon(HttpServletRequest request, HttpServletResponse response, ModelMap model,String status)
 	{
-		ModelAndView mv=new ModelAndView(MobilePageContants.MY_COUPON_PAGE);
 		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView(MobilePageContants.MY_COUPON_PAGE);
+		if(StringUtil.isNullOrEmpty(status)){
+			status=MobileContants.status_0;//默认显示未使用
+		}
+		mv.addObject("status",status);
 		return mv;
 	}
 

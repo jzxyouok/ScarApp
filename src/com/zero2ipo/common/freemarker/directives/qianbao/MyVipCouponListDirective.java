@@ -23,12 +23,13 @@ import java.util.Map;
  */
 public class MyVipCouponListDirective implements TemplateDirectiveModel{
 	private static final String USERID="userId";
+	private static final String PARAM_STATUS="status";
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
 		List<VipCoupon> list=null;
 		try {
 			String userId=DirectiveUtils.getString(USERID, params);
-
+			String status=DirectiveUtils.getString(PARAM_STATUS, params);
 			Map<String,Object> queryMap=new HashMap<String,Object>();
 			if(!StringUtil.isNullOrEmpty(userId)){
 				queryMap.put("userId", userId);

@@ -35,6 +35,9 @@ FROM vip_coupon
 	<isNotEmpty prepend="AND" property="couponCode">
 		coupon_code=#couponCode#
 	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="status">
+		status=#status#
+	</isNotEmpty>
 </dynamic>
 </select>
 

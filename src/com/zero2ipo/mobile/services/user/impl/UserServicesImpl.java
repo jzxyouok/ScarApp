@@ -75,7 +75,7 @@ public class UserServicesImpl implements IUserServices{
 		//基础信息
 		Users user = new Users();
 		user.setUserId(mobile);
-		user.setAccount(userIrId);
+		//user.setAccount(userIrId);
 		user.setPhoneNum(mobile);
 		user.setPassword(MD5PwdEncoder.generatePassword(password));
 		//user.setUserRegisterStep(1);

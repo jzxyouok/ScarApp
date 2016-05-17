@@ -70,6 +70,7 @@ public class DynamicMobilePageAct {
 				String hours=coreService.getValue(CodeCommon.PRE_TIME_HOURS);
 				List<String> preDates=DateUtil.getLast2Hours(Integer.parseInt(days),Integer.parseInt(hours));
 				mv.addObject("preDates", preDates);
+				request.getSession().setAttribute(MobileContants.PRE_DATES_KEY,preDates);//保存录入的车辆信息到缓存中
 				if(!StringUtil.isNullOrEmpty(couponId)){
 					mv.addObject("couponId",couponId);
 					//根据洗车券id查询洗车券信息
@@ -83,6 +84,7 @@ public class DynamicMobilePageAct {
 
 				}
 				mv.addObject("carList",list);
+
 				Car edite=(Car) SessionHelper.getAttribute(request, MobileContants.CAR_SESSION_KEY);
 				if(list.size()>0){
 					car=list.get(0);
@@ -107,6 +109,7 @@ public class DynamicMobilePageAct {
 					car.setCarType(carType);
 				}
 				mv.addObject("bo",car);
+				request.getSession().setAttribute(MobileContants.CAR_SESSION_KEY,car);//保存录入的车辆信息到缓存中
 			}else{
 				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 			}
@@ -117,6 +120,38 @@ public class DynamicMobilePageAct {
 		return mv;
 	}
 
+	/**
+	 * 首页
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
+	public ModelAndView indexPage(HttpServletRequest request,
+							  HttpServletResponse response, ModelMap model,Car car,String couponMoney) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		try {
+			mv.setViewName(MobilePageContants.FM_PAGE_MAIN);
+			//获取当前登录的用户id
+			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+			if(!StringUtil.isNullOrEmpty(user)){
+				//Car c= (Car) request.getSession().getAttribute(MobileContants.CAR_SESSION_KEY);
+				mv.addObject("bo",car);
+				mv.addObject("couponMoney", couponMoney);
+				List<String> preDates= (List<String>) request.getSession().getAttribute(MobileContants.PRE_DATES_KEY);//保存录入的车辆信息到缓存中
+				mv.addObject("preDates",preDates);
+			}else{
+				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return mv;
+	}
 
 	/**
 	 * 我的洗车券
@@ -192,12 +227,12 @@ public class DynamicMobilePageAct {
 			Car car=(Car) SessionHelper.getAttribute(request, MobileContants.CAR_SESSION_KEY);
 			if(!StringUtil.isNullOrEmpty(car)){
 				carNo=car.getCarNo();
-				if(StringUtil.isNullOrEmpty(carNo)){
+				/*if(StringUtil.isNullOrEmpty(carNo)){
 					carNo=user.getAccount();
-				}
-			}else{
+				}*/
+			}/*else{
 				carNo=user.getAccount();
-			}
+			}*/
 			mv.addObject("carNo",carNo);//车牌号
 
 			mv.setViewName(MobilePageContants.FM_PAGE_GMXCQ);
@@ -254,7 +289,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/jfqd.html", method = RequestMethod.GET)
 	public ModelAndView qiandao(HttpServletRequest request,
-								   HttpServletResponse response, ModelMap model) {
+								HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.QIANDAO_PAGE);
@@ -269,7 +304,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/selectCarType.html", method = RequestMethod.GET)
 	public ModelAndView selectCarType(HttpServletRequest request,
-								HttpServletResponse response, ModelMap model,Car car ) {
+									  HttpServletResponse response, ModelMap model,Car car ) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
@@ -286,7 +321,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/selectCarType.html", method = RequestMethod.POST)
 	public ModelAndView selectCarTypeForPost(HttpServletRequest request,
-									  HttpServletResponse response, ModelMap model,Car car ) {
+											 HttpServletResponse response, ModelMap model,Car car ) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.SELECT_CAR_TYPE_PAGE);
@@ -303,7 +338,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/fwxm.html", method = RequestMethod.GET)
 	public ModelAndView selectServiceProjectPage(HttpServletRequest request,
-									  HttpServletResponse response, ModelMap model) {
+												 HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.SELECT_SERVICE_PROJECT_PAEG);
