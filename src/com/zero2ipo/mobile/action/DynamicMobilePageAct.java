@@ -129,7 +129,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public ModelAndView indexPage(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,Car car,String couponMoney) {
+							  HttpServletResponse response, ModelMap model,Car editor,String couponMoney) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		try {
@@ -137,7 +137,7 @@ public class DynamicMobilePageAct {
 			//获取当前登录的用户id
 			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
 			if(!StringUtil.isNullOrEmpty(user)){
-				//Car c= (Car) request.getSession().getAttribute(MobileContants.CAR_SESSION_KEY);
+				Car car= (Car) request.getSession().getAttribute(MobileContants.CAR_SESSION_KEY);
 				mv.addObject("bo",car);
 				mv.addObject("couponMoney", couponMoney);
 				List<String> preDates= (List<String>) request.getSession().getAttribute(MobileContants.PRE_DATES_KEY);//保存录入的车辆信息到缓存中
@@ -162,7 +162,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/mycoupon.html", method = RequestMethod.GET)
 	public ModelAndView wycj(HttpServletRequest request,
-							 HttpServletResponse response, ModelMap model,Car car) {
+							 HttpServletResponse response, ModelMap model) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		//获取当前登录的用户id
@@ -171,9 +171,6 @@ public class DynamicMobilePageAct {
 			mv.setViewName(MobilePageContants.FM_PAGE_WDXCQ);
 			mv.addObject("user", user);
 			mv.addObject("mobile",user.getPhoneNum());
-			if(!StringUtil.isNullOrEmpty(car)){
-				SessionHelper.setAttribute(request, MobileContants.CAR_SESSION_KEY, car);
-			}
 		}else{
 			mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 		}

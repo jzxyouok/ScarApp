@@ -2,6 +2,7 @@ package com.zero2ipo.pay.web;
 
 import com.zero2ipo.car.userchongzhi.bizc.IUserChongZhi;
 import com.zero2ipo.car.userchongzhi.bo.UserChongZhiBo;
+import com.zero2ipo.common.entity.Car;
 import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
@@ -66,12 +67,15 @@ public class MoneyAction {
 	 * @author zhengyunfei
 	 * */
 	@RequestMapping(value = "/order/mycoupon.html")
-	public ModelAndView mycoupon(HttpServletRequest request, HttpServletResponse response, ModelMap model,String status)
+	public ModelAndView mycoupon(HttpServletRequest request, HttpServletResponse response, ModelMap model,String status,Car car)
 	{
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView(MobilePageContants.MY_COUPON_PAGE);
 		if(StringUtil.isNullOrEmpty(status)){
 			status=MobileContants.status_0;//默认显示未使用
+		}
+		if(!StringUtil.isNullOrEmpty(car)){
+			SessionHelper.setAttribute(request, MobileContants.CAR_SESSION_KEY, car);
 		}
 		mv.addObject("status",status);
 		return mv;

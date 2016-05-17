@@ -70,9 +70,9 @@
 					<div class="promote-card-list-box">
 						<div class="promote-nav-box">
 							<div class="tabber-ios-gray tabber tabber-ios">
-								<a [#if status==0]class="active"[/#if] href="${base}/order/mycoupon.html?status=${status!'0'}">未使用</a>
-								<a [#if status==1]class="active"[/#if] href="${base}/order/mycoupon.html?status=${status!'0'}">已使用</a>
-								<a [#if status==2]class="active"[/#if] href="${base}/order/mycoupon.html?status=${status!'0'}">已过期</a>
+								<a [#if status=='0']class="active"[/#if] style="background-color:green;color: white;" href="${base}/order/mycoupon.html?status=0">未使用</a>
+								<a [#if status=='1']class="active"[/#if] style="background-color:orange;color: white;" href="${base}/order/mycoupon.html?status=1">已使用</a>
+								<a [#if status=='2']class="active"[/#if] style="background-color:#808080;color: white" href="${base}/order/mycoupon.html?status=2">已过期</a>
 							</div>
 						</div>
 						<ul class="promote-card-list">

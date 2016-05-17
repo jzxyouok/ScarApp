@@ -210,7 +210,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 .tabber button,
 .tabber a {
 	float: left;
-	width: 50%;
+	width: 33.333%;
 	height: 40px;
 	line-height: 40px;
 	border: 0px none;
