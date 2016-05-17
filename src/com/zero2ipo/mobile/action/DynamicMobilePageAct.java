@@ -84,7 +84,6 @@ public class DynamicMobilePageAct {
 
 				}
 				mv.addObject("carList",list);
-
 				Car edite=(Car) SessionHelper.getAttribute(request, MobileContants.CAR_SESSION_KEY);
 				if(list.size()>0){
 					car=list.get(0);

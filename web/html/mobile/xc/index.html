@@ -29,8 +29,8 @@
 		<script src="${res}/scripts/xc/easydialog.js"></script>
 
 		<script src="${res}/scripts/xc/mobile_common.js"></script>
-		<script src="${res}/scripts/xc/pre_order.js?v=1"></script>
-		<script src="${res}/scripts/ggwash/selectProject.js?v=5"></script>
+		<script src="${res}/scripts/xc/pre_order.js?v=2"></script>
+		<script src="${res}/scripts/ggwash/selectProject.js?v=3"></script>
 		<link href="${res}/css/xc/style2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/main2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/easydialog.css" rel="stylesheet" />
@@ -260,7 +260,7 @@
 							   [#if fwxmList?? && fwxmList?size>0]
 							   [#list fwxmList as project]
 							   <p class="singleoption clearfix">
-									<img class="radiooper i_b v_m" id="dfm_${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/[#if project.status==1]radio_sel.png[#else]radio_unsel.png[/#if]">
+									<img class="radiooper i_b v_m" id="dfm_${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png">
 								   <span class="f_l">${project.name!''}</span>
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
 								  	[#if project.washCount>1]
@@ -335,7 +335,7 @@
 						</p>-->
 						<article class="crashintro">
 							<p class="singleoption clearfix">
-								余额抵扣:<img class="yuepay"   src="${res}/css/xc/img/radio_unsel.png" id="yuepayRadio">${account!'0'}￥
+								余额抵扣:<img class="yuepay"   src="${res}/css/xc/img/radio_unsel.png" id="yuepayRadio"><span id="yuemoney">${_user_key.account!'0'}</span>￥
 							</p>
 						</article>
 					</td>
@@ -348,12 +348,12 @@
 									<span class="deductions">
 										优惠券抵扣: <font class="deductprice color_green" id="coupon_price">${couponMoney!'0'}￥</font>
 									</span>
-									<span class="sum">钱包余额抵扣: <font class="color_orange"><span>0</span>￥</font></span>
+									<span class="sum">钱包抵扣: <font class="color_orange"><span id="qbdk">0</span>￥</font></span>
 								</p>
 							</section>
 						</td>
 					</tr>
-					<tr >
+					<tr id="wxpayTr">
 						<td>
 							<span class="sum">共计: <font class="color_orange"><span id="total">0</span>￥</font></span>
 							<input type="hidden" id="totalPrice" name="totalPrice">
@@ -366,6 +366,21 @@
 							<input id='order' type='button' style="display: block;width:85px;margin-left: 75px"
 								   class='ui-btn green' value='洗车券下单'
 								   onclick="save_order()"/>
+						</td>
+						<td>
+
+						</td>
+					</tr>
+					<tr id="qbpayTr" style="display: none;">
+						<td>
+							<span class="sum">共计: <font class="color_orange">
+								<span id="sum">0</span>￥</font>
+							</span>
+						</td>
+						<td colspan='' style="border: 0;">
+							<input id='o' type='button' style="display: block;width: 70px;float:left;background-color:#51AD8F;color: white"
+								   class='ui-btn green' value='提交订单'
+								   onclick="qbpay()" />
 						</td>
 						<td>
 

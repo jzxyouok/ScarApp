@@ -52,19 +52,35 @@ $(document).ready(function(e) {
         $("#total").html(parseFloat(sum_price).toFixed(2));
     });
     //余额付款
-    $( ".yuepay").click( function(){
-        var current_click=$(this).attr('id');
-        $(".radio").each(function(){
-            var id=$(this).attr('id');
-            if(current_click==id){
-                $( this ).addClass( "on" )
-                $( this ).attr( "src","../res/css/xc/img/radio_sel.png" );
-            }else{
+    $(".yuepay").click( function(){
+            var projectName=$("#projectName").val();
+            if(''==projectName||null==projectName){
+                alert("请选择服务项目");
+                return ;
+            }
+            var flg=$(this).hasClass('on');
+            if(flg){
                 $( this ).removeClass( "on" )
                 $( this ).attr( "src","../res/css/xc/img/radio_unsel.png" );
+            }else{
+                $( this ).addClass( "on" )
+                $( this ).attr( "src","../res/css/xc/img/radio_sel.png" );
+                $("#qbpayTr").hide();
+                $("#wxpayTr").show();
             }
-        });
-
+         //首先获取总价
+        var total=$("#total").html();//服务项目总金额
+        var qianbao=$("#yuemoney").html();//钱包余额
+        if(qianbao>total){//钱包余额充足，就没必要使用微信支付了，直接下单扣除钱包余额就可以了
+            $("#qbdk").html(total);
+            var youhui="${couponMoney!'0'}";
+            var sum= Math.round((parseFloat(total) - parseFloat(youhui))*100)/100;//保留2位小数。
+            $("#sum").html(sum);
+            $("#qbpayTr").show();
+            $("#wxpayTr").hide();
+        }else{
+            //提示余额不足，请及时充值，不采用总金额-余额部分金额扣款，因为微信支付完成之后还要修改钱包
+        }
     });
 });
 //选择服务项目,需要把服务项目名称和总金额传递过去

@@ -51,6 +51,11 @@ $( document ).ready(function(e) {
 			            alert("请填写洗车地点");
 			            return false;
 			        }
+                    var projectName=$("#projectName").val();
+                    if(projectName==''||projectName==null){
+                        alert("请选择服务项目");
+                        return false;
+                    }
 			      var preTime=$("#preTime").val();
 			      if(preTime==""||preTime==null){
 			      	alert("请选择预约时间");
