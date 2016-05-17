@@ -150,4 +150,12 @@ FROM users
 	where
 		USER_ID=#userId#
 </update>
+	<update id="updateUserQianBao" parameterClass="appUserBo">
+	UPDATE
+		users
+	set
+		account=account+#account#
+	where
+		USER_ID=#userId#
+</update>
 </sqlMap>

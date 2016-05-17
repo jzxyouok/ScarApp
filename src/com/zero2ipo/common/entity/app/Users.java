@@ -4,14 +4,14 @@ package com.zero2ipo.common.entity.app;
     * users 实体类
 	* 和app公众号公众一个bo
     * Sat Dec 19 18:37:01 GMT+08:00 2015 郑云飞
-    */ 
+    */
 
 
 public class Users{
 	private long id;
 	private String userId;
 	private String phoneNum;
-	private String account;
+	private float account;
 	private String password;
 	private String createTime;
 	private String updateTime;
@@ -44,10 +44,10 @@ public class Users{
 	public String getPhoneNum(){
 		return phoneNum;
 	}
-	public void setAccount(String account){
+	public void setAccount(float account){
 	this.account=account;
 	}
-	public String getAccount(){
+	public float getAccount(){
 		return account;
 	}
 	public void setPassword(String password){

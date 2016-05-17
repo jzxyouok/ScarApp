@@ -58,14 +58,8 @@ public interface IUserDao {
 	 */
 	public void saveUserInfo(UserEntity user);
 
-	/**
-	 * 注册企业用户信息
-	 * @param userType
-	 * @param mobile
-	 * @param password
-	 * @return
-	 */
-	public void saveOrgInfo(UserEntity user);
+
+	public void updateUserQianBao(Users user);
 
 	/**
 	 * 更新个人用户信息

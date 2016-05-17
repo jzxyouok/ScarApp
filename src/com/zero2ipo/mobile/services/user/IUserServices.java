@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ *
  * 用户服务接口
  *
  */
@@ -34,7 +34,7 @@ public interface IUserServices {
 	 * @return
 	 */
 	public List<Users> findUserByMobile(String mobile);
-	
+
 	/**
 	 * 根据手机号和密码查找用户
 	 * @param mobile
@@ -62,13 +62,13 @@ public interface IUserServices {
 	 * 更新个人用户信息
 	 * @param user
 	 */
-	public UserEntity updateUserInfo(UserEntity user);
-	
+	public void updateUserQianBao(Users user);
+
 	/**
 	 * 跟新机构用户信息
 	 */
 	public UserEntity updateOrgUserInfo(UserEntity user);
-	
+
 	/**
 	 * CRM用户更新
 	 */
@@ -85,7 +85,7 @@ public interface IUserServices {
 	 * @return
 	 */
 	public List<UserEntity> findUserByEmail(String email);
-	
+
 	/**
 	 * 跟新用户登录次数
 	 */

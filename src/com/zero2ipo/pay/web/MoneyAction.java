@@ -7,6 +7,7 @@ import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.core.MobilePageContants;
 import com.zero2ipo.framework.util.StringUtil;
+import com.zero2ipo.mobile.services.user.IUserServices;
 import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.pay.model.MdlPay;
 import com.zero2ipo.pay.service.WXPay;
@@ -40,6 +41,9 @@ public class MoneyAction {
 	public final static String notifyUrl="/order/yuepayupd.html";
 	@Resource(name = "userchongzhi")
 	private IUserChongZhi userchongzhi ;
+	@Resource(name = "userServices")
+	private IUserServices userServices ;
+
 	/**
 	 * 我的钱包页面
 	 * @author zhengyunfei
@@ -48,6 +52,11 @@ public class MoneyAction {
 	public ModelAndView mymoney(HttpServletRequest request, HttpServletResponse response, ModelMap model)
 	{
 		ModelAndView mv=new ModelAndView(MobilePageContants.MY_MONEY_PAGE);
+		//从全局缓存中获取当前登陆的账号
+		Users current= (Users) request.getSession().getAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
+		if(!StringUtil.isNullOrEmpty(current)){
+			mv.addObject("account",current.getAccount());
+		}
 		FmUtils.FmData(request, model);
 		return mv;
 	}
@@ -211,6 +220,21 @@ public class MoneyAction {
 				if("SUCCESS".equals(return_code)){
 					chongZhiBo.setTransactionId(transaction_id);
 					userchongzhi.add(chongZhiBo);
+					//更新钱包余额数量=充值金额+赠送金额
+					float money=chongZhiBo.getMoney();
+					float zsmoney=chongZhiBo.getZsmoney();
+					float total=money+zsmoney;
+					String userId=chongZhiBo.getUserId();
+					//根据用户id更新钱包余额ff
+					Users u=new Users();
+					u.setUserId(userId);
+					u.setAccount(total);
+					userServices.updateUserQianBao(u);
+					result.put("userId",userId);
+					//更新缓存中钱包余额
+					Users  current= (Users) application.getAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
+					current.setAccount(total);
+					application.setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY, current);
 					//付款成功之后将当前缓存key清楚
 					SessionHelper.removeAttribute(request,MobileContants.CURRENT_CHONGZHI_KEY);
 				}

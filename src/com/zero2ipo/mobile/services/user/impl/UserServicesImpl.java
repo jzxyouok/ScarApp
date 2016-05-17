@@ -113,8 +113,8 @@ public class UserServicesImpl implements IUserServices{
 	 * @param user
 	 */
 	@Override
-	public UserEntity updateUserInfo(UserEntity user) {
-		return null;
+	public void updateUserQianBao(Users user) {
+		userDao.updateUserQianBao(user);
 	}
 
 	/**

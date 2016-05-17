@@ -75,7 +75,7 @@
 				if(res.err_msg=='get_brand_wcpay_request:ok')
 				{
 					//充值成功之后，保存充值记录到数据库中，然后跳转到我的钱包页面
-					var url="${base}/order/savechongzhi.html";
+					var url="${base}/order/mymoney.html";
 					window.location.href=url;
 				}
 				else
@@ -103,7 +103,7 @@
 							<li class="gg-property_index_moneyline">
 								<div class="ui-list-info">
 									<p class="gg-property_index_money_title">账户余额（元）</p>
-									<p class="gg-property_index_money_desc">${_user_key.account?default('0')}</p>
+									<p class="gg-property_index_money_desc">${account?default('0')}</p>
 								</div>
 								<div class="ui-list-action">
 									<button type="button" class="ui-btn gg-btn-green" id="property_index_charge">立即充值</button>
@@ -183,7 +183,7 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">红包</h4>
-									<div class="ui-txt-info">${_user_key.account?default('0')}元</div>
+									<div class="ui-txt-info">${account?default('0')}元</div>
 								</div>
 							</li>
 						</ul>

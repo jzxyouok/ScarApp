@@ -242,8 +242,8 @@ public class UserAction {
 			map.put("user",user);
 			SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, user);
 			//登陆成功，保存user到全局session中
-			//WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
-			//wac.getServletContext().setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY,user);
+			WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+			wac.getServletContext().setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY,user);
 			map.put("success",true);
 		}
 		map.put("page", page);
