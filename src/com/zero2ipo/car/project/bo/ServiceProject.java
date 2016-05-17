@@ -50,7 +50,7 @@ public class ServiceProject{
 	this.name=name;
 	}
 	public String getName(){
-		return name;
+		return name.trim();
 	}
 	public void setPrice(String price){
 	this.price=price;

@@ -30,7 +30,7 @@
 
 		<script src="${res}/scripts/xc/mobile_common.js"></script>
 		<script src="${res}/scripts/xc/pre_order.js?v=1"></script>
-		<script src="${res}/scripts/ggwash/selectProject.js"></script>
+		<script src="${res}/scripts/ggwash/selectProject.js?v=5"></script>
 		<link href="${res}/css/xc/style2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/main2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/easydialog.css" rel="stylesheet" />
@@ -68,7 +68,7 @@
 				getMyCurrentLocation();
 				$("#carColor").val("${bo.carColor!''}");
 				$("#carType option").each(function (){
-				    if($(this).text()=='${bo.carType!''}'){
+				    if($(this).text()=="${bo.carType!''}"){
 				        $(this).attr('selected',true);
 				    }
 				});
@@ -260,28 +260,25 @@
 							   [#if fwxmList?? && fwxmList?size>0]
 							   [#list fwxmList as project]
 							   <p class="singleoption clearfix">
-								   <img class="radio i_b v_m" id="dfm_${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}" src="${res}/css/xc/img/radio_unsel.png">
+									<img class="radiooper i_b v_m" id="dfm_${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/[#if project.status==1]radio_sel.png[#else]radio_unsel.png[/#if]">
 								   <span class="f_l">${project.name!''}</span>
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
 								  	[#if project.washCount>1]
 								         <!--判断当前会员洗车次数-->
 								   		[@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
-								   			[#if count>0]
-								   				<!--如果会员洗车的次数大于等于后台设定的优惠次数-->
-											[#if count gte project.washCount]
-													<!--执行优惠价格-->
-								  					 <span class="f_r color_orange" id="default_${project_index+1}">${(project.discountPrice)?if_exists?string.number}￥</span>
-								   				[#else]
-								   					<!--执行原价-->
-								  					 <span class="f_r color_orange" id="default_${project_index+1}">${(project.carPrice)?if_exists?string.number}￥</span>
-								  		        [/#if]
-								   			[#else]
-								   					<!--首次洗车-->
-								  					 <span class="f_r color_orange" id="default_${project_index+1}">${project.firstPrice!'1'}￥</span>
-
-								          [/#if]
+								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->
+								  					 <span class="f_r color_orange" id="default_${project_index+1}">
+														 [#if count>0]
+															 [#if count gte project.washCount]
+																 ${(project.discountPrice)?if_exists?string.number}￥<!--执行优惠价格-->
+															 [#else]
+																 ${(project.carPrice)?if_exists?string.number}￥<!--执行原价-->
+														     [/#if]
+														 [#else]
+																 ${project.firstPrice!'1'}￥<!--首次洗车-->
+														  [/#if]
+													 </span>
 								   		[/@FindWashCountByUserId]
-
 								   [#else]
 								  		 <span class="f_r color_orange" id="default_${project_index+1}">${project.carPrice!''}￥</span>
 								   [/#if]
@@ -333,12 +330,12 @@
 				<!--账户余额-->
 				<tr>
 					<td class="lable" colspan="3" nowrap="nowrap">
-						<p class="introwords clearfix" style="padding-top: 5px;padding-bottom: 5px">
-							<span>余额抵扣</span>
-						</p>
+						<!--<p class="introwords clearfix" style="padding-top: 5px;padding-bottom: 5px">
+							<span></span>
+						</p>-->
 						<article class="crashintro">
 							<p class="singleoption clearfix">
-								<img class=""   src="${res}/css/xc/img/radio_unsel.png">
+								余额抵扣:<img class="yuepay"   src="${res}/css/xc/img/radio_unsel.png" id="yuepayRadio">${account!'0'}￥
 							</p>
 						</article>
 					</td>
@@ -349,9 +346,9 @@
 							<section class="serviceoption">
 								<p class="payment clearfix">
 									<span class="deductions">
-										优惠券抵扣: <font class="deductprice color_green" id="coupon_price">${couponMoney!'0'}元</font>
+										优惠券抵扣: <font class="deductprice color_green" id="coupon_price">${couponMoney!'0'}￥</font>
 									</span>
-									<span class="sum">共计: <font class="color_orange"><span>0</span>￥</font></span>
+									<span class="sum">钱包余额抵扣: <font class="color_orange"><span>0</span>￥</font></span>
 								</p>
 							</section>
 						</td>

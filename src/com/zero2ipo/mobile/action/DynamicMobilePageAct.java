@@ -129,7 +129,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public ModelAndView indexPage(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,Car editor,String couponMoney) {
+							  HttpServletResponse response, ModelMap model,String couponMoney) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		try {

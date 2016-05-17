@@ -18,6 +18,18 @@ $(document).ready(function(e) {
             sum_pirce+=parseFloat(value);
         }
         $("#total").html(parseFloat(sum_pirce).toFixed(2));
+        //获取服务项目名称
+        var names="";
+        $(".radiooper").each(function(){
+            if($(this).hasClass('on')){
+                names+=$(this).attr('fname')+",";
+            }
+        });
+        if(''!==names&&null!=names){
+            //去掉最后一个多余逗号,
+            names=names.trim().substr(0,names.length-1);
+        }
+        $("#projectName").val(names);
     });
     //单选按钮
     $( ".radio").click( function(){
@@ -38,6 +50,21 @@ $(document).ready(function(e) {
         });
 
         $("#total").html(parseFloat(sum_price).toFixed(2));
+    });
+    //余额付款
+    $( ".yuepay").click( function(){
+        var current_click=$(this).attr('id');
+        $(".radio").each(function(){
+            var id=$(this).attr('id');
+            if(current_click==id){
+                $( this ).addClass( "on" )
+                $( this ).attr( "src","../res/css/xc/img/radio_sel.png" );
+            }else{
+                $( this ).removeClass( "on" )
+                $( this ).attr( "src","../res/css/xc/img/radio_unsel.png" );
+            }
+        });
+
     });
 });
 //选择服务项目,需要把服务项目名称和总金额传递过去

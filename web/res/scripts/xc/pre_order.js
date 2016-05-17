@@ -15,7 +15,6 @@ $( document ).ready(function(e) {
     })
     /**选择优惠券**/
     $("#selectVipCouponClickBtn").click(function(){
-        alert("点击");
     	//信息填写完成之后，才可以选择优惠券
     	            var carSeats=$("#carSeats").is(":checked");
 			        var carType=$("#carType").val();
