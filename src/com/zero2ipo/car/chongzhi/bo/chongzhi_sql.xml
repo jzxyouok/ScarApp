@@ -20,6 +20,9 @@ SELECT
 	status,
 	remark
 FROM chongzhi
+<isNotEmpty prepend="limit" property="count">
+	0,#count#
+</isNotEmpty>
 </select>
 <select id='findChongZhi' resultMap='ChongZhiMap'>
 SELECT

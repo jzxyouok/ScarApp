@@ -50,14 +50,15 @@ public class ChongZhiImpl extends IbatisBaseDao implements IChongZhi {
 
 	@Override
 	public List<ChongZhiBo> findAllList(Map<String, Object> queryMap) {
-		List<ChongZhiBo> orderInfoList = new ArrayList<ChongZhiBo>();
+		List<ChongZhiBo> list = new ArrayList<ChongZhiBo>();
 		try {
 			//设置数据库类型: 网站全局库(01)
-    		orderInfoList = (List<ChongZhiBo>)this.queryAll(namespace+"findChongZhiList", queryMap);
+			list = (List<ChongZhiBo>)this.queryAll(namespace+"findChongZhiList", queryMap);
 		} catch (Exception e) {
+			e.printStackTrace();
 			BaseLog.e(this.getClass(), "queryOrderInfoList 查询列表失败", e);
 		}
-		return orderInfoList;
+		return list;
 	}
 
 	@Override

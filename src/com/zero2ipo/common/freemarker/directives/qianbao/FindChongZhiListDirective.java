@@ -19,11 +19,17 @@ import java.util.Map;
  * @author zhengYunfei
  */
 public class FindChongZhiListDirective implements TemplateDirectiveModel{
+	private final static String PARAM_VALUE="count";
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
 		List<ChongZhiBo> list=null;
 		try {
 			Map<String,Object> queryMap=new HashMap<String,Object>();
+			String count= DirectiveUtils.getString(PARAM_VALUE, params);
+			if(!StringUtil.isNullOrEmpty(count)){
+				int size=Integer.parseInt(count);
+				queryMap.put("count",size);
+			}
 			list=chongzhi.findAllList(queryMap);
 			if(!StringUtil.isNullOrEmpty(list)&&list.size()>0){
 				env.setVariable("chongzhiList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
