@@ -2,7 +2,7 @@ package com.zero2ipo.car.project.bo;
 public class ServiceProject{
 	private String id;
 	private String name;
-	private float price;
+	private String price;
 	private float orignPrice;
 	private String remark;
 	private String isMain;
@@ -52,10 +52,10 @@ public class ServiceProject{
 	public String getName(){
 		return name;
 	}
-	public void setPrice(float price){
+	public void setPrice(String price){
 	this.price=price;
 	}
-	public float getPrice(){
+	public String getPrice(){
 		return price;
 	}
 	public void setOrignPrice(float orignPrice){

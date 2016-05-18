@@ -15,6 +15,16 @@
 					var url="${base}/order/chongzhi.html";
 					window.location.href=url;
 				})
+				//wash car coupon page
+				$("#washCarCouponDiv").bind("click",function(){
+					var url="${base}/mycoupon.html";
+					window.location.href=url;
+				})
+				//vip coupon page
+				$("#vipCouponDiv").bind("click",function(){
+					var url="${base}/order/mycoupon.html";
+					window.location.href=url;
+				})
 			})
 		</script>
 	</head>
@@ -102,7 +112,7 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">洗车券</h4>
-									<div class="ui-txt-info">
+									<div class="ui-txt-info" id="washCarCouponDiv">
 										[@findWashCouponCount userId="${_user_key.userId!''}"]
 										${washCouponCount!'0'}张
 										[/@findWashCouponCount]
@@ -115,7 +125,7 @@
 								</div>
 								<div class="ui-list-info">
 									<h4 class="ui-nowrap">优惠券</h4>
-									<div class="ui-txt-info">
+									<div class="ui-txt-info" id="vipCouponDiv">
 										[@findVipCouponCount userId="${_user_key.userId!''}"]
 											${vipCouponCount!'0'}张
 										[/@findVipCouponCount]

@@ -77,6 +77,7 @@ public class Oauth2Servlet {
                 System.out.println("从数据库中查询出来的openid=================="+u);
             	if(!StringUtil.isNullOrEmpty(u)&&null!=u){
             		SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, u);
+                    user=u;
             	}else{
                     if(!StringUtil.isNullOrEmpty(user)){
                         user.setOpenId(openid);

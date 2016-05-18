@@ -40,7 +40,7 @@ a:visited{color:#666;}
 .conter_n1 ul li strong{color:#e89b01;}
 
 .yytz{margin:0 auto; text-align:center; margin-top:3%;}
-.yytz a{font-size:16px; color:#fff;background:#e89b01;border-radius:30px; padding:2% 0%;text-align:center;display:block;width: 90%;margin: 0 auto;}
+.yytz a{font-size:16px; color:#fff;background:#50AD8E;border-radius:30px; padding:2% 0%;text-align:center;display:block;width: 90%;margin: 0 auto;}
 .yytz_over a{background: #a3a1a1;}
 
 
@@ -268,7 +268,7 @@ a:visited{color:#666;}
 
 
 .login_contera p{float:left; width:96%; padding:2% 1%; font-size:14px; color:#444;}
-.login_vipyc1{text-align:center; font-size:12px; padding:3%; margin:0 auto; color:#444;}
+.login_vipyc1{text-align:center; font-size:16px; padding:3%; margin:0 auto; color:#444;}
 
 .login_vipyc a{text-align:right; color:#e89b01; font-size:12px; float:right}
 .login_xm{margin-left:1%;vertical-align: middle;}
@@ -326,7 +326,7 @@ a:visited{color:#666;}
 }
 
 .login_yzm{margin:0 auto; text-align:center; width:33%; float:left; margin-left:2%;}
-.login_yzm a{font-size:14px; color:#fff;background:#e89b01;border-radius:15px; padding:6% 2%;text-align:center; display:block}
+.login_yzm a{font-size:14px; color:#fff;background:#51AD8F;border-radius:15px; padding:6% 2%;text-align:center; display:block}
 
 .login_yzma{margin:0 auto; text-align:center; width:33%; float:left; margin-left:2%; margin-top:1%; font-size:14px;}
 .login_yzma span{color:#fff;background:#c7c7c7;border-radius:15px; padding:6% 2%;text-align:center; display:block;}

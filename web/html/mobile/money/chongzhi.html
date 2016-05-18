@@ -12,7 +12,12 @@
 			<script src="${res}/scripts/xc/jquery.min.js"></script>
 		<script>
 			//ajax微信付款，首先获取jsParam
-			function wxpay(id){
+			function wxpay(){
+				alert("微信支付");
+				var money=$('input:radio:checked').attr('money');
+				var zsmoney=$('input:radio:checked').attr('zsmoney');
+				alert(money);
+				alert(zsmoney);
 				var url="/order/getPayParam.html";
 				$.ajax({
 					type: "POST",
@@ -61,7 +66,7 @@
 				<section id="content">
 					<section id="gg_property_cash-content">
 						<ul class="ui-list">
-							[@FindChongZhiList]
+							[@findChongZhiList]
 								[#if chongzhiList?? &&chongzhiList?size>0]
 									[#list chongzhiList as chongzhi]
 										<li class="gg_property_cash_buy">
@@ -82,13 +87,13 @@
 											</div>
 											<div class="ui-list-action" style="width: 40px;">
 												<label class="ui-radio " style="margin-top: 6px">
-													<input type="radio" id="typeid_${chongzhi.id!''}" value="${chongzhi.id!''}" name="paytype" style="margin-left:10px;margin-top: 24px;" [#if chongzhi_index==0]checked="true" [/#if]> </label>
+													<input type="radio" id="typeid_${chongzhi.id!''}" money="${chongzhi.money!''}" zsmoney="${chongzhi.zsmoney!''}" value="${chongzhi.id!''}" name="paytype" style="margin-left:10px;margin-top: 24px;" [#if chongzhi_index==0]checked="true" [/#if]> </label>
 											</div>
 											<label id="${chongzhi.id!''}" for="typeid_${chongzhi.id!''}" class="mask-event"></label>
 										</li>
 									[/#list]
 								[/#if]
-							[/@FindChongZhiList]
+							[/@findChongZhiList]
 
 						</ul>
 					</section>
@@ -112,8 +117,8 @@
 						<div class="ui-footer-btn gg-property_cash_foot-div">
 							<ul class="ui-tiled ui-border-t " id="g_property_bu">
 								<li id="coupon_buy_alipay" class="gg-property-r gg-property-t-buton-backgroud">
-									<div>
-										<img class="gg-property-r-text-div-text" src="${res}/css/money/img/weixin.png">&nbsp;&nbsp;微信支付
+									<div onclick="javascript:wxpay()">
+										<img  class="gg-property-r-text-div-text" src="${res}/css/money/img/weixin.png">&nbsp;&nbsp;微信支付
 									</div>
 								</li>
 							</ul>

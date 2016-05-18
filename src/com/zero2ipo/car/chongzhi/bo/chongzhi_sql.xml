@@ -9,6 +9,7 @@
 	<result property="expDate" column="expDate"/>
 	<result property="remark" column="remark"/>
 	<result property="status" column="status"/>
+
 </resultMap>
 <select id='findChongZhiList' resultMap='ChongZhiMap'>
 SELECT
@@ -19,7 +20,6 @@ SELECT
 	status,
 	remark
 FROM chongzhi
-
 </select>
 <select id='findChongZhi' resultMap='ChongZhiMap'>
 SELECT
@@ -28,7 +28,9 @@ SELECT
 	zsmoney,
 	expDate,
 	status,
-	remark
+	remark,
+	transactionId,
+	outTradeNo
 FROM
 	chongzhi
 where

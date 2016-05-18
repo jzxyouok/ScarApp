@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>用户登陆</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes" />    
+<meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="format-detection" content="telephone=yes"/>
 <meta name="msapplication-tap-highlight" content="no" />
@@ -34,12 +34,13 @@
 <br>
 <br>
 <form method="post" id="form1" action="" name="form1" class="f1" onsubmit="return false;">
+	<label>洗车承诺严格保密车主隐私</label>
 <input type="text" value="" id="mobile" name="mobile" class="wbk" placeholder="请输入手机号"><br/>
 <input type="text" value="" id="vcode"  name="verify" class="wbk1"  placeholder="输入验证码">
 <input type="submit" value="获取验证码" class="bnt_yzm" onclick="getCode()" ><br/>
 <input type="submit" value="登陆" class="bnt_dl" onclick="javascript:forfpLogin()" >
 </form>
-		
+
 	<script type="text/javascript">
 	var $sendSMS = true;
 	 function getCode(){
@@ -89,14 +90,14 @@
 								}
 							},1000);
                    //}
-                    
+
                 },error:function(){
                     alert("操作一次");
                 }
             });
         }
     }
-	
+
 	</script>
 
 		<!-- 页面底部.end -->

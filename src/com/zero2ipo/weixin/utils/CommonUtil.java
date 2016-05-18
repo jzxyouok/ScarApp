@@ -83,6 +83,7 @@ public class CommonUtil {
         Token token = null;
         String requestUrl = token_url.replace("APPID", appid).replace("APPSECRET", appsecret);
         // 发起GET请求获取凭证
+        System.out.println("获取tokenurl============================="+requestUrl);
         JSONObject jsonObject = httpsRequest(requestUrl, "GET", null);
         if (null != jsonObject) {
             try {
@@ -90,6 +91,7 @@ public class CommonUtil {
                 token.setAccessToken(jsonObject.getString("access_token"));
                 token.setExpiresIn(jsonObject.getInt("expires_in"));
             } catch (JSONException e) {
+                e.printStackTrace();
                 token = null;
             }
         }

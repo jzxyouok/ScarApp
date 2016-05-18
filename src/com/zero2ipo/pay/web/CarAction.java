@@ -1,5 +1,6 @@
 package com.zero2ipo.pay.web;
 
+import com.sun.org.apache.bcel.internal.classfile.Code;
 import com.zero2ipo.common.entity.*;
 import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
@@ -714,7 +715,6 @@ public class CarAction {
 	@RequestMapping(value = "/order/wxpayHdMethod.html")
 	public ModelAndView wxpayHdMethod(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mv=new ModelAndView();
-		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
 		Map<String,Object> result=new HashMap<String, Object>();
 		boolean flag=false;
 		String inputLine;
@@ -737,16 +737,13 @@ public class CarAction {
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
 		Map<String,Object> query=new HashMap<String, Object>();
-		System.out.println("获取到的商户订单号============================"+transaction_id);
 		query.put("transactionId",transaction_id);
 		Order count=orderService.findById(query);
-		System.out.println("根据商户订单号查询出付款结果==================================="+count);
 		//从缓存中获取订单
 		ServletContext application =request.getSession().getServletContext();
 		Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
 		String url="";
 		if(!StringUtil.isNullOrEmpty(order)){
-			System.out.println("从缓存中获取到的订单信息======================"+order);
 			url="redirect:/my/order"+order.getId()+".html";
 			mv.setViewName(url);
 		}
@@ -762,16 +759,13 @@ public class CarAction {
 					SessionHelper.removeAttribute(request,MobileContants.CURRENT_ORDER_KEY);
 				}
 				//根据order主键更新订单信息
-				System.out.println("从缓存中获取的orderId=============="+order.getId());
 				flag=orderService.updateOrderByOutTradeNo(order);
-				System.out.println("更新订单状态========================="+flag);
 				//更新订单成功之后，重新更新一下缓存
 				application.removeAttribute(MobileContants.CURRENT_ORDER_KEY);
 				application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
 			}
 			//下完单后是否开启自动派单功能
 			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
-			System.out.println("自动派单标志=============================="+autoPaiDan);
 			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 				//根据经纬度派单给最近的洗车工师父
 				SendOrder sendOrder=new SendOrder();
@@ -801,24 +795,31 @@ public class CarAction {
 					if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
 						//发送微信通知
 						String openId=bo.getIp();//获取洗车工绑定的微信openid
-						//String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 						String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
+						if(StringUtil.isNullOrEmpty(templateMessageId)){
+							templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+						}
+						templateMessageId=templateMessageId.trim();
 						String washType=order.getWashType();
 						//查询域名
 						String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
-						System.out.println("从缓存中获取到的domain========================"+domain);
 						if(StringUtil.isNullOrEmpty(domain)){//
 							  domain=coreService.getValue(CodeCommon.DOMAIN);
-							  System.out.println("从数据库中获取到的domain===================="+domain);
 						}
 						url=domain+"/renwu/order"+order.getId()+".html";
 						System.out.println("派单给======================="+bo.getUserName());
-						System.out.println("openid===================="+openId);
 						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
 						//发送模板消息
-						String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
-						String appsecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
-						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
+						Object appId=application.getAttribute(MobileContants.APPID_KEY);
+						if(StringUtil.isNullOrEmpty(appId)){
+							appId=coreService.getValue(CodeCommon.APPID);
+						}
+						Object appsecret=application.getAttribute(MobileContants.APPSCRET_KEY);
+						if(StringUtil.isNullOrEmpty(appsecret)){
+							appsecret=coreService.getValue(CodeCommon.APPSECRET);
+						}
+						System.out.println("派单前参数appid="+appId+"\tappsecret="+appsecret+"\topenId="+openId+"\ttemplateMessageId="+templateMessageId);
+						coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
 
 					}
 				}

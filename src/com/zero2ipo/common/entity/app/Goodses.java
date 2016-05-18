@@ -9,8 +9,8 @@ package com.zero2ipo.common.entity.app;
 public class Goodses{
 	private long id;
 	private String name;
-	private int carPrice;
-	private int jeepPrice;
+	private String carPrice;
+	private String jeepPrice;
 	private String info;
 	private String url;
 	private int status;
@@ -57,16 +57,16 @@ public class Goodses{
 	public String getName(){
 		return name;
 	}
-	public void setCarPrice(int carPrice){
+	public void setCarPrice(String carPrice){
 	this.carPrice=carPrice;
 	}
-	public int getCarPrice(){
+	public String getCarPrice(){
 		return carPrice;
 	}
-	public void setJeepPrice(int jeepPrice){
+	public void setJeepPrice(String jeepPrice){
 	this.jeepPrice=jeepPrice;
 	}
-	public int getJeepPrice(){
+	public String getJeepPrice(){
 		return jeepPrice;
 	}
 	public void setInfo(String info){

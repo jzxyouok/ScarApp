@@ -29,9 +29,12 @@ SELECT
 	status
 FROM vip_coupon
 <dynamic prepend="WHERE">
-<isNotEmpty prepend="AND" property="userId">
-INSTR(userId,#userId#)>0
-</isNotEmpty>
+	<isNotEmpty prepend="AND" property="userId">
+		userId=#userId#
+	</isNotEmpty>
+	<isNotEmpty prepend="AND" property="couponCode">
+		coupon_code=#couponCode#
+	</isNotEmpty>
 </dynamic>
 </select>
 
@@ -39,8 +42,14 @@ INSTR(userId,#userId#)>0
 	SELECT
 		count(0)
 	FROM vip_coupon
-	 WHERE
-	userId=#userId#
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="userId">
+			userId=#userId#
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="couponCode">
+			coupon_code=#couponCode#
+		</isNotEmpty>
+	</dynamic>
 </select>
 
 <select id='findVipCouponById' resultMap='vipCouponMap'>

@@ -16,7 +16,7 @@
 SELECT
 	id,
 	name,
-	car_price,
+	car_price price,
 	jeep_price,
 	info,
 	status,

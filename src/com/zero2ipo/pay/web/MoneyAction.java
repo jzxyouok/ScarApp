@@ -1,6 +1,5 @@
 package com.zero2ipo.pay.web;
 
-import com.zero2ipo.car.chongzhi.bizc.IChongZhi;
 import com.zero2ipo.car.userchongzhi.bizc.IUserChongZhi;
 import com.zero2ipo.car.userchongzhi.bo.UserChongZhiBo;
 import com.zero2ipo.common.entity.app.Users;
@@ -12,18 +11,23 @@ import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.pay.model.MdlPay;
 import com.zero2ipo.pay.service.WXPay;
 import com.zero2ipo.pay.service.WXPrepay;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.xml.sax.InputSource;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.StringReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -96,22 +100,13 @@ public class MoneyAction {
 			String userId=u.getUserId();
 			bo.setUserId(userId);
 		}
-		userchongzhi.add(bo);
+		//只有付款成功之后，才保存到数据库中，所以现在需要将充值保存到缓存中
+		ServletContext application =request.getSession().getServletContext();
+		application.setAttribute(MobileContants.CURRENT_CHONGZHI_KEY,bo);
+		String jsParam=getWXJsParamForNative(request,bo.getMoney());
+		mv.addObject("jsParam",jsParam);
+		//userchongzhi.add(bo);
 		return mv;
-	}
-	/**
-	 * 获取微信支付jsParam
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value = "/order/getPayParam.html", method = RequestMethod.POST)
-	@ResponseBody
-	public String getJsParam(HttpServletRequest request, HttpServletResponse response,float toatl) {
-			//根据orderId查询订单
-			String jsParam="";
-			jsParam=getWXJsParamForNative(request,toatl);
-			return jsParam;
 	}
 	//获取微信支付参数信息
 	public String getWXJsParamForNative(HttpServletRequest request, float total_free) {
@@ -127,7 +122,7 @@ public class MoneyAction {
 		String prepayid = prePay.submitXmlGetPrepayId();
 		if (!"".equals(prepayid) && prepayid != null && prepayid.length() > 10) {
 			// 生成微信支付参数，此处拼接为完整的JSON格式，符合支付调起传入格式
-			jsParam = WXPay.createPackageValue(pay.getAppId(), pay.getPartnerKey(), prepayid);
+			jsParam = WXPay.createPackageValue(prePay.getAppid(), prePay.getPartnerKey(), prepayid);
 		}
 		return jsParam;
 	}
@@ -167,23 +162,104 @@ public class MoneyAction {
 		return prePay;
 	}
 	/**
-	 * 获取微信支付参数
-	 * appId 微信appid
-	 * partnerId 微信支付商户号
-	 * partnerkey 微信支付商户秘钥
-	 *
+	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变
+	 * @param request
+	 * @param response
 	 * @return
 	 */
-	public MdlPay getMdlPay(HttpServletRequest request) {
-		MdlPay pay = new MdlPay();
+	@RequestMapping(value = "/order/yuepayupd.html")
+	@ResponseBody
+	public ModelAndView wxpayHdMethod(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mv=new ModelAndView();
+		System.out.println("微信支付回调开始。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。");
+		Map<String,Object> result=new HashMap<String, Object>();
+		boolean flag=false;
+		String inputLine;
+		String notityXml = "";
+		String resXml = "";
+		try {
+			while ((inputLine = request.getReader().readLine()) != null) {
+				notityXml += inputLine;
+			}
+			request.getReader().close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map m = parseXmlToList2(notityXml);
+		String openid=m.get("openid")+"";
+		String return_code=m.get("return_code")+"";//付款成功与否的标志
+		String total_fee=m.get("total_fee")+"";//付款金额
+		String transaction_id=m.get("transaction_id")+"";//微信支付订单号
+		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
+		String attach=m.get("attach")+"";//商家数据包
+		String time_end=m.get("time_end")+"";//支付时间
+		Map<String,Object> query=new HashMap<String, Object>();
+		query.put("transactionId",transaction_id);
+		int count=userchongzhi.findAllListCount(query);
+		//从缓存中获取订单
 		ServletContext application =request.getSession().getServletContext();
-		String partnerId =application.getAttribute(MobileContants.PARTNERID_KEY)+"";
-		String appid =application.getAttribute(MobileContants.APPID_KEY)+"";
-		String partnerValue = application.getAttribute(MobileContants.PARTNERVALUE_KEY)+"";
-		pay.setAppId(appid);
-		pay.setPartnerId(partnerId);
-		pay.setPartnerKey(partnerValue);
-		return pay;
+		UserChongZhiBo chongZhiBo= (UserChongZhiBo) application.getAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
+		String url="";
+		if(!StringUtil.isNullOrEmpty(chongZhiBo)){
+			//	url="redirect:/my/order"+order.getId()+".html";
+			mv.setViewName(url);
+		}
+		if(count==0){
+			if(!StringUtil.isNullOrEmpty(chongZhiBo)){
+				//更新订单支付状态，同时更新商户订单号和交易单号
+				chongZhiBo.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
+				if("SUCCESS".equals(return_code)){
+					chongZhiBo.setTransactionId(transaction_id);
+					userchongzhi.add(chongZhiBo);
+					//付款成功之后将当前缓存key清楚
+					SessionHelper.removeAttribute(request,MobileContants.CURRENT_CHONGZHI_KEY);
+				}
+			}
+			String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
+			//查询域名
+			String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
+			//url=domain+"/renwu/order"+order.getId()+".html";
+			//WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
+			//发送模板消息
+			String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+			String appsecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+			//coreService.send_template_message(appId,appsecret,openId,wxTemplate);
+
+		}
+
+		result.put("success",flag);
+		return mv;
+	}
+	/**
+	 * description: 解析微信通知xml
+	 *
+	 * @param xml
+	 * @return
+	 * @author ex_yangxiaoyi
+	 * @see
+	 */
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
+	private static Map parseXmlToList2(String xml) {
+		Map retMap = new HashMap();
+		try {
+			StringReader read = new StringReader(xml);
+			// 创建新的输入源SAX 解析器将使用 InputSource 对象来确定如何读取 XML 输入
+			InputSource source = new InputSource(read);
+			// 创建一个新的SAXBuilder
+			SAXBuilder sb = new SAXBuilder();
+			// 通过输入源构造一个Document
+			Document doc = (Document) sb.build(source);
+			Element root = doc.getRootElement();// 指向根节点
+			List<Element> es = root.getChildren();
+			if (es != null && es.size() != 0) {
+				for (Element element : es) {
+					retMap.put(element.getName(), element.getValue());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return retMap;
 	}
 }
 

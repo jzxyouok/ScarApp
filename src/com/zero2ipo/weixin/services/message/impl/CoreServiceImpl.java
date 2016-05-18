@@ -1,11 +1,15 @@
 package com.zero2ipo.weixin.services.message.impl;
 
 import com.zero2ipo.weixin.dao.message.ICoreDao;
+import com.zero2ipo.weixin.msg.Token;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
 import com.zero2ipo.weixin.test.WeixinUtil;
 import com.zero2ipo.weixin.token.AccessToken;
 import com.zero2ipo.weixin.token.TokenThread;
+import com.zero2ipo.weixin.utils.CommonUtil;
+import com.zero2ipo.weixin.utils.GetAccessTokenUtil;
+import com.zero2ipo.weixin.utils.GetAllWeixinUserUtil;
 import com.zero2ipo.weixin.utils.MessageUtil;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -41,9 +45,13 @@ public class CoreServiceImpl implements ICoreService {
 	 * openId 用户标识
 	 */
 	public void send_template_message(String appId, String appSecret, String openId,WxTemplate template) {
-		//Token token = CommonUtil.getToken(appId, appSecret);
-		AccessToken token=TokenThread.accessToken;
-		String access_token = token.getToken();
+		//定时获取token
+		//AccessToken token=TokenThread.accessToken;
+		//String access_token = token.getToken();
+		appSecret="812beb1774934d7d9ec9577f33f0856b";
+		String access_token = GetAccessTokenUtil.getAccess_token2(appId, appSecret);
+		System.out.println("获取前appid======================="+appId+"\t获取钱appsecret============="+appSecret);
+		System.out.println("获取到的acces_token================="+access_token);
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
 		String jsonString = JSONObject.fromObject(template).toString();
 		JSONObject jsonObject = WeixinUtil.httpRequest(url, "POST", jsonString);

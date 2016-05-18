@@ -20,6 +20,7 @@ public class MobileContants {
 	public static final String PREPAYBODY_KEY = "_prepaybody_key";
 	public static final String DOMAIN_KEY = "_domain_key";
 	public static final String CURRENT_ORDER_KEY = "_current_order_key";
+	public static final String CURRENT_CHONGZHI_KEY = "_current_chongzhi_key";
 	public static final String PAIDAN_TEMPLATE_KEY = "_paidan_template_key";
 	public static final String AREA_CODE_TYPE = "area_code";
 	public static final String DEFAULT_AREA_LONG = "1000";//默认1公里范围之内洗车有效

@@ -8,6 +8,8 @@
 	<result property="zsmoney" column="zsmoney"/>
 	<result property="createTime" column="createTime"/>
 	<result property="empNo" column="empNo"/>
+	<result property="transactionId" column="transactionId"/>
+	<result property="outTradeNo" column="outTradeNo"/>
 </resultMap>
 <select id='findUserChongZhiList' resultMap='UserChongZhiMap'>
 SELECT
@@ -15,7 +17,9 @@ SELECT
 	money,
 	zsmoney,
 	createTime,
-	empNo
+	empNo,
+	transactionId,
+	outTradeNo
 FROM user_chongzhi
 
 </select>
@@ -25,7 +29,9 @@ SELECT
 	money,
 	zsmoney,
 	createTime,
-	empNo
+	empNo,
+	transactionId,
+	outTradeNo
 FROM
 	user_chongzhi
 where
@@ -37,6 +43,11 @@ SELECT
 	count(0)
 FROM
  	user_chongzhi
+	<dynamic prepend="WHERE">
+		<isNotEmpty prepend="AND" property="transactionId">
+			transactionId=#transactionId#
+		</isNotEmpty>
+	</dynamic>
 
 </select>
 
@@ -46,12 +57,16 @@ FROM
 	money,
 	zsmoney,
 	createTime,
-	empNo
+	empNo,
+	transactionId,
+	outTradeNo
 )VALUES(
 	#money#,
 	#zsmoney#,
 	now(),
-	#empNo#
+	#empNo#,
+	#transactionId#,
+	#outTradeNo#
 )
 </insert>
 <update id="updUserChongZhi" parameterClass="UserChongZhiBO">
