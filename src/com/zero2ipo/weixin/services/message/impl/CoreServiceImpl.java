@@ -48,7 +48,7 @@ public class CoreServiceImpl implements ICoreService {
 		//定时获取token
 		//AccessToken token=TokenThread.accessToken;
 		//String access_token = token.getToken();
-		appSecret="812beb1774934d7d9ec9577f33f0856b";
+		//appSecret="812beb1774934d7d9ec9577f33f0856b";
 		String access_token = GetAccessTokenUtil.getAccess_token2(appId, appSecret);
 		System.out.println("获取前appid======================="+appId+"\t获取钱appsecret============="+appSecret);
 		System.out.println("获取到的acces_token================="+access_token);

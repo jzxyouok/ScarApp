@@ -5,31 +5,16 @@ var sum=0;
 $(document).ready(function(e) {
     /* 多选按钮 */
     $( ".radiooper").click( function(){
-        var sum_pirce=parseFloat($("#total").html());
+        var sum_pirce=0;
         if($(this).hasClass("on")){
             $( this ).removeClass( "on" )
             $( this ).attr( "src","../res/css/xc/img/radio_unsel.png" );
-            var value=$(this).attr('value');
-            sum_pirce-=parseFloat(value);
         }else{
             $( this ).addClass( "on" )
             $( this ).attr( "src","../res/css/xc/img/radio_sel.png" );
-            var value=$(this).attr('value');
-            sum_pirce+=parseFloat(value);
         }
-        $("#total").html(parseFloat(sum_pirce).toFixed(2));
-        //获取服务项目名称
-        var names="";
-        $(".radiooper").each(function(){
-            if($(this).hasClass('on')){
-                names+=$(this).attr('fname')+",";
-            }
-        });
-        if(''!==names&&null!=names){
-            //去掉最后一个多余逗号,
-            names=names.trim().substr(0,names.length-1);
-        }
-        $("#projectName").val(names);
+        getTotalPrice();
+
     });
     //单选按钮
     $( ".radio").click( function(){
@@ -68,21 +53,57 @@ $(document).ready(function(e) {
                 $("#qbpayTr").hide();
                 $("#wxpayTr").show();
             }
-         //首先获取总价
-        var total=$("#total").html();//服务项目总金额
-        var qianbao=$("#yuemoney").html();//钱包余额
-        if(qianbao>total){//钱包余额充足，就没必要使用微信支付了，直接下单扣除钱包余额就可以了
-            $("#qbdk").html(total);
-            var youhui="${couponMoney!'0'}";
-            var sum= Math.round((parseFloat(total) - parseFloat(youhui))*100)/100;//保留2位小数。
-            $("#sum").html(sum);
-            $("#qbpayTr").show();
-            $("#wxpayTr").hide();
-        }else{
-            //提示余额不足，请及时充值，不采用总金额-余额部分金额扣款，因为微信支付完成之后还要修改钱包
-        }
+        getTotalPrice();
+
     });
 });
+//计算总价
+function getTotalPrice(){
+    //获取服务项目总价
+    var sumPrice=0;
+    var names='';
+    $(".radiooper").each(function(){
+        if($(this).hasClass('on')){
+            names+=$(this).attr('fname')+",";
+            var id=$(this).attr('id');
+            var value=$("#default_"+id).attr('value');
+            sumPrice=parseFloat(sumPrice)+parseFloat(value);
+
+        }
+    });
+    //原价
+    $("#orignPrice").html(sumPrice);
+    if(sumPrice>0){//选择了服务项目后才有下面的算法
+        if(''!==names&&null!=names){
+            //去掉最后一个多余逗号,
+            names=names.trim().substr(0,names.length-1);
+        }
+        $("#projectName").val(names);
+        //获取优惠券抵扣金额
+        var youhui=parseFloat($("#coupon_price").html()).toFixed(2);
+        //计算总价减去优惠券抵扣后的价格
+        sumPrice=parseFloat(sumPrice-youhui).toFixed(2);
+        //获取钱包余额 前提是选择了使用余额付款
+        var flg=$(".yuepay").hasClass('on');
+        if(flg){
+            var qianbao=parseFloat($("#yuemoney").html()).toFixed(2);//钱包余额
+            var f=qianbao-sumPrice;
+            if(f>0){//钱包余额充足，就没必要使用微信支付了，直接下单扣除钱包余额就可以了
+                $("#qbdk").html(sumPrice);//余额抵扣
+                $("#sum").html(sumPrice);
+                $("#qbpayTr").show();
+                $("#wxpayTr").hide();
+            }else{
+                $("#qbdk").html(qianbao);//余额抵扣
+                sumPrice=sumPrice-qianbao;
+                $("#qbpayTr").hide();
+                $("#wxpayTr").show();
+            }
+
+        }
+    }
+    $("#total").html(sumPrice);
+}
 //选择服务项目,需要把服务项目名称和总金额传递过去
 function xzfwxm(){
     var carType=$("#carType").val();
