@@ -75,6 +75,7 @@ FROM users
 				user_id=(select user_id from orders where id=#id#)
 			</isNotEmpty>
 		</dynamic>
+		ORDER BY create_time DESC
 		limit 0,1
 	</select>
 <!--新增-->
