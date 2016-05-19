@@ -44,13 +44,12 @@ public class CoreServiceImpl implements ICoreService {
 	 * appSecret 公众账号的密钥
 	 * openId 用户标识
 	 */
-	public void send_template_message(String appId, String appSecret, String openId,WxTemplate template) {
+	public int send_template_message(String appId, String appSecret, String openId,WxTemplate template) {
 		//定时获取token
 		//AccessToken token=TokenThread.accessToken;
 		//String access_token = token.getToken();
 		//appSecret="812beb1774934d7d9ec9577f33f0856b";
 		String access_token = GetAccessTokenUtil.getAccess_token2(appId, appSecret);
-		System.out.println("获取前appid======================="+appId+"\t获取钱appsecret============="+appSecret);
 		System.out.println("获取到的acces_token================="+access_token);
 		String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+access_token;
 		String jsonString = JSONObject.fromObject(template).toString();
@@ -62,6 +61,7 @@ public class CoreServiceImpl implements ICoreService {
 			}
 		}
 		System.out.println("发送模板消息返回结果======="+result);
+		return result;
 	}
 	/**
 	 * 发送普通消息

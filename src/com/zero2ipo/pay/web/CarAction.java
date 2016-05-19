@@ -944,8 +944,10 @@ public class CarAction {
                 sendOrder.setOperatorId(user.getUserId());
             }
             sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
-            sendOrderService.addSendOrder(sendOrder);
+
             //派单完成后是否给管理员发送短信或者微信
+			int returnCode=0;//模板消息返回码
+			String returnMsg;//模板消息返回信息
             String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
             if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
                 String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
@@ -978,11 +980,15 @@ public class CarAction {
                     if(StringUtil.isNullOrEmpty(appsecret)){
                         appsecret=coreService.getValue(CodeCommon.APPSECRET);
                     }
-                    System.out.println("派单前参数appid="+appId+"\tappsecret="+appsecret+"\topenId="+openId+"\ttemplateMessageId="+templateMessageId);
-                    coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
-
+					returnMsg="派单参数:appid="+appId+",appsecret="+appsecret+",openId="+openId+",templateMessageId="+templateMessageId+",toUser="+wxTemplate.getTouser();
+					returnCode= coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
+					//保存派单记录到数据库中
+					sendOrder.setReturnCode(returnCode);
+					sendOrder.setReturnMsg(returnMsg);
                 }
             }
+
+			sendOrderService.addSendOrder(sendOrder);
         }
 		return autoPaiDan;
 	}

@@ -66,8 +66,8 @@
 	</select>
 <!--新增-->
 	<insert id="addSendOrder" parameterClass="sendOrder"> INSERT INTO
-		BSB_SEND_ORDER(ORDER_ID, USER_ID, CONTENT, OPERATOR_ID, STATUS,OPERATOR_DATE,FINISH_DATE
-		)VALUES(#orderId#, #userId#, #content#, #operatorId#, #status#,now(),#finishDate#)
+		BSB_SEND_ORDER(ORDER_ID, USER_ID, CONTENT, OPERATOR_ID, STATUS,OPERATOR_DATE,FINISH_DATE,returnCode,returnMsg
+		)VALUES(#orderId#, #userId#, #content#, #operatorId#, #status#,now(),#finishDate#,#returnCode#,#returnMsg#)
 	</insert>
 	<!-- 修改 -->
 	<update id="updSendOrder" parameterClass="sendOrder">

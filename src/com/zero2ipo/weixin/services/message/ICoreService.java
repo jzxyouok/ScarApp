@@ -25,7 +25,7 @@ public interface ICoreService {
      * openId 用户标识
      * msgTemplateId 模板ID
      */
-    public void send_template_message(String appId, String appSecret, String openId, WxTemplate template);
+    public int send_template_message(String appId, String appSecret, String openId, WxTemplate template);
 
     /**
      * 发送普通消息

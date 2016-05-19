@@ -6,10 +6,10 @@ import java.io.Serializable;
  * @title 派单实体类
  * @description: 系统派单实体对象类，对应数据库中的bsb_send_order表。
  * @author wangli
- * 
+ *
  */
 public class SendOrder implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private String orderId;//订单ID
@@ -21,6 +21,24 @@ public class SendOrder implements Serializable {
 	private String finishDate;// 完成时间
 	private String beforePhoto;
 	private String afterPhoto;
+	private int returnCode;
+	private String returnMsg;
+
+	public int getReturnCode() {
+		return returnCode;
+	}
+
+	public void setReturnCode(int returnCode) {
+		this.returnCode = returnCode;
+	}
+
+	public String getReturnMsg() {
+		return returnMsg;
+	}
+
+	public void setReturnMsg(String returnMsg) {
+		this.returnMsg = returnMsg;
+	}
 
 	/**
 	 * 扩展信息
@@ -140,8 +158,8 @@ public class SendOrder implements Serializable {
 		this.operatorId = operatorId;
 	}
 
-	
 
-	
-	
+
+
+
 }
