@@ -1,6 +1,7 @@
 package com.zero2ipo.car.project.webc;
 import com.zero2ipo.car.project.bizc.IServiceProject;
 import com.zero2ipo.car.project.bo.ServiceProject;
+import com.zero2ipo.common.entity.app.Goodses;
 import com.zero2ipo.common.web.BaseCtrl;
 import com.zero2ipo.framework.exception.BaseException;
 import com.zero2ipo.framework.log.BaseLog;
@@ -60,7 +61,7 @@ public class ProjectCtrl extends BaseCtrl {
 
 			int total=0;
         	total=serviceProject.findAllListCount(map);
-        	List<ServiceProject> list= null;
+        	List<Goodses> list= null;
         	if(total>0){
         		list = serviceProject.findAllList(map);
         	}

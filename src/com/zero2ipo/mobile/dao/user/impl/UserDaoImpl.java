@@ -29,7 +29,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	//根据手机号和密码查找
 	private static final String FIND_USERS_BY_MOBILE_PWD = "zero2ipo.mobile.user.findUserByMobileAndPwd";
 	//根据ID查找用户
-	private static final String FIND_USER_BY_ID = "zero2ipo.mobile.user.findUserById";
+	private static final String FIND_USER_BY_ID = "com.app.mobile.user.findUsersByMap";
 
 	private static final String FIND_USERINFO_BY_ID = "zero2ipo.mobile.user.findUserInfoByUserId";
 	private static final String FIND_USER_BY_MAP = "com.app.mobile.user.findUsersByMap";
@@ -103,13 +103,15 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 
 	/**
 	 * 根据用户ID查找用户
-	 * @param mobile
+	 * @param userId
 	 * @return
 	 */
-	public Users findUserById(String mobile) {
+	public Users findUserById(String userId) {
 		Users u=null;
 		try{
-			u=(Users)this.query(FIND_USER_BY_ID, mobile);
+			Map map=new HashMap();
+			map.put("userId",userId);
+			u=(Users)this.query(FIND_USER_BY_ID, map);
 		}catch (Exception e){
 			u=new Users();
 			e.printStackTrace();

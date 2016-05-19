@@ -14,7 +14,7 @@
 	//ajax微信付款，首先获取jsParam
 	function wxpay(id){
 		var url="/order/getJsParam.html";
-		var jsParam='${order.jsParam}';
+		var jsParam='${order.jsParam?default("")}';
 		jsParam=eval("("+jsParam+")");
 		if(''==jsParam||null==jsParam){
 			chongxinGetJsParam(id,url);

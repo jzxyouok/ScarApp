@@ -2,6 +2,7 @@ package com.zero2ipo.car.project.bizc.impl;
 
 import com.zero2ipo.car.project.bizc.IServiceProject;
 import com.zero2ipo.car.project.bo.ServiceProject;
+import com.zero2ipo.common.entity.app.Goodses;
 import com.zero2ipo.framework.exception.BaseException;
 import com.zero2ipo.framework.log.BaseLog;
 import com.zero2ipo.mobile.dao.base.IbatisBaseDao;
@@ -49,11 +50,11 @@ public class ServiceProjectImpl extends IbatisBaseDao implements IServiceProject
 	}
 
 	@Override
-	public List<ServiceProject> findAllList(Map<String, Object> queryMap) {
-		List<ServiceProject> orderInfoList = new ArrayList<ServiceProject>();
+	public List<Goodses> findAllList(Map<String, Object> queryMap) {
+		List<Goodses> orderInfoList = new ArrayList<Goodses>();
 		try {
 			//设置数据库类型: 网站全局库(01)
-    		orderInfoList = (List<ServiceProject>)this.queryAll(FINDALLLIST, queryMap);
+    		orderInfoList = (List<Goodses>)this.queryAll(FINDALLLIST, queryMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			BaseLog.e(this.getClass(), "queryOrderInfoList 查询列表失败", e);

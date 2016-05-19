@@ -3,6 +3,7 @@ package com.zero2ipo.common.freemarker.directives;
 import com.zero2ipo.car.project.bizc.IServiceProject;
 import com.zero2ipo.car.project.bo.ServiceProject;
 import com.zero2ipo.common.entity.GgwashCoupon;
+import com.zero2ipo.common.entity.app.Goodses;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.bsb.IWashCouponService;
 import freemarker.core.Environment;
@@ -24,7 +25,7 @@ public class ServiceProjectListDirective implements TemplateDirectiveModel{
 
 	public void execute(Environment env, Map params, TemplateModel[] model,
 			TemplateDirectiveBody body) throws TemplateException, IOException {
-		List<ServiceProject> list=null;
+		List<Goodses> list=null;
 		try {
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			list=serviceProject.findAllList(queryMap);

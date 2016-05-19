@@ -487,6 +487,19 @@ public class CarAction {
 		return resultMap;
 
 	}
+	@RequestMapping(value = "/order/qbpay.html", method = RequestMethod.GET)
+	public ModelAndView qbpayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
+		ModelAndView mv=new ModelAndView();
+		FmUtils.FmData(request, model);
+		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+		Map<String,Object> queryMap=new HashMap<String,Object>();
+		queryMap.put("id", orderId);
+		mv.addObject("orderId", orderId);
+		Order order=orderService.findById(queryMap);
+		mv.addObject("order",order);
+		return mv;
+	}
+
 	@RequestMapping(value = "/order/wxpay.html", method = RequestMethod.GET)
 	public ModelAndView wxpayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
 		ModelAndView mv=new ModelAndView();
@@ -497,17 +510,6 @@ public class CarAction {
 		mv.addObject("orderId", orderId);
 		Order order=orderService.findById(queryMap);
 		mv.addObject("order",order);
-		/**根据orderId查询订单
-		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("orderId",orderId);
-		Order order=orderService.findById(queryMap);
-		if(!StringUtil.isNullOrEmpty(order)){
-			//重新生成微信支付参数，防止订单过期
-			float toatl=order.getPrice();
-			String jsParam=getWXJsParamForNative(request,toatl,orderId);
-			mv.addObject("jsParam",jsParam);
-		}
-		mv.addObject("order",order);**/
 		return mv;
 	}
 
@@ -748,7 +750,7 @@ public class CarAction {
 				}
 				//减少优惠券
 				String vipcouponId=application.getAttribute(MobileContants.VIP_COUPON_ID_KEY)+"";
-				if(!StringUtil.isNullOrEmpty(vipcouponId)){
+				if(!StringUtil.isNullOrEmpty(vipcouponId)&&!"null".equals(vipcouponId)){
 					//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
 					long couponId=Long.parseLong(vipcouponId);
 					VipCoupon vipCoupon=new VipCoupon();
@@ -766,70 +768,6 @@ public class CarAction {
 		return url;
 
 	}
-	/*//微信支付成功后调用此方法
-	@RequestMapping(value = "/order/wxpay_update", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String,Object> updateOrder(HttpServletRequest request, HttpServletResponse response, Model model,ModelMap map,String  orderId) {
-		Map<String,Object> result=new HashMap<String, Object>();
-		Order order=new Order();
-		int id=Integer.parseInt(orderId);
-		order.setId(id);
-		order.setOrderStatus(MobileContants.status_1);//已支付
-		boolean flag=orderService.updateStatus(order);
-		//根据orderid查询Order
-		Map<String,Object> queryMap=new HashMap<String, Object>();
-		queryMap.put("id",orderId);
-		 order=orderService.findById(queryMap);
-		//下完单后是否开启自动派单功能
-		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
-		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
-			//根据经纬度派单给最近的洗车工师父
-			SendOrder sendOrder=new SendOrder();
-			order.setId(id);
-			//根据经纬度获取最近的洗车工师父
-			AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
-			sendOrder.setCarNo(order.getCarNum());
-			sendOrder.setOrderId(id+"");
-			sendOrder.setName(order.getCarType());
-			sendOrder.setPreTime(order.getWashTime());
-			sendOrder.setMobile(order.getMobile());
-			sendOrder.setSendOrderTime(com.zero2ipo.framework.util.DateUtil.getCurrentTime());
-			sendOrder.setUserId(bo.getUserId());
-			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-			sendOrder.setOperatorId(user.getUserId());
-			sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
-			sendOrderService.addSendOrder(sendOrder);
-			//派单完成后是否给管理员发送短信或者微信
-			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
-			System.out.println("是否开启给管理员发送短信或者微信通知"+isSendMessage);
-			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
-				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
-				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
-					//发送短信通知
-				}
-				if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
-					//发送微信通知
-					String openId=bo.getIp();//获取洗车工绑定的微信openid
-					String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
-					String washType=order.getWashType();
-					//查询域名
-					String  domain=coreService.getValue(CodeCommon.DOMAIN);
-					String url=domain+"/renwu/order"+orderId+".html";
-					if(!order.getSendOrderStatus().equals(MobileContants.SEND_ORDER_STATUS_1)){
-						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId,templateMessageId,url,order,bo);
-						//发送模板消息
-						String appId=coreService.getValue(CodeCommon.APPID);
-						String appsecret=coreService.getValue(CodeCommon.APPSECRET);
-						System.out.println("发送模板============================================="+wxTemplate);
-						coreService.send_template_message(appId,appsecret,openId,wxTemplate);
-					}
-				}
-			}
-
-		}
-		result.put("success",flag);
-		return result;
-	}*/
 
 	/**
 	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变

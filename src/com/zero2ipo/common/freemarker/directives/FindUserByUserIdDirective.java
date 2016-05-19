@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
+ *
  * 根据userid查询用户信息
  * @author zhengYunfei
  *
@@ -31,6 +31,9 @@ public class FindUserByUserIdDirective implements TemplateDirectiveModel{
 		try {
 			if(!StringUtil.isNullOrEmpty(userId)){
 				user=userServices.findUserByUserId(userId);
+				if(!StringUtil.isNullOrEmpty(user)){
+					env.setVariable("account", ObjectWrapper.DEFAULT_WRAPPER.wrap(user.getAccount()+""));
+				}
 			}
 			env.setVariable("user", ObjectWrapper.DEFAULT_WRAPPER.wrap(user));
 		} catch (Exception e) {

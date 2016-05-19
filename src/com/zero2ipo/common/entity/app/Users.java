@@ -1,6 +1,8 @@
 package com.zero2ipo.common.entity.app;
 
-   /**
+import java.math.BigDecimal;
+
+/**
     * users 实体类
 	* 和app公众号公众一个bo
     * Sat Dec 19 18:37:01 GMT+08:00 2015 郑云飞
@@ -48,6 +50,10 @@ public class Users{
 	this.account=account;
 	}
 	public float getAccount(){
+		if(account>0){
+			BigDecimal bd = new BigDecimal(Double.parseDouble(account+""));
+			account=bd.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+		}
 		return account;
 	}
 	public void setPassword(String password){

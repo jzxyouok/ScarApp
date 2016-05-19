@@ -49,7 +49,8 @@ public class ServiceProject{
 	public void setName(String name){
 	this.name=name;
 	}
-	public String getName(){
+	public String getName()
+	{
 		return name.trim();
 	}
 	public void setPrice(String price){

@@ -94,7 +94,12 @@
 			           if(name==""||name==null){
 			            alert("请填写称呼");
 			            return false;
-			        }
+			        }else {
+						   if (!/^[\u4e00-\u9fa5]+$/gi.test(name.trim())) {
+									alert("只能输入中文");
+							         return false;
+						   }
+					   }
 			        if(carNo==""||carNo==null){
 			            alert("请填写车牌号");
 			            return false;
@@ -162,7 +167,7 @@
 					</td>
 					<td colspan='2'>
 						<input class='input-text' id='name' type='text' name="name" value="${bo.name!''}"
-							 placeholder='请输入称呼' />
+							 placeholder='请输入称呼'/>
 					</td>
 				</tr>
 				<tr>
@@ -254,16 +259,16 @@
 				   <tr>
 					   <td class="lable" colspan="3" nowrap="nowrap">
 						   <!--选择服务项目-->
-						   <p class="introwords clearfix" style="padding-top: 5px;padding-bottom: 5px">
-							   <span>选择服务项目</span>
+						   <p class="introwords clearfix" style="padding-top: 2px;">
+							   <h2>选择服务项目</h2>
 						   </p>
 						   <article class="crashintro">
 							   [@serviceProjectListDirective]
 							   [#if fwxmList?? && fwxmList?size>0]
 							   [#list fwxmList as project]
 							   <p class="singleoption clearfix">
-									<img class="radiooper i_b v_m" id="${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png">
-								   <span class="f_l">${project.name!''}</span>
+								   <img class="radiooper i_b v_m" id="${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png"/>
+								   <span>${project.name!''}</span>
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
 								  	[#if project.washCount>1]
 								         <!--判断当前会员洗车次数-->
@@ -271,24 +276,17 @@
 								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->
 														 [#if count>0]
 															 [#if count gte project.washCount]
-														  		 <span class="f_r color_orange" value="${(project.discountPrice)?if_exists?string.number}" id="default_${project_index+1}">
-																 	${(project.discountPrice)?if_exists?string.number}￥<!--执行优惠价格-->
-																  </span>
+								       							<span class="f_r color_orange" value="${(project.discountPrice)?default('')}" id="default_${project_index+1}">${(project.discountPrice)?default('')}￥</span><!--执行优惠价格-->
 															 [#else]
-								                                 <span class="f_r color_orange" value="${(project.carPrice)?if_exists?string.number}" id="default_${project_index+1}">
-																	 ${(project.carPrice)?if_exists?string.number}￥<!--执行原价-->
-																 </span>
+								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')}￥</span><!--执行原价-->
 														     [/#if]
 														 [#else]
-																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">
-																    ${project.firstPrice!'0'}￥<!--首次洗车-->
-																  </span>
+																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">${project.firstPrice!'0'}￥</span><!--首次洗车-->
 														  [/#if]
 								   		[/@FindWashCountByUserId]
 								   [#else]
 								  		 <span class="f_r color_orange" id="default_${project_index+1}">${project.carPrice!''}￥</span>
 								   [/#if]
-
 							   </p>
 							   [/#list]
 							   [/#if]
@@ -341,7 +339,14 @@
 						</p>-->
 						<article class="crashintro">
 							<p class="singleoption clearfix">
-								余额抵扣:<img class="yuepay"   src="${res}/css/xc/img/radio_unsel.png" id="yuepayRadio"><span id="yuemoney">${_user_key.account!'0'}</span>￥
+								余额抵扣:<img class="yuepay"   src="${res}/css/xc/img/radio_unsel.png" id="yuepayRadio">
+								<span id="yuemoney">
+									[@find_user_byId userId="${_user_key.userId!''}"]
+										[#if account??]
+											${account!'0'}
+										[/#if]
+									 [/@find_user_byId]
+								</span>￥
 							</p>
 						</article>
 					</td>

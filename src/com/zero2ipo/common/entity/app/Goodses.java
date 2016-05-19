@@ -55,6 +55,7 @@ public class Goodses{
 	this.name=name;
 	}
 	public String getName(){
+		name=name.replace(" ","").trim();
 		return name;
 	}
 	public void setCarPrice(String carPrice){

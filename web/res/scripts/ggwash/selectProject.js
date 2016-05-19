@@ -130,6 +130,11 @@ function xzfwxm(){
     if(name==""||name==null){
         alert("请填写称呼");
         return false;
+    }{
+        if (!/^[\u4e00-\u9fa5]+$/gi.test(name.trim())) {
+            alert("称呼只能输入中文");
+            return false;
+        }
     }
     if(carNo==""||carNo==null){
         alert("请填写车牌号");
@@ -190,6 +195,11 @@ function qbpay(){
     if(name==""||name==null){
         alert("请填写称呼");
         return false;
+    }{
+        if (!/^[\u4e00-\u9fa5]+$/gi.test(name.trim())) {
+            alert("称呼只能输入中文");
+            return false;
+        }
     }
     if(carNo==""||carNo==null){
         alert("请填写车牌号");
