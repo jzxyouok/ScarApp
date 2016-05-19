@@ -245,6 +245,9 @@ select
 			<isNotEmpty prepend="," property="outTradeNo">
 				out_trade_no=#outTradeNo#
 			</isNotEmpty>
+			<isNotEmpty prepend="," property="sendOrderStatus">
+				send_order_status=#sendOrderStatus#
+			</isNotEmpty>
 		</dynamic>
 
 		<dynamic prepend="WHERE">

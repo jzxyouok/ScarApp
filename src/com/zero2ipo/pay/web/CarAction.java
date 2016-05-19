@@ -1,6 +1,7 @@
 package com.zero2ipo.pay.web;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
+import com.zero2ipo.car.vipcoupon.bizc.IVipCouponService;
+import com.zero2ipo.car.vipcoupon.bo.VipCoupon;
 import com.zero2ipo.common.entity.*;
 import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
@@ -18,12 +19,10 @@ import com.zero2ipo.pay.util.OrderUtil;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateMessageUtils;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
-import org.apache.http.protocol.HTTP;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -641,6 +640,132 @@ public class CarAction {
 		return url;
 
 	}
+	/**
+	 * 当钱包充足的时候，直接使用钱包余额抵扣，不走微信支付
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param car
+	 * @return
+	 */
+	@RequestMapping(value = "/order/qbpay.html", method = RequestMethod.POST)
+	public String qbpay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String lat,String lng,String totalPrice,String projectName){
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		boolean flag=false;
+		//FmUtils.FmData(request, model);
+		String orderId="";
+		int id=0;
+		int carId=-1;
+		String jsParam="";
+		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+		if(!StringUtil.isNullOrEmpty(user))
+		{
+
+			if (!StringUtil.isNullOrEmpty(car)){
+				car.setUserCarId(user.getUserId());
+				//首页判断此车辆是否存在
+				Map<String,Object> queryMap=new HashMap<String,Object>();
+				queryMap.put("mobile",user.getPhoneNum());
+				Car isExsit=null;
+				List<Car> historyCar=historyCarService.findAllList(queryMap);
+				if(historyCar.size()>0){
+					isExsit=historyCar.get(0);
+				}
+				if(StringUtil.isNullOrEmpty(isExsit)){
+					carId= historyCarService.add(car);//新增
+					car.setId(carId);
+					isExsit=car;
+					if(carId>0){
+						flag=true;
+					}
+				}else{//更新
+					queryMap.put("userCardId", user.getUserId());
+					isExsit.setWashAddr(car.getWashAddr());
+					isExsit.setName(car.getName());
+					isExsit.setWashInfo(car.getWashInfo());
+					isExsit.setMobile(car.getMobile());
+					isExsit.setCarColor(car.getCarColor());
+					isExsit.setCarSeats(car.getCarSeats());
+					isExsit.setCarType(car.getCarType());
+					isExsit.setCarNo(car.getCarNo());
+					isExsit.setPreTime(car.getPreTime());
+					flag=historyCarService.update(isExsit);
+					carId=isExsit.getId();
+				}
+				/**移除录入的车辆信息保存的session**/
+				SessionHelper.removeAttribute(request, MobileContants.CAR_SESSION_KEY);
+             	/*生成订单*/
+				Order order=new Order();
+				String orderNo=DateUtil.getDateOrderNo();
+				order.setOrderId(orderNo);
+				String orderTime=DateUtil.getCurrentDateStr();
+				order.setCreateTime(orderTime);
+				order.setWashTime(car.getPreTime());
+				order.setCarNum(car.getCarNo());
+				order.setCarColor(car.getCarColor());
+				order.setAddress(car.getWashAddr());
+				order.setMobile(user.getPhoneNum());
+				order.setUserId(user.getUserId());
+				order.setUserName(car.getName());
+				order.setAddress(car.getWashAddr());
+				order.setCarType(car.getCarType());
+				order.setDiscription(car.getWashInfo());
+				order.setCarId(carId + "");
+				order.setPayType(MobileContants.status_2);//钱包抵扣
+				order.setOrderStatus(MobileContants.status_1);//已付款
+				order.setLon(lng);
+				order.setLat(lat);
+				float total_price=0;
+				if(!StringUtil.isNullOrEmpty(totalPrice)){
+					total_price=Float.parseFloat(totalPrice);
+				}
+				order.setPrice(total_price);
+				order.setWashType(projectName);
+				order.setSendOrderStatus(MobileContants.status_0);
+				order.setUserId(user.getUserId());
+				orderId=OrderUtil.GetOrderNumber("");
+				order.setOrderId(orderId);
+				id=orderService.add(order);
+				//下单完成后保存订单主键到缓存中，修改订单状态的时候要用
+				order.setId(id);
+				//保存订单完毕后，减去钱包余额
+				user.setAccount(user.getAccount()-total_price);
+				userServices.reduceQianBao(user);
+				//同时更新缓存
+				SessionHelper.removeAttribute(request,MobileContants.USER_SESSION_KEY);
+				SessionHelper.setAttribute(request,MobileContants.USER_SESSION_KEY,user);
+				request.getSession().removeAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
+				request.getSession().setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY,user);
+				//接下来是自动派单
+				ServletContext application =request.getSession().getServletContext();
+				String autoPaiDan=isAutoPaiDanMethod(request, application, order);
+				if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
+					//判断完毕，更新订单派单状态
+					Order o=new Order();
+					o.setId(id);
+					o.setSendOrderStatus(MobileContants.status_1);
+					orderService.updateStatus(o);
+				}
+				//减少优惠券
+				String vipcouponId=application.getAttribute(MobileContants.VIP_COUPON_ID_KEY)+"";
+				if(!StringUtil.isNullOrEmpty(vipcouponId)){
+					//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
+					long couponId=Long.parseLong(vipcouponId);
+					VipCoupon vipCoupon=new VipCoupon();
+					vipCoupon.setId(couponId);
+					vipCoupon.setStatus(MobileContants.status_1);
+					vipCoupon.setUserId(user.getUserId());
+					vipCouponService.update(vipCoupon);
+					//更新完毕之后，从缓存中移除此优惠券
+					application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
+				}
+			}
+		}
+		//钱包余额抵扣后跳转到订单详情页面
+		String url="redirect:/order/wxpay.html?orderId="+id;
+		return url;
+
+	}
 	/*//微信支付成功后调用此方法
 	@RequestMapping(value = "/order/wxpay_update", method = RequestMethod.POST)
 	@ResponseBody
@@ -760,75 +885,108 @@ public class CarAction {
 				}
 				//根据order主键更新订单信息
 				flag=orderService.updateOrderByOutTradeNo(order);
+				//减少优惠券,先判断下单的时候是否使用了优惠券，如果使用了，那么需要更新一下优惠券使用状态
+				Users user= (Users) application.getAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
+				String vipcouponId=application.getAttribute(MobileContants.VIP_COUPON_ID_KEY)+"";
+				if(!StringUtil.isNullOrEmpty(vipcouponId)){
+					//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
+					long couponId=Long.parseLong(vipcouponId);
+					VipCoupon vipCoupon=new VipCoupon();
+					vipCoupon.setId(couponId);
+					vipCoupon.setStatus(MobileContants.status_1);
+					vipCoupon.setUserId(user.getUserId());
+					vipCouponService.update(vipCoupon);
+					//更新完毕之后，从缓存中移除此优惠券
+					application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
+				}
+				//判断下单的时候是否使用了余额抵扣，如果使用了余额抵扣，那么付款成功之后，还需要把会员里面的余额做相应的减少操作
+				float qianbao=order.getQianbao();
+				if(qianbao>0){//说明使用了钱包抵扣，那么做递减操作
+					user.setAccount(user.getAccount()-qianbao);
+					userServices.reduceQianBao(user);
+				}
 				//更新订单成功之后，重新更新一下缓存
 				application.removeAttribute(MobileContants.CURRENT_ORDER_KEY);
 				application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
 			}
-			//下完单后是否开启自动派单功能
-			String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
-			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
-				//根据经纬度派单给最近的洗车工师父
-				SendOrder sendOrder=new SendOrder();
-				//根据经纬度获取最近的洗车工师父
-				AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
-				sendOrder.setCarNo(order.getCarNum());
-				sendOrder.setOrderId(order.getId() + "");
-				sendOrder.setName(order.getCarType());
-				sendOrder.setPreTime(order.getWashTime());
-				sendOrder.setMobile(order.getMobile());
-				String  currentTime=com.zero2ipo.framework.util.DateUtil.getCurrentTime();
-				sendOrder.setSendOrderTime(currentTime);
-				sendOrder.setUserId(bo.getUserId());
-				Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-				if(!StringUtil.isNullOrEmpty(user)){
-					sendOrder.setOperatorId(user.getUserId());
-				}
-				sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
-				sendOrderService.addSendOrder(sendOrder);
-				//派单完成后是否给管理员发送短信或者微信
-				String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
-				if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
-					String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
-					if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
-						//发送短信通知
-					}
-					if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
-						//发送微信通知
-						String openId=bo.getIp();//获取洗车工绑定的微信openid
-						String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
-						if(StringUtil.isNullOrEmpty(templateMessageId)){
-							templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
-						}
-						templateMessageId=templateMessageId.trim();
-						String washType=order.getWashType();
-						//查询域名
-						String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
-						if(StringUtil.isNullOrEmpty(domain)){//
-							  domain=coreService.getValue(CodeCommon.DOMAIN);
-						}
-						url=domain+"/renwu/order"+order.getId()+".html";
-						System.out.println("派单给======================="+bo.getUserName());
-						WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
-						//发送模板消息
-						Object appId=application.getAttribute(MobileContants.APPID_KEY);
-						if(StringUtil.isNullOrEmpty(appId)){
-							appId=coreService.getValue(CodeCommon.APPID);
-						}
-						Object appsecret=application.getAttribute(MobileContants.APPSCRET_KEY);
-						if(StringUtil.isNullOrEmpty(appsecret)){
-							appsecret=coreService.getValue(CodeCommon.APPSECRET);
-						}
-						System.out.println("派单前参数appid="+appId+"\tappsecret="+appsecret+"\topenId="+openId+"\ttemplateMessageId="+templateMessageId);
-						coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
-
-					}
-				}
-			}
+			//自动派单
+			String autoPaiDan =isAutoPaiDanMethod(request, application, order);
 		}
 
 		result.put("success",flag);
 		return mv;
 	}
+
+	/**
+	 * 自动派单方法
+	 * @param request
+	 * @param application
+	 * @param order
+	 */
+	private String isAutoPaiDanMethod(HttpServletRequest request, ServletContext application, Order order) {
+		String url;//下完单后是否开启自动派单功能
+		String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
+		if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
+            //根据经纬度派单给最近的洗车工师父
+            SendOrder sendOrder=new SendOrder();
+            //根据经纬度获取最近的洗车工师父
+            AdminBo bo=userServices.findAdminByLatLng(order.getLat(), order.getLon());
+            sendOrder.setCarNo(order.getCarNum());
+            sendOrder.setOrderId(order.getId() + "");
+            sendOrder.setName(order.getCarType());
+            sendOrder.setPreTime(order.getWashTime());
+            sendOrder.setMobile(order.getMobile());
+            String  currentTime=com.zero2ipo.framework.util.DateUtil.getCurrentTime();
+            sendOrder.setSendOrderTime(currentTime);
+            sendOrder.setUserId(bo.getUserId());
+            Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+            if(!StringUtil.isNullOrEmpty(user)){
+                sendOrder.setOperatorId(user.getUserId());
+            }
+            sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
+            sendOrderService.addSendOrder(sendOrder);
+            //派单完成后是否给管理员发送短信或者微信
+            String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+            if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
+                String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+                if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
+                    //发送短信通知
+                }
+                if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
+                    //发送微信通知
+                    String openId=bo.getIp();//获取洗车工绑定的微信openid
+                    String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
+                    if(StringUtil.isNullOrEmpty(templateMessageId)){
+                        templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
+                    }
+                    templateMessageId=templateMessageId.trim();
+                    String washType=order.getWashType();
+                    //查询域名
+                    String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
+                    if(StringUtil.isNullOrEmpty(domain)){//
+                          domain=coreService.getValue(CodeCommon.DOMAIN);
+                    }
+                    url=domain+"/renwu/order"+order.getId()+".html";
+                    System.out.println("派单给======================="+bo.getUserName());
+                    WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
+                    //发送模板消息
+                    Object appId=application.getAttribute(MobileContants.APPID_KEY);
+                    if(StringUtil.isNullOrEmpty(appId)){
+                        appId=coreService.getValue(CodeCommon.APPID);
+                    }
+                    Object appsecret=application.getAttribute(MobileContants.APPSCRET_KEY);
+                    if(StringUtil.isNullOrEmpty(appsecret)){
+                        appsecret=coreService.getValue(CodeCommon.APPSECRET);
+                    }
+                    System.out.println("派单前参数appid="+appId+"\tappsecret="+appsecret+"\topenId="+openId+"\ttemplateMessageId="+templateMessageId);
+                    coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
+
+                }
+            }
+        }
+		return autoPaiDan;
+	}
+
 	/**
 	 * description: 解析微信通知xml
 	 *
@@ -943,6 +1101,8 @@ public class CarAction {
 	private IOrderService orderService;
 	@Resource(name = "washCouponService")
 	private IWashCouponService washCouponService;
+	@Resource(name = "vipCouponService")
+	private IVipCouponService vipCouponService;
 	@Resource(name = "coreService")
 	private ICoreService coreService;
 	@Resource(name = "sendOrderService")

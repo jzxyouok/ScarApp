@@ -35,6 +35,15 @@ public class Order {
 	private String carId;
 	private String transactionId;//微信支付成功之后返回商户订单号
 	private String outTradeNo;
+    private float qianbao;//钱包付款金额
+
+	public float getQianbao() {
+		return qianbao;
+	}
+
+	public void setQianbao(float qianbao) {
+		this.qianbao = qianbao;
+	}
 
 	public String getOutTradeNo() {
 		return outTradeNo;

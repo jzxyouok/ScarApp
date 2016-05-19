@@ -117,6 +117,7 @@ ul a {
 .infotable .lable{
     text-align:left;
     vertical-align:middle;
+    width:125px;
    /* color:#b9b9b9;*/
 }
 .infotable .lable img{

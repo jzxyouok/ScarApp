@@ -54,7 +54,7 @@
 			<mvc:mapping path="/mycoupon.html" /><!--我的洗车券 -->
 			<mvc:mapping path="/pay/buycouponPage.html" /><!-- 购买洗车券 -->
 			<mvc:mapping path="/pay/couponUpdate" /><!-- 我的洗车券 -->
-			<mvc:mapping path="/order/myorderlist.html" /><!-- 我的洗车订单 -->
+			<mvc:mapping path="/order/*.html" /><!-- 我的洗车订单 -->
 			<bean class="com.zero2ipo.common.interceptor.UserLoginInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -116,6 +116,9 @@ public class UserServicesImpl implements IUserServices{
 	public void updateUserQianBao(Users user) {
 		userDao.updateUserQianBao(user);
 	}
+	public void reduceQianBao(Users user){
+		userDao.reduceQianBao(user);
+	}
 
 	/**
 	 * 跟新机构用户信息

@@ -128,6 +128,8 @@
 			      	return false;
 			      }
 			      $("#sid").val(couponId);
+			      var qbdk=$("#qbdk").html();
+			   	  $("#qianbao").val(qbdk);
 			       //下单换成ajax方式
 			       var url=$("#myform").attr('action');
 			       var data=$('#myform').serialize();
@@ -356,6 +358,7 @@
 										<font color="red">优惠券抵扣:</font> <font class="deductprice color_green" id="coupon_price">${couponMoney!'0'}</font>￥
 									</span>
 									<span class="sum"><font color="red">钱包抵扣:</font> <font class="color_orange"><span id="qbdk">0</span>￥</font></span>
+									<input type="hidden" id="qianbao" name="qianbao"/>
 								</p>
 							</section>
 						</td>

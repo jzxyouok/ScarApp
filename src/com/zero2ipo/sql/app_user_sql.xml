@@ -150,6 +150,7 @@ FROM users
 	where
 		USER_ID=#userId#
 </update>
+	<!--钱包充值-->
 	<update id="updateUserQianBao" parameterClass="appUserBo">
 	UPDATE
 		users
@@ -158,4 +159,13 @@ FROM users
 	where
 		USER_ID=#userId#
 </update>
+<!--钱包抵扣-->
+	<update id="reduceQianBao" parameterClass="appUserBo">
+		UPDATE
+		users
+		set
+		account=#account#
+		where
+		USER_ID=#userId#
+	</update>
 </sqlMap>

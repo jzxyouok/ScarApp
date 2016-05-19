@@ -72,7 +72,7 @@ function getTotalPrice(){
         }
     });
     //原价
-    $("#orignPrice").html(sumPrice);
+    $("#orignPrice").html(parseFloat(sumPrice).toFixed(2));
     if(sumPrice>0){//选择了服务项目后才有下面的算法
         if(''!==names&&null!=names){
             //去掉最后一个多余逗号,
@@ -99,10 +99,21 @@ function getTotalPrice(){
                 $("#qbpayTr").hide();
                 $("#wxpayTr").show();
             }
-
+        }else{
+            //不使用钱包余额付款
+            chongzhiQianBao();
         }
+    }else{
+        //重置钱包余额
+        chongzhiQianBao();
     }
     $("#total").html(sumPrice);
+}
+//不使用余额付款
+function chongzhiQianBao(){
+    $("#qbdk").html(0);//余额抵扣
+    $("#qbpayTr").hide();
+    $("#wxpayTr").show();
 }
 //选择服务项目,需要把服务项目名称和总金额传递过去
 function xzfwxm(){
@@ -156,11 +167,72 @@ function xzfwxm(){
     $("#totalPrice").val($("#total").html());
     //跳转到微信支付订单页面
     //下单换成ajax方式
+    var qbdk=$("#qbdk").html();
+    $("#qianbao").val(qbdk);
     var url="/order/wxpay.html";
     $("#myform").attr('action',url);
     var data=$('#myform').serialize();
     $("#myform").submit();
 
+}
+//钱包充足，使用钱包直接扣款，不走微信支付
+function qbpay(){
+    var carType=$("#carType").val();
+    var carColor=$("#carColor").val();
+    var carNo=$('#carNo').val();
+    var washAddr=$('#washAddr').val();
+    var mobile=$('#mobile').val();
+    var name=$("#name").val();
+    if(mobile==""||mobile==null){
+        alert("请填写手机号码");
+        return false;
+    }
+    if(name==""||name==null){
+        alert("请填写称呼");
+        return false;
+    }
+    if(carNo==""||carNo==null){
+        alert("请填写车牌号");
+        return false;
+    }else if(carNo.length!=7){
+        alert("车牌号填写错误");
+        return false;
+    }
+
+    if(carColor==""||carColor==null){
+        alert("请填写车颜色");
+        return false;
+    }
+    if(carType==""||carType==null){
+        alert("请填写车型");
+        // hideloading();
+        return false;
+    }
+    if(washAddr==""||washAddr==null||"定位中，请稍后......"==washAddr){
+        alert("请填写洗车地点");
+        return false;
+    }
+    var preTime=$("#preTime").val();
+    if(preTime==""||preTime==null){
+        alert("请选择预约时间");
+        return false;
+    }
+    var money=$("#total").html();//总金额
+    var projectName=$("#projectName").val();//服务项目
+    var ids=getServicesProjectIds();
+    if(''==ids||null==ids){
+        alert("请选择服务项目");
+        return;
+    }
+    $("#totalPrice").val($("#total").html());
+    //跳转到微信支付订单页面
+    //下单换成ajax方式
+    var qbdk=$("#qbdk").html();
+    $("#qianbao").val(qbdk);
+    var url="/order/qbpay.html";
+    $("#myform").attr('action',url);
+    var data=$('#myform').serialize();
+    $("#myform").submit();
 }
 /*获取所有选中的服务*/
 function getServicesProjectIds(){

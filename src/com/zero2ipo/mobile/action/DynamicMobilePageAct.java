@@ -128,7 +128,7 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public ModelAndView indexPage(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,String couponMoney) {
+							  HttpServletResponse response, ModelMap model,String couponMoney,String vipCouponId) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		try {
@@ -144,7 +144,10 @@ public class DynamicMobilePageAct {
 			}else{
 				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 			}
-
+			//当用户选择优惠券的时候，把此优惠券id放到缓存中,等微信支付成功的时候，要从缓存中取出优惠券id，然后把状态更改为已使用
+			if(!StringUtil.isNullOrEmpty(vipCouponId)){
+				request.getSession().setAttribute(MobileContants.VIP_COUPON_ID_KEY,vipCouponId);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

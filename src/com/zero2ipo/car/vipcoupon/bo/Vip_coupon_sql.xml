@@ -96,16 +96,11 @@ where id=#id#
 	UPDATE
 	vip_coupon
 	SET
-	userId=#userId#,
-	coupon_code=#couponCode#,
-	coupon_name=#couponName#,
-	coupon_money=#couponMoney#,
-	coupon_start_time=#couponStartTime#,
-	coupon_end_time=#couponEndTime#,
-	coupon_remark=#couponRemark#
 	status=#status#
  	WHERE
 	ID=#id#
+	and
+	userId=#userId#
 </update>
 <delete id="deleleteVipCoupon" parameterClass="vipCouponBo">
 	DELETE FROM

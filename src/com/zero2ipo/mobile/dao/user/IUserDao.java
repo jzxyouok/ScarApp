@@ -118,4 +118,6 @@ public interface IUserDao {
 	public boolean updateAdmin(AdminBo admin);
 
 	public AdminBo findAdminByLatLng(String lat, String lng);
+
+	public void reduceQianBao(Users user);
 }

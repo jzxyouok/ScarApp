@@ -85,7 +85,7 @@
 									[#else]
 										[#if coupon.status=='0']
 										<li class="promote-item coupon-style-${coupon_index%5}">
-										<a class="clearfix" href="${base}/index.html?couponMoney=${coupon.couponMoney!''}">
+										<a class="clearfix" href="${base}/index.html?couponMoney=${coupon.couponMoney!''}&vipCouponId=${coupon.id!''}">
 										[#else]
 											<li class="promote-item coupon-style-${coupon_index%5}">
 											<a class="clearfix" href="javascript:void(0)">
