@@ -138,9 +138,7 @@ public class MoneyAction {
 		FmUtils.FmData(request, model);
 		ServletContext application =request.getSession().getServletContext();
 		UserChongZhiBo bo= (UserChongZhiBo) application.getAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
-		System.out.println("从缓存中获取的充值bo============================="+bo);
-		System.out.println("从缓存中获取的充值bo============================="+request.getSession().getAttribute(MobileContants.CURRENT_CHONGZHI_KEY));
-		if(StringUtil.isNullOrEmpty(bo)){
+		if(!StringUtil.isNullOrEmpty(bo)){
 			userchongzhi.add(bo);
 		}
 		return mv;
