@@ -140,6 +140,16 @@ public class MoneyAction {
 		UserChongZhiBo bo= (UserChongZhiBo) application.getAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
 		if(!StringUtil.isNullOrEmpty(bo)){
 			userchongzhi.add(bo);
+			//同时更新用户钱包数量
+			//根据用户id更新钱包余额ff
+			String userId=bo.getUserId();
+			Users u=new Users();
+			u.setUserId(userId);
+			u.setAccount(bo.getMoney()+bo.getZsmoney());
+			userServices.updateUserQianBao(u);
+			//付款成功之后将当前缓存key清楚
+			SessionHelper.removeAttribute(request,MobileContants.CURRENT_CHONGZHI_KEY);
+
 		}
 		return mv;
 	}

@@ -103,7 +103,13 @@
 							<li class="gg-property_index_moneyline">
 								<div class="ui-list-info">
 									<p class="gg-property_index_money_title">账户余额（元）</p>
-									<p class="gg-property_index_money_desc">${account?default('0')}</p>
+									<p class="gg-property_index_money_desc">
+										[@find_user_byId userId="${_user_key.userId!''}"]
+										[#if account??]
+										${account!'0'}
+										[/#if]
+										[/@find_user_byId]
+									</p>
 								</div>
 								<div class="ui-list-action">
 									<button type="button" class="ui-btn gg-btn-green" id="property_index_charge">立即充值</button>
