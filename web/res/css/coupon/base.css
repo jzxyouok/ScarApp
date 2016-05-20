@@ -1,4 +1,4 @@
-.u-dlbtn{width: 50%; display: block; border-radius: 5px; line-height: 44px; font-size: 14px; text-align: center; color: #fff; background: #32b06b;}
+.u-dlbtn{ display: block;  text-align: center;  background: #32b06b;}
 .u-dlbtn:hover{background: #1bae5e;}
 .u-tcbtn{width: 50%; display: block; border-radius: 5px; line-height: 36px; font-size: 17px; text-align: center; color: #fff; background: #999;}
 .u-tcbtn:hover{background: #666;}
@@ -60,7 +60,7 @@
 }
 
 
-.f-yhbox input{ width: 100%; border: 1px solid #d9d7d6; line-height: 23px; padding: 10px 5px 10px 20px;box-sizing:border-box; border-radius: 5px;}
+.f-yhbox input{ width: 100%; border: 1px solid #d9d7d6; line-height: 23px; box-sizing:border-box; border-radius: 5px;}
 .mb10 {
 	margin-bottom: 10px
 }

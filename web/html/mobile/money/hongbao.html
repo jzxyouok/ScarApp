@@ -18,7 +18,13 @@
 						<li class="gg-property_wallet_moneyline">
 							<div class="ui-list-info">
 								<p class="gg-property_wallet_money_title">红包余额（元）</p>
-								<p class="gg-property_wallet_money_desc">0.00</p>
+								<p class="gg-property_wallet_money_desc">
+									[@find_user_byId userId="${_user_key.userId!''}"]
+									[#if account??]
+									${account!'0'}
+									[/#if]
+									[/@find_user_byId]
+								</p>
 							</div>
 							<div class="ui-list-action">
 								<button type="button" class="ui-btn gg-btn-green" id="property_wallet_use">立即使用</button>
@@ -29,7 +35,7 @@
 						<li class="ui-border-r">
 							<span class="gg-property_index_head_img gg-property_index_img_cash"></span>
 							<span class="ui-nowrap">共获得</span>
-							<br><span>￥0.00</span>
+							<br><span>￥</span>
 						</li>
 						<li class="ui-border-r">
 							<span class="gg-property_index_head_img gg-property_index_img_expired"></span>
