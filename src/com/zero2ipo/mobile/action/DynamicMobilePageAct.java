@@ -145,9 +145,9 @@ public class DynamicMobilePageAct {
 				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 			}
 			//当用户选择优惠券的时候，把此优惠券id放到缓存中,等微信支付成功的时候，要从缓存中取出优惠券id，然后把状态更改为已使用
-			if(!StringUtil.isNullOrEmpty(vipCouponId)){
-				request.getSession().setAttribute(MobileContants.VIP_COUPON_ID_KEY,vipCouponId);
-			}
+			//if(!StringUtil.isNullOrEmpty(vipCouponId)){
+				//request.getSession().setAttribute(MobileContants.VIP_COUPON_ID_KEY,vipCouponId);
+			//}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

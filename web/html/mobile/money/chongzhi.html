@@ -13,19 +13,18 @@
 		<script>
 			//ajax微信付款，首先获取jsParam
 			function wxpay(){
-				alert("微信支付");
 				var money=$('input:radio:checked').attr('money');
 				var zsmoney=$('input:radio:checked').attr('zsmoney');
-				alert(money);
-				alert(zsmoney);
-				var url="/order/getPayParam.html";
+				var url="/order/chongzhiWxPay.html";
 				$.ajax({
 					type: "POST",
 					url: url,
 					async : false,
+					data:{"money":money,"zsmoney":zsmoney},
 					dataType: "json",
 					success: function (data) {
 						var jsParam=data;
+						//jsParam=eval("("+jsParam+")");
 						WeixinJSBridge.invoke(
 								'getBrandWCPayRequest'
 								,jsParam
@@ -72,13 +71,13 @@
 										<li class="gg_property_cash_buy">
 											<div class="gg_property_cash-flag">
 												<span class="gg-property_cash_style_min">￥</span>
-												<span class="gg-property_cash_style_max">${chongzhi.money!''}</span>
+												<span class="gg-property_cash_style_max">${(chongzhi.money)?default('')?string('#.##')}</span>
 											</div>
 											<div class="ui-list-info gg-property_cash-info">
 												<div class="gg-property_cash-info-bg">
 													<h4 class="ui-nowrap gg-property_cash-info-bg-font">&nbsp;
 														<span class="gg-property_cash_style_min">再送￥</span>
-														<span class="gg-property_cash_style_mid">${chongzhi.zsmoney!''}</span>
+														<span class="gg-property_cash_style_mid">${(chongzhi.zsmoney)?default('')?string('#.##')}</span>
 														<span class="gg-property_cash_style_min">价值:￥${chongzhi.totalMoney!''}</span></h4>
 													<p class="ui-nowrap" style="padding-top: 10px">
 														<span class="gg-property_cash_style_min" style="color: #D0C9C9">&nbsp;·&nbsp;赠送金额有效期：365天</span>

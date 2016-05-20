@@ -540,6 +540,7 @@ public class CarAction {
 		}
 		return jsParam;
 	}
+
 		/**
          * 首页下单Ajax 微信支付下单
          * @param request
@@ -647,11 +648,10 @@ public class CarAction {
 	 * @param request
 	 * @param response
 	 * @param model
-	 * @param car
 	 * @return
 	 */
 	@RequestMapping(value = "/order/qbpay.html", method = RequestMethod.POST)
-	public String qbpay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String lat,String lng,String totalPrice,String projectName){
+	public String qbpay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Order order,String lat,String lng,String totalPrice,String projectName){
 		Map<String,Object> resultMap=new HashMap<String,Object>();
 		boolean flag=false;
 		//FmUtils.FmData(request, model);
@@ -660,11 +660,11 @@ public class CarAction {
 		int carId=-1;
 		String jsParam="";
 		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
-		if(!StringUtil.isNullOrEmpty(user))
+		if(!StringUtil.isNullOrEmpty(order))
 		{
 
-			if (!StringUtil.isNullOrEmpty(car)){
-				car.setUserCarId(user.getUserId());
+			//if (!StringUtil.isNullOrEmpty(car)){
+				/*car.setUserCarId(user.getUserId());
 				//首页判断此车辆是否存在
 				Map<String,Object> queryMap=new HashMap<String,Object>();
 				queryMap.put("mobile",user.getPhoneNum());
@@ -694,25 +694,25 @@ public class CarAction {
 					flag=historyCarService.update(isExsit);
 					carId=isExsit.getId();
 				}
-				/**移除录入的车辆信息保存的session**/
+				*//**移除录入的车辆信息保存的session**//*
 				SessionHelper.removeAttribute(request, MobileContants.CAR_SESSION_KEY);
-             	/*生成订单*/
-				Order order=new Order();
+             	*//*生成订单*//*
+				Order order=new Order();*/
 				String orderNo=DateUtil.getDateOrderNo();
 				order.setOrderId(orderNo);
 				String orderTime=DateUtil.getCurrentDateStr();
 				order.setCreateTime(orderTime);
-				order.setWashTime(car.getPreTime());
+				/*order.setWashTime(car.getPreTime());
 				order.setCarNum(car.getCarNo());
 				order.setCarColor(car.getCarColor());
-				order.setAddress(car.getWashAddr());
+				order.setAddress(car.getWashAddr());*/
 				order.setMobile(user.getPhoneNum());
 				order.setUserId(user.getUserId());
-				order.setUserName(car.getName());
-				order.setAddress(car.getWashAddr());
-				order.setCarType(car.getCarType());
-				order.setDiscription(car.getWashInfo());
-				order.setCarId(carId + "");
+				/*order.setUserName(car.getName());*/
+			/*	order.setAddress(car.getWashAddr());*/
+				/*order.setCarType(car.getCarType());
+				order.setDiscription(car.getWashInfo());*/
+				//order.setCarId(carId + "");
 				order.setPayType(MobileContants.status_2);//钱包抵扣
 				order.setOrderStatus(MobileContants.status_1);//已付款
 				order.setLon(lng);
@@ -749,7 +749,7 @@ public class CarAction {
 					orderService.updateStatus(o);
 				}
 				//减少优惠券
-				String vipcouponId=application.getAttribute(MobileContants.VIP_COUPON_ID_KEY)+"";
+				String vipcouponId=order.getVipCouponId();
 				if(!StringUtil.isNullOrEmpty(vipcouponId)&&!"null".equals(vipcouponId)){
 					//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
 					long couponId=Long.parseLong(vipcouponId);
@@ -759,9 +759,9 @@ public class CarAction {
 					vipCoupon.setUserId(user.getUserId());
 					vipCouponService.update(vipCoupon);
 					//更新完毕之后，从缓存中移除此优惠券
-					application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
+					//application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
 				}
-			}
+			//}
 		}
 		//钱包余额抵扣后跳转到订单详情页面
 		String url="redirect:/order/wxpay.html?orderId="+id;
@@ -825,7 +825,7 @@ public class CarAction {
 				flag=orderService.updateOrderByOutTradeNo(order);
 				//减少优惠券,先判断下单的时候是否使用了优惠券，如果使用了，那么需要更新一下优惠券使用状态
 				Users user= (Users) application.getAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
-				String vipcouponId=application.getAttribute(MobileContants.VIP_COUPON_ID_KEY)+"";
+				String vipcouponId=order.getVipCouponId();
 				if(!StringUtil.isNullOrEmpty(vipcouponId)){
 					//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
 					long couponId=Long.parseLong(vipcouponId);
@@ -835,7 +835,7 @@ public class CarAction {
 					vipCoupon.setUserId(user.getUserId());
 					vipCouponService.update(vipCoupon);
 					//更新完毕之后，从缓存中移除此优惠券
-					application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
+					//application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
 				}
 				//判断下单的时候是否使用了余额抵扣，如果使用了余额抵扣，那么付款成功之后，还需要把会员里面的余额做相应的减少操作
 				float qianbao=order.getQianbao();

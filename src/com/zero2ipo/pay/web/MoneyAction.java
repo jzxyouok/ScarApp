@@ -107,11 +107,12 @@ public class MoneyAction {
 	 * 充值
 	 * @author zhengyunfei
 	 * */
-	@RequestMapping(value = "/order/savechongzhi.html")
-	public ModelAndView saveChongZhi(HttpServletRequest request, HttpServletResponse response, ModelMap model,UserChongZhiBo bo)
+	@RequestMapping(value = "/order/chongzhiWxPay.html")
+	@ResponseBody
+	public String chongzhiWxPay(HttpServletRequest request, HttpServletResponse response, ModelMap model,UserChongZhiBo bo)
 	{
-		ModelAndView mv=new ModelAndView(MobilePageContants.MY_HONGBAO_PAGE);
-		FmUtils.FmData(request, model);
+		//ModelAndView mv=new ModelAndView(MobilePageContants.MY_HONGBAO_PAGE);
+		//FmUtils.FmData(request, model);
 		//首先获取当前登陆的会员信息
 		Users u= (Users) SessionHelper.getAttribute(request,MobileContants.USER_SESSION_KEY);
 		if(!StringUtil.isNullOrEmpty(u)){
@@ -122,8 +123,26 @@ public class MoneyAction {
 		ServletContext application =request.getSession().getServletContext();
 		application.setAttribute(MobileContants.CURRENT_CHONGZHI_KEY,bo);
 		String jsParam=getWXJsParamForNative(request,bo.getMoney());
-		mv.addObject("jsParam",jsParam);
+		//mv.addObject("jsParam",jsParam);
 		//userchongzhi.add(bo);
+		return jsParam;
+	}
+	/**
+	 * 充值
+	 * @author zhengyunfei
+	 * */
+	@RequestMapping(value = "/order/savechongzhi.html")
+	public ModelAndView saveChongZhi(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+	{
+		ModelAndView mv=new ModelAndView(MobilePageContants.MY_HONGBAO_PAGE);
+		FmUtils.FmData(request, model);
+		ServletContext application =request.getSession().getServletContext();
+		UserChongZhiBo bo= (UserChongZhiBo) application.getAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
+		System.out.println("从缓存中获取的充值bo============================="+bo);
+		System.out.println("从缓存中获取的充值bo============================="+request.getSession().getAttribute(MobileContants.CURRENT_CHONGZHI_KEY));
+		if(StringUtil.isNullOrEmpty(bo)){
+			userchongzhi.add(bo);
+		}
 		return mv;
 	}
 	//获取微信支付参数信息
