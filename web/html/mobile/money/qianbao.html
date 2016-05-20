@@ -141,12 +141,12 @@
 							[#list chongzhiList as chongzhi]
 							<li class="gg-property_index_cash_hot_pay ui-grid-halve-img" data-money="${chongzhi.money?default('')}" data-zsmoney="${chongzhi.zsmoney?default('')}" id="${chongzhi.id!''}" onclick="showPayType('${chongzhi.id}')">
 								<i class="ui-nowrap">
-									<span class="gg-property_index_cash_account">${chongzhi.money?default('')}元</span>
+									<span class="gg-property_index_cash_account">${chongzhi.money?default('')?string('#.##')}元</span>
 								</i>
 								<br>
 								<i class="ui-nowrap">
 									<span class="gg-property_index_cash_gift">赠送</span>
-									<span class="gg-property_index_cash_gift_account">${chongzhi.zsmoney?default('')}元</span>
+									<span class="gg-property_index_cash_gift_account">${chongzhi.zsmoney?default('')?string('#.##')}元</span>
 								</i>
 								<span class="gg-property_index_safe"></span>
 							</li>

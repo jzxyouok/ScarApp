@@ -134,7 +134,7 @@ public class MoneyAction {
 	@RequestMapping(value = "/order/savechongzhi.html")
 	public ModelAndView saveChongZhi(HttpServletRequest request, HttpServletResponse response, ModelMap model)
 	{
-		ModelAndView mv=new ModelAndView(MobilePageContants.MY_HONGBAO_PAGE);
+		ModelAndView mv=new ModelAndView(MobilePageContants.MY_MONEY_PAGE);
 		FmUtils.FmData(request, model);
 		ServletContext application =request.getSession().getServletContext();
 		UserChongZhiBo bo= (UserChongZhiBo) application.getAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
@@ -145,11 +145,10 @@ public class MoneyAction {
 			String userId=bo.getUserId();
 			Users u=new Users();
 			u.setUserId(userId);
-			u.setAccount(bo.getMoney()+bo.getZsmoney());
+			u.setAccount(bo.getMoney() + bo.getZsmoney());
 			userServices.updateUserQianBao(u);
 			//付款成功之后将当前缓存key清楚
-			SessionHelper.removeAttribute(request,MobileContants.CURRENT_CHONGZHI_KEY);
-
+			application.removeAttribute(MobileContants.CURRENT_CHONGZHI_KEY);
 		}
 		return mv;
 	}
