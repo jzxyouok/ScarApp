@@ -36,6 +36,15 @@ public class Order {
 	private String transactionId;//微信支付成功之后返回商户订单号
 	private String outTradeNo;
     private float qianbao;//钱包付款金额
+    private String vipCouponId;//如果使用优惠券抵扣了，那么vipCouponId就有值了
+
+	public String getVipCouponId() {
+		return vipCouponId;
+	}
+
+	public void setVipCouponId(String vipCouponId) {
+		this.vipCouponId = vipCouponId;
+	}
 
 	public float getQianbao() {
 		return qianbao;

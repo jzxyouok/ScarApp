@@ -143,7 +143,7 @@
 		  </script>
 	</head>
 	<body >
-	<form action="${base}/xd.html" method="post" id="myform" style="display: none;">
+	<form action="${base}/xd.html" method="post" id="myform" style="display: block;">
 		<input type="hidden" id="sid" name="sid"/>
 		<input type="hidden" id="lng" name="lng" value="${bo.lng!''}">
 		<input type="hidden" id="lat" name="lat" value="${bo.lat!''}">
@@ -324,8 +324,9 @@
 						<div class="oneline appointmenttime">
 							<p class="clearfix bb_none">
 										<span class="f_r brandsel timesel p_r">
-											<font class="textwords v_m" id="couponName">${vipCouponMoney!''}</font>
+											<font class="textwords v_m" id="vipCouponName"></font>
 											<img class="i_b v_m arrow_down"  src="${res}/css/xc/img/arrow_down.png" id="selectVipCouponClickBtn">
+											<input type="hidden" id="vipCouponId" name="vipCouponId"/>
 									   </span>
 							</p>
 						</div>
@@ -466,6 +467,6 @@
 		[/@find_config_bykey]
 	</p>-->
 	</body>
-<iframe src="${base}/order/mycoupon.html" id="main" width="100%" height="100%" frameborder="0" scrolling="no"></iframe>
+<iframe src="${base}/order/mycoupon.html" id="vipCouponIframe" width="100%" height="100%" frameborder="0" scrolling="no" style="display: none"></iframe>
 <script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>
 </html>

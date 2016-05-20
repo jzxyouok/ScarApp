@@ -36,3 +36,13 @@ function getCode() {
     });
     // e.stopPropagation();
 }
+//使用优惠券
+function useCoupon(money,name,vipCouponId){
+    $("#coupon_price",window.parent.document).html(money);
+    $("#vipCouponName",window.parent.document).html(name);
+    $("#vipCouponId",window.parent.document).html(vipCouponId);
+    //隐藏此iframe
+    $("#vipCouponIframe",window.parent.document).hide();
+    $("#myform",window.parent.document).show();
+    //显示主页
+}

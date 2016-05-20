@@ -18,7 +18,7 @@
 		<script type="text/javascript" src="${res}/scripts/xc/jquery.min.js"></script>
 		<script src="${res}/scripts/lib/jquery/jquery.alerts.js" type="text/javascript"></script>
 		<script src="${res}/scripts/xc/dialog.js" type="text/javascript"></script>
-
+		<script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>
 	<body>
 		<div class="container ">
 			<div class="p15" style="background:#fff;">
@@ -49,7 +49,7 @@
 									[#else]
 										[#if coupon.status=='0']
 										<li class="promote-item coupon-style-${coupon_index%5}">
-										<a class="clearfix" href="${base}/index.html?couponMoney=${coupon.couponMoney!''}&vipCouponId=${coupon.id!''}">
+										<a class="clearfix" href="javascript:useCoupon('${coupon.couponMoney}','${coupon.couponName}','${coupon.id}')">
 										[#else]
 											<li class="promote-item coupon-style-${coupon_index%5}">
 											<a class="clearfix" href="javascript:void(0)">

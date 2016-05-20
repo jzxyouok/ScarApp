@@ -61,12 +61,15 @@ $( document ).ready(function(e) {
 			      	alert("请选择预约时间");
 			      	return false;
 			      }
-                var url="/order/mycoupon.html";
+               // var url="/order/mycoupon.html";
                // url=timestamp(url);
-                url=url.replace(" ","%20").replace(":","%3A");
-                $("#myform").attr('method',"get");
-                $("#myform").attr('action',encodeURI(url));
-                $("#myform").submit();
+               // url=url.replace(" ","%20").replace(":","%3A");
+               // $("#myform").attr('method',"get");
+               // $("#myform").attr('action',encodeURI(url));
+               // $("#myform").submit();
+                //隐藏本页面,显示优惠券iframe页面
+                $("#myform").hide();
+                $("#vipCouponIframe").show();
     })
     /**选择洗车券**/
     $("#selectCouponClickBtn").click(function(){
