@@ -57,9 +57,12 @@
 		if(res.err_msg=='get_brand_wcpay_request:ok')
 		{
 			//支付成功后修改订单状态，并发送派单通知
+			//alert("成功");
 			var orderId="${orderId!''}";
+			//alert(orderId);
 			//支付成功之后跳转到订单详情页面
-			var url="${base}/my/order"+orderId+".html";
+			//var url="${base}/my/order"+orderId+".html";
+			var url="${base}/order/wxpayUpdate.html?id="+orderId;
 			window.location.href=url;
 		}
 		else

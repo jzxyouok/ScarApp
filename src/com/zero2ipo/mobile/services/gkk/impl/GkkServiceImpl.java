@@ -132,11 +132,11 @@ public class GkkServiceImpl implements IGkkService {
 			System.out.println("查询出来的车轮======"+list.size());
 			if(list.size()>0){
 				car=list.get(0);
-				car.setCarNo(user.getAccount());
+				//car.setCarNo(user.getAccount());
 			}else{
 				car =new Car();
 				car.setMobile(user.getPhoneNum());
-				car.setCarNo(user.getAccount());
+				//car.setCarNo(user.getAccount());
 			}
 			model.put("bo",car);
 			mv.addObject("bo", "car");

@@ -227,7 +227,7 @@
 					</tr>
 				    <tr>
 						<td class="lable" nowrap="nowrap">
-						<img src="${res}/images/ggwash/icon_comment.png" />
+						<img src="${res}/images/ggwash/123.png" />
 							时间
 						</td>
 						<td colspan='2'>
@@ -247,11 +247,11 @@
 
 					<tr>
 						<td class="lable">
-							<img src="${res}/images/exclamation.png" width="20px" height="20px"/>
+							<img src="${res}/images/456.png" width="20px" height="20px"/>
 							备注
 						</td>
 						<td colspan='2'>
-							<input id='washInfo' name="washInfo" style="width:90%"
+							<input id='washInfo' name="washInfo" style="width:90%;border: 1px" class="input-text"
 								type='text'  placeholder='请填写车辆详细地址' value="${bo.washInfo!''}" /></input>
 						</td>
 					</tr>
@@ -275,12 +275,12 @@
 								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->
 														 [#if count>0]
 															 [#if count gte project.washCount]
-								       							<span class="f_r color_orange" value="${(project.discountPrice)?default('')}" id="default_${project_index+1}">${(project.discountPrice)?default('')}￥</span><!--执行优惠价格-->
+								       							<span class="f_r color_orange" value="${(project.discountPrice)?default('')}" id="default_${project_index+1}">${(project.discountPrice)?default('')?string('#.##')}￥</span><!--执行优惠价格-->
 															 [#else]
-								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')}￥</span><!--执行原价-->
+								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')?string('#.##')}￥</span><!--执行原价-->
 														     [/#if]
 														 [#else]
-																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">${project.firstPrice!'0'}￥</span><!--首次洗车-->
+																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">${project.firstPrice?default('0')?string('#.##')}￥</span><!--首次洗车-->
 														  [/#if]
 								   		[/@FindWashCountByUserId]
 								   [#else]

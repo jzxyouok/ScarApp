@@ -105,9 +105,10 @@ public class Oauth2Servlet {
                            page=MobilePageContants.FM_PAGE_WDXCQ;
                            model=gkkService.initMyOrder(model,openid,page,user);
                        }
+                       System.out.println("key==============="+key);
                        if(key.equals(UrlContants.MENU_KEY_31)){//钱包
                            page=MobilePageContants.MY_MONEY_PAGE;
-                           model=gkkService.initMyOrder(model,openid,page,user);
+                           //model=gkkService.initMyOrder(model,openid,page,user);
                        }
                    }
             }
