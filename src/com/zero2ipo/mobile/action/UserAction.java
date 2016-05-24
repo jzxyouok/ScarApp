@@ -10,6 +10,7 @@ import com.zero2ipo.core.md5.MD5PwdEncoder;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.user.IUserServices;
 import com.zero2ipo.mobile.web.SessionHelper;
+import com.zero2ipo.mobile.web.URLHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

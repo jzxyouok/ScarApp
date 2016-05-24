@@ -36,6 +36,7 @@ public class CodeCommon {
 	public static final String CAR_TYPE_KEY_1="1";//车型配置
 	public static final String PREPAY_BODY="PREPAY_BODY";//微信支付提示语配置
 	public static final String AUTO_PAIDAN="AUTO_PAIDAN";//是否开启自动派单
+	public static final String AUTO_QAINGDAN="AUTO_QAINGDAN";//是否开启抢单
 	public static final String AUTO_PAIDAN_FLAG="1";//自动派单标志
 	public static final String IS_SENDMESSAGE_TO_ADMIN="IS_SENDMESSAGE_TO_ADMIN";//是否开启给洗车工发送派单短信通知
 	public static final String SEND_MESSAGE_FLAG="SEND_MESSAGE_FLAG";//发送短信通知的类型
@@ -44,7 +45,9 @@ public class CodeCommon {
 
 	public static final String IS_SENDMESSAGE_TO_ADMIN_FLAG="1";//自动派单标志
 	public static final String PAIDAN_TEMPLATE_MESSAGE="PAIDAN_TEMPLATE_MESSAGE";//管理员自动派单模板消息
+	public static final String QIANGDAN_TEMPLATE_MESSAGE="QIANGDAN_TEMPLATE_MESSAGE";//管理员自动派单模板消息
 	public static final String POSITION="洗车";//洗车工职务
+	public static final String QIANG_DAN_DAOJISHI="QIANG_DAN_DAOJISHI";//抢单倒计时
 
 
 

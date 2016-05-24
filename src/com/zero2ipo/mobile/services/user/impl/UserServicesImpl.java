@@ -120,6 +120,11 @@ public class UserServicesImpl implements IUserServices{
 		userDao.reduceQianBao(user);
 	}
 
+	@Override
+	public List<AdminBo> findAdminList() {
+		return userDao.findAdminList();
+	}
+
 	/**
 	 * 跟新机构用户信息
 	 */

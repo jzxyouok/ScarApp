@@ -37,6 +37,10 @@ public class MobilePageContants {
 	public static final String MY_HONGBAO_PAGE="mobile/money/hongbao";//我的红包
 	public static final String MY_CHOGNZHI_PAGE="mobile/money/chongzhi";//余额充值
 
+	public static final String QIANG_DAN_PAGE="mobile/xc/qiangdan";//抢单页面
+	public static final String QIANG_DAN_LATER_PAGE="mobile/xc/qiangdanOfLater";//抢单来晚页面
+	public static final String QIANG_DAN_SUCCESS_PAGE="mobile/xc/qiangdanOfSuccess";//抢单成功页面
+
 
 	public static final String FM_USER_HOME = "mobile/user/vip";				//个人中心
 

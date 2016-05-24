@@ -66,5 +66,31 @@ public class TemplateMessageUtils {
         temp.setData(paramMap);
         return temp;
     }
+ public static WxTemplate getQiangDanTemplate(String openId,String msgTemplateId,String url,Order order,AdminBo bo,String qiangdanTime){
+        WxTemplate temp = new WxTemplate();
+        temp.setTouser(openId);
+        temp.setTemplate_id(msgTemplateId);
+        temp.setUrl(url);
+        temp.setTopcolor("#0099FF");
+        Map<String,TemplateData> paramMap=new HashMap<String, TemplateData>();
+        TemplateData data0=new TemplateData();
+        data0.setValue("您好,您有新的订单可抢!");
+        data0.setColor("#0099FF");
+        paramMap.put("first",data0);
+        TemplateData data1=new TemplateData();
+        data1.setValue("抢单倒计时"+qiangdanTime+"秒");
+        data1.setColor("#0099FF");
+        paramMap.put("keyword1",data1);
+        TemplateData data2=new TemplateData();
+        data2.setValue("洗车信息:车主:"+order.getUserName() + ",车牌号:" + order.getCarNum()+",洗车地址:"+order.getAddress()+"洗车类型:"+order.getWashType()+",预约时间:"+order.getWashTime());
+        data2.setColor("#0099FF");
+        paramMap.put("keyword2",data2);
+        TemplateData remark=new TemplateData();
+        remark.setValue("点我开始抢单");
+        remark.setColor("#0099FF");
+        paramMap.put("remark",remark);
+        temp.setData(paramMap);
+        return temp;
+    }
 
 }

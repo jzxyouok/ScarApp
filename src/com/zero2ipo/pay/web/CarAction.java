@@ -22,6 +22,7 @@ import com.zero2ipo.weixin.templateMessage.WxTemplate;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.omg.CORBA.ORB;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -913,14 +914,20 @@ public class CarAction {
 				user.setAccount(user.getAccount()-qianbao);
 				userServices.reduceQianBao(user);
 			}
-			//更新订单成功之后，重新更新一下缓存
-			//application.removeAttribute(MobileContants.CURRENT_ORDER_KEY);
-			//application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
-			//}
 			//自动派单
-			order.setOrderStatus(updateOrder.getOrderStatus());
-			String autoPaiDan =isAutoPaiDanMethod(request, application, order);
-			System.out.println("autoPaiDan======================================================="+autoPaiDan);
+			String autoQiangDan=coreService.getValue(CodeCommon.AUTO_QAINGDAN);
+			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoQiangDan)){
+				url="redirect:/my/order"+id+".html";
+				mv.setViewName(url);
+				order.setOrderStatus(updateOrder.getOrderStatus());
+				String autoPaiDan =isAutoPaiDanMethod(request, application, order);
+				System.out.println("autoPaiDan======================================================="+autoPaiDan);
+			}else {
+				String qingdanTime=application.getAttribute(MobileContants.QIANGDAN_TIME_KEY)+"";
+				isAutoQiangDanMethod(request, application, order);
+				url = "redirect:/qiangdan/index.html";
+			}
+
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -979,7 +986,7 @@ public class CarAction {
 						domain=coreService.getValue(CodeCommon.DOMAIN);
 					}
 					url=domain+"/renwu/order"+order.getId()+".html";
-					System.out.println("派单给======================="+bo.getUserName());
+
 					WxTemplate wxTemplate= TemplateMessageUtils.getPaiDanTemplate(openId, templateMessageId, url, order, bo);
 					//发送模板消息
 					Object appId=application.getAttribute(MobileContants.APPID_KEY);
@@ -1003,6 +1010,93 @@ public class CarAction {
 		return autoPaiDan;
 	}
 
+	/**
+	 * 倒计时结束的时候，还没有人接单的话,那么自动派给距离最近的人
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/qiangdan/timeover.html", method = RequestMethod.POST)
+	@ResponseBody
+	public void isAutoPaiDanMethod(HttpServletRequest request,String id) {
+		//首先根据id判断是否存在派单信息
+		SendOrder  sendOrder=sendOrderService.findSendOrderByOrderId(id);
+		if(StringUtil.isNullOrEmpty(sendOrder)){
+			//开启自动派单
+			ServletContext application =request.getSession().getServletContext();
+			Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+			isAutoPaiDanMethod(request,application,order);
+		}
+	}
+	/**
+	 * qiang dan success
+	 * @return
+	 */
+	@RequestMapping(value = "/qiandan/test.html", method = RequestMethod.GET)
+	public ModelAndView qiandanTest(HttpServletRequest request,
+									HttpServletResponse response, ModelMap model,String orderId) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		String url=MobilePageContants.QIANG_DAN_SUCCESS_PAGE;
+		mv.setViewName(url);
+		mv.addObject("orderId",orderId);
+		ServletContext application=request.getSession().getServletContext();
+		Map<String,Object> queryMap=new HashMap<String, Object>();
+		queryMap.put("id",orderId);
+		Order order=orderService.findById(queryMap);
+		application.setAttribute(MobileContants.CURRENT_ORDER_KEY, order);
+		isAutoQiangDanMethod(request, application, order);
+		return mv;
+	}
+
+	/**
+	 * 抢单方法
+	 * @param application
+	 * @param order
+	 */
+	private void isAutoQiangDanMethod(HttpServletRequest request2, ServletContext application, Order order) {
+		String url;//下完单后是否开启自动派单功能
+		//派单完成后是否给管理员发送短信或者微信
+		int returnCode=0;//模板消息返回码
+		String returnMsg;//模板消息返回信息
+		String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+		if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
+			String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+			if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
+				//查询所有的洗车工
+				List<AdminBo> adminList=userServices.findAdminList();
+				for(int i=0;i<adminList.size();i++){
+					AdminBo bo=adminList.get(i);
+					//发送微信通知
+					String openId=bo.getIp();//获取洗车工绑定的微信openid
+					String templateMessageId=application.getAttribute(MobileContants.QIANGDAN_TEMPLATE_KEY)+"";
+					if(StringUtil.isNullOrEmpty(templateMessageId)){
+						templateMessageId=coreService.getValue(CodeCommon.QIANGDAN_TEMPLATE_MESSAGE);
+					}
+					templateMessageId=templateMessageId.trim();
+					String washType=order.getWashType();
+					//查询域名
+					String  domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";//首先从缓存中获取
+					if(StringUtil.isNullOrEmpty(domain)){//
+						domain=coreService.getValue(CodeCommon.DOMAIN);
+					}
+					url=domain+"/qiangdan/index.html?id="+order.getId();
+					String qingdanTime=application.getAttribute(MobileContants.QIANGDAN_TIME_KEY)+"";
+					WxTemplate wxTemplate= TemplateMessageUtils.getQiangDanTemplate(openId, templateMessageId, url, order, bo,qingdanTime);
+					//发送模板消息
+					Object appId=application.getAttribute(MobileContants.APPID_KEY);
+					if(StringUtil.isNullOrEmpty(appId)){
+						appId=coreService.getValue(CodeCommon.APPID);
+					}
+					Object appsecret=application.getAttribute(MobileContants.APPSCRET_KEY);
+					if(StringUtil.isNullOrEmpty(appsecret)){
+						appsecret=coreService.getValue(CodeCommon.APPSECRET);
+					}
+					returnMsg="派单参数:appid="+appId+",appsecret="+appsecret+",openId="+openId+",templateMessageId="+templateMessageId+",toUser="+wxTemplate.getTouser();
+					returnCode= coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
+				}
+			}
+		}
+	}
 	/**
 	 * description: 解析微信通知xml
 	 *

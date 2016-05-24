@@ -121,4 +121,6 @@ public interface IUserServices {
 	public AdminBo findAdminByLatLng(String lat, String lng);
 
 	public void reduceQianBao(Users user);
+
+	public List<AdminBo> findAdminList();
 }

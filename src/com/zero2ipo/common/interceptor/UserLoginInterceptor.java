@@ -16,13 +16,13 @@ import java.io.IOException;
  *
  */
 public class UserLoginInterceptor extends HandlerInterceptorAdapter{
-	
+
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException, IOException {
-		
+
 		HttpSession session = request.getSession();
 		boolean flag = false;
 		Object o = session.getAttribute(MobileContants.USER_SESSION_KEY);
-		if(o == null) 
+		if(o == null)
 		{
 		   String url = URLHelper.getURI(request);
 		   if(url.contains("/user/login.html")){
@@ -35,8 +35,8 @@ public class UserLoginInterceptor extends HandlerInterceptorAdapter{
 		}else{
 			flag=true;
 		}
-	
+
 		return flag;
 	}
-	
+
 }

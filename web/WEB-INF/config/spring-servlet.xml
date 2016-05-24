@@ -51,10 +51,10 @@
 		<!--登陆  -->
 		<mvc:interceptor>
 			<!-- 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller -->
-			<mvc:mapping path="/mycoupon.html" /><!--我的洗车券 -->
-			<mvc:mapping path="/pay/buycouponPage.html" /><!-- 购买洗车券 -->
-			<mvc:mapping path="/pay/couponUpdate" /><!-- 我的洗车券 -->
-			<mvc:mapping path="/order/*.html" /><!-- 我的洗车订单 -->
+			<mvc:mapping path="/mycoupon.html" />
+			<mvc:mapping path="/pay/buycouponPage.html" />
+			<mvc:mapping path="/pay/couponUpdate" />
+			<mvc:mapping path="/order/*.html" />
 			<bean class="com.zero2ipo.common.interceptor.UserLoginInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

@@ -162,6 +162,17 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 
 	}
 
+	@Override
+	public List<AdminBo> findAdminList() {
+		List<AdminBo> list=new ArrayList<AdminBo>();
+		try{
+			list= (List<AdminBo>) this.queryAll(FIND_ALL_ADMINS, null);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 
 	/**
 	 * 更新个人用户信息
