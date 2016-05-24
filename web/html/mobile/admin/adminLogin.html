@@ -20,7 +20,7 @@
 <script src="${res}/scripts/book/message.js" type="text/javascript"></script>
 <script src="${res}/scripts/book/validate.js?v=1" type="text/javascript"></script>
 <script src="${res}/scripts/book/user.js" type="text/javascript"></script>
-<script>	
+<script>
 	/**
  * 账号登陆
  * @return
@@ -48,7 +48,7 @@ function adminLogin(){
                if(data.success){
                    Dialog.show("登陆成功", 1, 2000);
                    setTimeout(function() {
-                	    var page=data.page;	 
+                	    var page=data.page;
               			window.location.href=page;
                    },2000);
                }else{
@@ -58,37 +58,30 @@ function adminLogin(){
                	alert("服务器duang了,你可以休息片刻再回来");
            }
        });
-	
+
 }
 </script>
   </head>
   <body>
-  <form action="" id="form1" name="form1"> 
-  
+  <form action="" id="form1" name="form1">
+
 <div class="login_conter">
 	<div class="login_bd">
 		<img src="../../../res/css/ggwash/images/shouji.png" width="8%" />
 		<input type="text" id="mobile" name="mobile" class="login_dh" placeholder="请输入手机号" />
-		
+
 	</div>
     <div class="login_cw" id="errorMobile" style="display:none">输入的手机号有误</div>
-   
-    
+
+
     <div class="login_bd">
     	<img src="../../../res/css/ggwash/images/mima.png"  width="8%" />
     	<input type="password" class="login_dh" id="userPwd" name="userPwd" placeholder="请输入您的登录密码" />
     </div>
-   
+
     <div class="clear"></div>
     <div class="yytz"><a href="javascript:void(0);" onclick="javascript:adminLogin()">登陆</a></div>
 </div>
-
-
-
-
-
-
-
 
    </form>
 </body>
