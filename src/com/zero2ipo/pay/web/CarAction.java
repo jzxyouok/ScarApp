@@ -22,7 +22,6 @@ import com.zero2ipo.weixin.templateMessage.WxTemplate;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
-import org.omg.CORBA.ORB;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +33,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.StringReader;
 import java.util.*;
 
@@ -42,7 +42,7 @@ import java.util.*;
  */
 @Controller
 public class CarAction {
-	String notifyUrl = "/order/wxpayHdMethod.html";//微信支付成功回调方法,修改订单状态以及自动派单
+	String notifyUrl = "order/wxpayHdMethod.html";//微信支付成功回调方法,修改订单状态以及自动派单
 	/**
 	 * 订单流程页面
 	 * */
@@ -777,9 +777,10 @@ public class CarAction {
 	 * @return
 	 */
 	@RequestMapping(value = "/order/wxpayHdMethod.html")
-	public ModelAndView wxpayHdMethod(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("weixin pay >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	public void wxpayHdMethod(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+		System.out.println("我是主动回调的方法，我进来了，终于成功了，原来是因为回调url加登录过滤验证了。。。。。。。");
 		ModelAndView mv=new ModelAndView();
+		Order order=null;
 		Map<String,Object> returnMap=new HashMap<String, Object>();
 		Map<String,Object> result=new HashMap<String, Object>();
 		boolean flag=false;
@@ -791,9 +792,7 @@ public class CarAction {
 				notityXml += inputLine;
 			}
 			request.getReader().close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 		Map m = parseXmlToList2(notityXml);
 		String openid=m.get("openid")+"";
 		String return_code=m.get("return_code")+"";//付款成功与否的标志
@@ -802,29 +801,38 @@ public class CarAction {
 		String out_trade_no=m.get("out_trade_no")+"";//商户订单号
 		String attach=m.get("attach")+"";//商家数据包
 		String time_end=m.get("time_end")+"";//支付时间
+			System.out.println("openid==================================="+openid);
+			System.out.println("return_code==================================="+return_code);
+			System.out.println("transaction_id==================================="+transaction_id);
 		Map<String,Object> query=new HashMap<String, Object>();
 		query.put("transactionId",transaction_id);
 		Order count=orderService.findById(query);
 		//从缓存中获取订单
 		ServletContext application =request.getSession().getServletContext();
-		Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+			order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
 		String url="";
 		if(!StringUtil.isNullOrEmpty(order)){
 			url="redirect:/my/order"+order.getId()+".html";
 			mv.setViewName(url);
 			returnMap.put("page",url);
 		}
-		System.out.println("count=================================================="+count);
+
 		if(StringUtil.isNullOrEmpty(count)){
 			if(!StringUtil.isNullOrEmpty(order)){
 				//更新订单支付状态，同时更新商户订单号和交易单号
 				order.setOutTradeNo(out_trade_no);//根据outtradeNo查询订单信息
 				returnMap.put("SUCCESS",true);
 				if("SUCCESS".equals(return_code)){
+					//支付成功
+					resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
+							+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 					order.setOrderStatus(MobileContants.status_1);//已支付
 					order.setTransactionId(transaction_id);
 					//付款成功之后将当前订单缓存key清楚
 					SessionHelper.removeAttribute(request,MobileContants.CURRENT_ORDER_KEY);
+				}else{
+					resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
+							+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 				}
 				//根据order主键更新订单信息
 				System.out.println("更新订单前order=================="+order.getId());
@@ -856,13 +864,20 @@ public class CarAction {
 			//自动派单
 			String autoPaiDan =isAutoPaiDanMethod(request, application, order);
 		}
-
+			BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+			out.write(resXml.getBytes());
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		result.put("success",flag);
 		returnMap.put("success", flag);
 		returnMap.put("orderId",order.getId());
-		return mv;
+		//return mv;
 	}
 	@RequestMapping(value = "/order/wxpayUpdate.html")
+	@ResponseBody
 	public ModelAndView wxpayUpdate(HttpServletRequest request, HttpServletResponse response,String id) {
 		System.out.println("weixin pay >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		ModelAndView mv=new ModelAndView();
@@ -1164,7 +1179,7 @@ public class CarAction {
 		prePay.setPartnerKey(partnerValue);
 		prePay.setMch_id(partnerId);
 		System.out.println("weixin pay 回调地址================================================================="+domain+notifyUrl);
-		prePay.setNotify_url(domain + notifyUrl);
+		prePay.setNotify_url(domain+notifyUrl);
 		String outTradeNo=UUID.randomUUID().toString().replace("-","");
 		prePay.setOut_trade_no(outTradeNo);//每次重新生成交易单号，防止订单重复，但是需要把订单里面的outTradeNo也修改了
 		prePay.setSpbill_create_ip(spbill_create_ip);

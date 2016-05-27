@@ -29,7 +29,6 @@ body,#wrapper{
 .btnoper span{
 	width: 45%;
 	text-align: center;
-	padding: 0.7rem 0;
 	font-size: 1.57rem;
 }
 .myevaluate{
@@ -59,7 +58,7 @@ body,#wrapper{
 .userinfo p{
 	font-size: 1.2rem;
 	color: #808080;
-	line-height: 2.8rem;
+	line-height: 1.8rem;
 	display: block;
 }
 .userinfo p span{

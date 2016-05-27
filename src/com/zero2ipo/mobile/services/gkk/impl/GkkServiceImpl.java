@@ -136,7 +136,6 @@ public class GkkServiceImpl implements IGkkService {
 			}else{
 				car =new Car();
 				car.setMobile(user.getPhoneNum());
-				//car.setCarNo(user.getAccount());
 			}
 			model.put("bo",car);
 			mv.addObject("bo", "car");

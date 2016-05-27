@@ -277,7 +277,7 @@
 															 [#if count gte project.washCount]
 								       							<span class="f_r color_orange" value="${(project.discountPrice)?default('')}" id="default_${project_index+1}">${(project.discountPrice)?default('')?string('#.##')}￥</span><!--执行优惠价格-->
 															 [#else]
-								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')?string('#.##')}￥</span><!--执行原价-->
+								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')}￥</span><!--执行原价-->
 														     [/#if]
 														 [#else]
 																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">${project.firstPrice?default('0')?string('#.##')}￥</span><!--首次洗车-->
@@ -306,8 +306,7 @@
 										<span class="f_r brandsel timesel p_r">
 											<font class="textwords v_m" id="couponName">${couponName!''}</font>
 										   <input type="hidden" id="couponId" name="couponId" value="${couponId!''}"/>
-											<img class="i_b v_m arrow_down" src="${res}/css/xc/img/arrow_down.png" id="
-											">
+											<img class="i_b v_m arrow_down" src="${res}/css/xc/img/arrow_down.png" id="selectCouponClickBtn">
 
 									   </span>
 						            </p>
@@ -380,7 +379,7 @@
 						<td colspan='' style="border: 0;">
 							<input id='o' type='button' style="display: block;width: 70px;float:left;background-color:#51AD8F;color: white"
 								class='ui-btn green' value='微信支付'
-								onclick="xzfwxm()" />
+								onclick="weixinPay()" />
 							<input id='order' type='button' style="display: block;width:85px;margin-left: 75px"
 								   class='ui-btn green' value='洗车券下单'
 								   onclick="save_order()"/>
@@ -455,17 +454,6 @@
 </div>
 	</form>
 	<script src="${res}/scripts/lib/map/gaodeMap.js?v=2" type="text/javascript"></script>
-	<!--<p class="tip-list">
-
-	<div style="color:#F00;font-size:16px">
-		<img src="${res}/images/bulb-green.png" width="30px" height="30px">温馨提示
-	</div>
-		[@find_config_bykey confKey="service_fanwei_key"]
-		[#if config??]
-			${config.confValue!''}
-		[/#if]
-		[/@find_config_bykey]
-	</p>-->
 	</body>
 <iframe src="${base}/order/mycoupon.html" id="vipCouponIframe" width="100%" height="100%" frameborder="0" scrolling="no" style="display: none"></iframe>
 <script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>

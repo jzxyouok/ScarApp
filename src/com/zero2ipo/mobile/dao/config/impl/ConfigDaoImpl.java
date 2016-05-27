@@ -1,6 +1,7 @@
 package com.zero2ipo.mobile.dao.config.impl;
 
 import com.zero2ipo.common.entity.ConfValue;
+import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.dao.base.IbatisBaseDao;
 import com.zero2ipo.mobile.dao.config.IConfigDao;
 import org.springframework.stereotype.Component;
@@ -29,8 +30,10 @@ public class ConfigDaoImpl extends IbatisBaseDao  implements IConfigDao{
 		String result="";
 		Map<String, Object> m=new HashMap<String, Object>();
 		m.put("confKey",key);
-		ConfValue  confValue=(ConfValue) this.query(findConfValueByMap, m);;
-		result=confValue.getConfValue();
+		ConfValue  confValue=(ConfValue) this.query(findConfValueByMap, m);
+		if(!StringUtil.isNullOrEmpty(confValue)){
+			result=confValue.getConfValue();
+		}
 		return result;
 	}
 

@@ -61,7 +61,7 @@ public class PayController {
 	String notifyUrl = "/pay/update";
 	String coupon_notifyUrl="/pay/couponUpdate";
 	public PayController(){
-		
+
 	}
 	@RequestMapping("/pay/testpage.html")
 	public ModelAndView payTestpage(HttpServletRequest request, HttpServletResponse response,String appId,String partnerId,String partnerKey, ModelMap model) {
@@ -125,7 +125,7 @@ public class PayController {
 		String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 		prePay.setOpenid(openid);
 		String jsParam="";
-        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！ 
+        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
 		logger.info("获取的预支付订单是：" + prepayid);
@@ -140,7 +140,7 @@ public class PayController {
 			logger.info("生成的微信调起JS参数为：" + jsParam);
 			Date date = new Date();
 			DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-			
+
 			String formattedDate = dateFormat.format(date);
 			result.put("status", 1);
 			result.put("serverTime", formattedDate );
@@ -148,7 +148,7 @@ public class PayController {
 		return result;
 	}
 	/**
-	 * 获取并填写支付参数 
+	 * 获取并填写支付参数
 	 * @param model
 	 * @return
 	 */
@@ -179,12 +179,12 @@ public class PayController {
 		}
 		prePay.setOpenid(openid);
 		String jsParam="";
-        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！ 
+        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+
 		String formattedDate = dateFormat.format(date);
 		//根据id查询车辆信息
 		Map<String,Object> queryMap=new HashMap<String,Object>();
@@ -236,7 +236,7 @@ public class PayController {
 			attr.addFlashAttribute("prepayid", prepayid);
 			attr.addFlashAttribute("notifyUrl",notifyUrl);
 			logger.info("生成的微信调起JS参数为：" + jsParam);
-			
+
 		}
 		order.setJsParam(jsParam);
 		int orderId=orderService.add(order);
@@ -312,25 +312,25 @@ public class PayController {
 		String openid=SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
 		prePay.setOpenid(openid);
 		String jsParam="";
-        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！ 
+        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
 		System.out.println("prepayid2======"+prepayid);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+
 		String formattedDate = dateFormat.format(date);
 		//根据id查询车辆信息
 		Map<String,Object> queryMap=new HashMap<String,Object>();
-		
+
 		attr.addFlashAttribute("total",total);
 		String orderTime=DateUtil.getCurrentDateStr();
 		attr.addFlashAttribute("orderTime", orderTime);
 		attr.addFlashAttribute("serverTime", formattedDate );
 		String orderNo=DateUtil.getDateOrderNo();
 		attr.addFlashAttribute("orderNo", orderNo );
-		
-		
+
+
 		//生成洗车券和用对应关系表
 		//UserCoupon coupon=new UserCoupon();
 		//coupon.setUserId(openid);
@@ -345,9 +345,9 @@ public class PayController {
 			attr.addFlashAttribute("prepayid", prepayid);
 			attr.addFlashAttribute("notifyUrl",coupon_notifyUrl);
 			logger.info("生成的微信调起JS参数为：" + jsParam);
-			
+
 		}
-		
+
 		attr.addFlashAttribute("prepayid", prepayid);
 		attr.addFlashAttribute("couponId", id);
 		attr.addFlashAttribute("jsParam", jsParam);
@@ -360,7 +360,7 @@ public class PayController {
 	 * 购买洗车券主方法
 	 * @param model
 	 * @return
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
 	@RequestMapping("/pay/washCouponbuyAjax.html")
 	@ResponseBody
@@ -388,25 +388,25 @@ public class PayController {
 		}
 		prePay.setOpenid(openid);
 		String jsParam="";
-        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！ 
+        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
 		System.out.println("prepayid3======"+prepayid);
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
+
 		String formattedDate = dateFormat.format(date);
 		//根据id查询车辆信息
 		Map<String,Object> queryMap=new HashMap<String,Object>();
-		
+
 		attr.addFlashAttribute("total",total);
 		String orderTime=DateUtil.getCurrentDateStr();
 		attr.addFlashAttribute("orderTime", orderTime);
 		attr.addFlashAttribute("serverTime", formattedDate );
 		String orderNo=DateUtil.getDateOrderNo();
 		attr.addFlashAttribute("orderNo", orderNo );
-		
-		
+
+
 		//生成洗车券和用对应关系表
 		//UserCoupon coupon=new UserCoupon();
 		//coupon.setUserId(openid);
@@ -421,7 +421,7 @@ public class PayController {
 			attr.addFlashAttribute("prepayid", prepayid);
 			attr.addFlashAttribute("notifyUrl",coupon_notifyUrl);
 			logger.info("生成的微信调起JS参数为：" + jsParam);
-			
+
 		}
 		resultMap.put("prepayid", prepayid);
 		resultMap.put("couponId", id);
@@ -445,7 +445,7 @@ public class PayController {
 		String spbill_create_ip = request.getRemoteAddr();
 		WXPrepay prePay = getWxPrepay(pay, spbill_create_ip);
 		String jsParam="";
-        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！ 
+        //此处添加获取openid的方法，获取预支付订单需要此参数！！！！！！！！！！！
 		// 获取预支付订单号
 		String prepayid = prePay.submitXmlGetPrepayId();
 		logger.info("获取的预支付订单是：" + prepayid);
@@ -518,7 +518,7 @@ public class PayController {
 			mv.addObject("order",order);
 		}
 
-	
+
 		return mv;
 	}
 	//微信支付回调函数
@@ -575,7 +575,7 @@ public class PayController {
 						System.out.println("id======="+userCoupon.getId());
 						userCoupon.setNumber(userCoupon.getNumber()+washCoupon.getNumber());
 						userCoupon.setUserId(userId);
-						userCoupon.setCarNo(userEntity.getAccount());
+						//userCoupon.setCarNo(userEntity.g);
 						//更新洗车券数量
 						washCouponService.updateCouponNum(userCoupon);
 						System.out.println("更新洗车券==========");
@@ -583,7 +583,7 @@ public class PayController {
 						//新增
 						userCoupon=new UserCoupon();
 						userCoupon.setCouponId(couponId);
-						userCoupon.setCarNo(userEntity.getAccount());
+						//userCoupon.setCarNo(userEntity.getAccount());
 						userCoupon.setUserId(userId);
 						userCoupon.setNumber(washCoupon.getNumber());
 						//userCoupon.setUserName(userEntity.get);
@@ -597,7 +597,7 @@ public class PayController {
 		mv.addObject("success", flag);
 		mv.addObject("openid",userId);
 		mv.addObject("user", userEntity);
-		
+
 		return mv;
 	}
 }

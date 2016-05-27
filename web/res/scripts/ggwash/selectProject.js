@@ -116,7 +116,7 @@ function chongzhiQianBao(){
     $("#wxpayTr").show();
 }
 //选择服务项目,需要把服务项目名称和总金额传递过去
-function xzfwxm(){
+function weixinPay(){
     var carType=$("#carType").val();
     var carColor=$("#carColor").val();
     var carNo=$('#carNo').val();

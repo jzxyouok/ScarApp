@@ -54,7 +54,6 @@
 			<mvc:mapping path="/mycoupon.html" />
 			<mvc:mapping path="/pay/buycouponPage.html" />
 			<mvc:mapping path="/pay/couponUpdate" />
-			<mvc:mapping path="/order/*.html" />
 			<bean class="com.zero2ipo.common.interceptor.UserLoginInterceptor"></bean>
 		</mvc:interceptor>
 	</mvc:interceptors>
