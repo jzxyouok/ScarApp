@@ -53,10 +53,14 @@ public class SendOrderDaoImpl extends IbatisBaseDao implements ISendOrderDao{
 	@Override
 	public SendOrder findSendOrderByOrderId(String id) {
 		SendOrder sendOrder=null;
+		List<SendOrder> list=null;
 		try {
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("orderId",id);
-			sendOrder=(SendOrder) this.query(findSendOrderByOrderId,queryMap);
+			list=(List<SendOrder>) this.query(findSendOrderByOrderId,queryMap);
+			if(!com.zero2ipo.framework.util.StringUtil.isNullOrEmpty(list)&&list.size()>0){
+				sendOrder=list.get(0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

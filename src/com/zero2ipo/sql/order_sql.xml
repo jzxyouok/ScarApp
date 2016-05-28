@@ -83,7 +83,7 @@ order by
 		where
 			user_id=#userId#
 		and
-			(order_status='1' or order_status='-1')
+			order_status='1'
 	</select>
 <select id='findById' resultMap='orderMap'>
 select
