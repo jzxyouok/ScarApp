@@ -431,7 +431,7 @@ public class CarAction {
 				String autoPaiDan=coreService.getValue(CodeCommon.AUTO_PAIDAN);
 				if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
 					//根据经纬度派单给最近的洗车工师父
-					SendOrder sendOrder=new SendOrder();
+				/**	SendOrder sendOrder=new SendOrder();
 					order.setOrderId(orderId+"");
 					//根据经纬度获取最近的洗车工师父
 					AdminBo bo=userServices.findAdminByLatLng(lat,lng);
@@ -445,6 +445,7 @@ public class CarAction {
 					sendOrder.setOperatorId(user.getUserId());
 					sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
 					sendOrderService.addSendOrder(sendOrder);
+					**/
 					//派单完成后是否给管理员发送短信或者微信
 					ServletContext application =request.getSession().getServletContext();
 					isAutoQiangDanMethod(request,application,order);
