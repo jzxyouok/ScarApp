@@ -153,7 +153,7 @@ WHERE number>0
 	SET
 	number=#number#
  	WHERE
-	car_no=#carNo#
+	user_id=#userId#
 	and coupon_id=#couponId#
 </update>
 

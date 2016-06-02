@@ -445,7 +445,9 @@ public class CarAction {
 					sendOrder.setStatus(MobileContants.SEND_ORDER_STATUS_1);
 					sendOrderService.addSendOrder(sendOrder);
 					//派单完成后是否给管理员发送短信或者微信
-					String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+					ServletContext application =request.getSession().getServletContext();
+					isAutoQiangDanMethod(request,application,order);
+				/**	String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
 					if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
 						String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
 						if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
@@ -453,13 +455,12 @@ public class CarAction {
 						}
 						if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
 							//发送微信通知
-							String openId=bo.getTel();//获取洗车工绑定的微信openid
+							String openId=bo.getIp();//获取洗车工绑定的微信openid
 							String templateMessageId=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 							String washType=order.getWashType();
 							//查询域名
 							String  domain=coreService.getValue(CodeCommon.DOMAIN);
 							String url=domain+"/renwu/order"+orderId+".html";
-
 							WxTemplate wxTemplate= TemplateMessageUtils.getWxTemplateToAdmin(openId,templateMessageId,url,orderNo, com.zero2ipo.framework.util.DateUtil.getCurrentTime(),isExsit.getName(),isExsit.getCarNo(),isExsit.getWashAddr(),order.getWashTime(),washType);
 							//发送模板消息
 							String appId=coreService.getValue(CodeCommon.APPID);
@@ -467,7 +468,7 @@ public class CarAction {
 							coreService.send_template_message(appId,appsecret,openId,wxTemplate);
 
 						}
-					}
+					}**/
 
 				}
 				//如果订单 保存 成功的话 ，减去 用户已经使用 的洗车券
