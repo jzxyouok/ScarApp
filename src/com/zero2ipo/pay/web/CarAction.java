@@ -403,6 +403,7 @@ public class CarAction {
 				order.setAddress(car.getWashAddr());
 				order.setMobile(user.getPhoneNum());
 				order.setUserId(user.getUserId());
+				order.setUserName(car.getName());
 				order.setAddress(car.getWashAddr());
 				order.setCarType(car.getCarType());
 				order.setGoodsId(couponId);
