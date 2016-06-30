@@ -1,9 +1,12 @@
 package com.zero2ipo.common.http;
 
 import com.zero2ipo.common.GlobalConstant;
+import com.zero2ipo.common.entity.CodeCommon;
 import com.zero2ipo.common.entity.Site;
+import com.zero2ipo.framework.util.StringUtil;
 import org.springframework.ui.ModelMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -13,7 +16,7 @@ import java.util.Date;
 /**
  *
  * 前端处理工具类
- * 
+ *
  * @author zhengyunfei
  *
  */
@@ -23,10 +26,10 @@ public class FmUtils {
 	private static final String CSSPATH = "/style";
 	private static final String SCRIPTSPATH = "/scripts/portal";
 	private static final String RESPATH = "/res";
-	
+
 	//错误页面请求
 	private static final String ERROR_404_PAGE = "error/404";
-	
+
 	//重定向标记
 	private static final String PAGE_REDIRECT = "redirect:";
 
@@ -52,14 +55,21 @@ public class FmUtils {
 			model.put("images", site.getContextPath() + IMAGEPATH);
 			model.put("css", site.getContextPath() + CSSPATH);
 			model.put("scripts", site.getContextPath() + SCRIPTSPATH);
-			model.put("cmsReq", site.getHttpUrIAddr());
+			ServletContext application =request.getSession().getServletContext();
+			String cmsRep=application.getAttribute(CodeCommon.DOMAIN)+"";
+			//model.put("cmsReq", site.getHttpUrIAddr());
+			System.out.println("cmsReq==================="+cmsRep);
+			if(StringUtil.isNullOrEmpty(cmsRep)){
+				cmsRep="http://xiche.suninpay.com";
+			}
+			model.put("cmsReq", cmsRep);
 
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 			String currDate = sdf.format(new Date());
 			model.put("now", currDate);
 		}
 	}
-	
+
 	/**
 	 * 处理html页面跳转请求
 	 * @param request
@@ -71,7 +81,7 @@ public class FmUtils {
 		FmUtils.FmData(request, model);
 		return rpage;
 	}
-	
+
 	/**
 	 * 处理重定向条状请求
 	 * @param request
@@ -80,10 +90,10 @@ public class FmUtils {
 	 * @return
 	 */
 	public static String fmRedirectPage(HttpServletRequest request, ModelMap model, String rpage) {
-		
+
 		return new StringBuffer(PAGE_REDIRECT).append(rpage).toString();
 	}
-	
+
 	/**
 	 * 处理重定向条状请求
 	 * @param request
@@ -92,7 +102,7 @@ public class FmUtils {
 	 * @return
 	 */
 	public static void fmRedirectPage(HttpServletRequest request, HttpServletResponse response, ModelMap model, String rpage) throws IOException {
-		
+
 		response.sendRedirect(new StringBuffer(request.getContextPath()).append(rpage).toString());
 	}
 
@@ -102,7 +112,7 @@ public class FmUtils {
 	 * @param model
 	 * @return
 	 */
-	public static String fmNotFountPage(HttpServletRequest request, HttpServletResponse response, 
+	public static String fmNotFountPage(HttpServletRequest request, HttpServletResponse response,
 			ModelMap model) {
 		FmData(request, model);
 		return ERROR_404_PAGE;

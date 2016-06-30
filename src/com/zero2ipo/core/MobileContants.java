@@ -39,7 +39,7 @@ public class MobileContants {
 	public static final String SUCCESS_KEY = "success";
 
 	public static final String IMAGE_REVIEW_KEY = "cfj_ly_review_zw_file.png";
-	public static final String DEFAULT_OPEN_ID="oR_pAwi2AC7WYfUzyrb5QaFPqcFU";
+	public static final String DEFAULT_OPEN_ID="-999999";
 	public static final String USER_OPEN_ID_KEY="_openid_key";
 	public static final String USER_SESSION_OPENID_KEY="_session_openid_key";
 	public static final String GKK_CODE_ID="1925";

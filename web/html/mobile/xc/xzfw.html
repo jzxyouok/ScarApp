@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <meta name="format-detection" content="telephone=no"/> 
+    <meta name="format-detection" content="telephone=no"/>
 
     <title>订单详情</title>
-   
+
     <!--  <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.css" />
     <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.default.css" />-->
-   <link rel="stylesheet" type="text/css" href="../../../res/images/foot/foot.css">
-    <link rel='stylesheet' type="text/css" href='../../../res/css/ggwash/od.css'>
+   <link rel="stylesheet" type="text/css" href="${res}/images/foot/foot.css">
+    <link rel='stylesheet' type="text/css" href='${res}/css/ggwash/od.css'>
     <link rel='stylesheet' type="text/css" href='${res}/css/ggwash/fileupload.css'>
-      <script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
+      <script src="${res}/scripts/xc/jquery.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="${res}/css/star/css/application.css">
+	<script type="text/javascript" src="${res}/scripts/xc/jquery.raty.min.js"></script>
     <script>
     	var msg="${flag!''}";
     	if(""!=msg&&null!=msg){
@@ -33,7 +35,7 @@
 
         <div id="d_status" style='display: block; width: 100%'>
         <div id='d_iconstates'>
-			
+
             <div id='d_statussub1' class="c_fllf0">
                     <div class=" c_imgsize c_statusimg" id="d_status1"></div>
                     <div class='c_statustip'>支付完成</div>
@@ -76,8 +78,8 @@
 				            </div>
 
 	    			[/#if]
-	    		
-           
+
+
         </div>
 
     </div>
@@ -94,7 +96,7 @@
 					            <span id="s_loc" class='c_vtext'>停放位置</span>
 					            <span id="d_saddr" class='c_vtext'>${order.address!''}</span>
 					        </div>
-					
+
 					        <div id="d_note">
 					                <div id='d_subrow' class='clear'>
 					            <div id="d_nimg" class="c_fllf c_imgsize c_moreimg"></div>
@@ -105,7 +107,7 @@
 					        </div>
 	    						</div>
 
-  
+
     [@send_order orderId="${orderId}"]
     	[#if sendOrder??]
     			 <div id="d_befor">
@@ -115,7 +117,7 @@
 			         <div style="text-align:center;">
 			         [#if sendOrder.beforePhoto??]
 			       		 	<img id="d_ibefor"  src="${sendOrder.beforePhoto}"/>
-			       	 [/#if]	 	
+			       	 [/#if]
 			       	 </div>
 			   		 </div>
 				    <div id="d_after">
@@ -125,7 +127,7 @@
 				        <div style="text-align:center;">
 				        [#if sendOrder.afterPhoto??]
 				        	<img id="d_iafter"  src="${sendOrder.afterPhoto}"/>
-				        [/#if]	
+				        [/#if]
 				        </div>
 				    </div>
 				     <div id="d_comment">
@@ -138,33 +140,45 @@
 			    </div>
     	[/#if]
     [/@send_order]
-   
+
     [#if order.sendOrderStatus?number gt 3]
     [@find_comment_orderId orderId="${orderId}"]
     	[#if comment??]
     		 <div class="login_bd">
+				 服务质量:<div id="star" ></div>
+				 上门速度:<div id="star2" ></div>
+				 服务态度:<div id="star3" ></div>
+				 <input type="hidden" id="starNum" name="starNum" value="${comment.starNum!''}">
+				 <input type="hidden" id="star2Num" name="star2Num" value="${comment.star2Num!''}">
+				 <input type="hidden" id="star3Num" name="star3Num" value="${comment.star3Num!''}">
 	            <span id="s_comment" class='c_vtext'>评价内容</span>
 	            <textarea rows="5" cols="5" style="width:100%;border:1px solid #2EC5C0" id="content" name="content">${comment.content!''} </textarea>
 	        </div>
     	[#else]
     		 <div class="login_bd">
-	            <span id="s_comment" class='c_vtext'>评价内容</span>
+				 服务质量:<div id="star" ></div>
+				 上门速度:<div id="star2" ></div>
+				 服务态度:<div id="star3" ></div>
+				 <input type="hidden" id="starNum" name="starNum" value="">
+				 <input type="hidden" id="star2Num" name="star2Num" value="">
+				 <input type="hidden" id="star3Num" name="star3Num" value="">
+				 <span id="s_comment" class='c_vtext'>评价内容</span>
 	            <textarea rows="5" cols="5" style="width:100%;border:1px solid #2EC5C0" id="content" name="content"></textarea>
-	           
+
 	        </div>
  			 <div class="yytz_x">
   		    	<a href="javascript:void(0);" onclick="$('#step2Form').submit();">提交评价</a>
   		    </div>
     	[/#if]
     [/@find_comment_orderId]
-   
+
     [/#if]
-    
+
       		[/#if]
     	[/@find_order_byid]
     [/#if]
-   
-    <!--  
+
+    <!--
     <div id="d_footnote">温馨提示: 系统派单前撤单可全额退款。</div>
     <div align="center"><input type="button" id="order_refund_btn" class="ui-btn red"  value=""></div>
     -->
@@ -179,3 +193,32 @@
 
 </body>
 </html>
+<script type="text/javascript">
+	$(function() {
+		//$('#star').raty();
+		$.fn.raty.defaults.path = '${res}/css/star/img';
+		var starNum=$("#starNum").val();
+		var star2Num=$("#star2Num").val();
+		var star3Num=$("#star3Num").val();
+		$('#star').raty({ score: starNum,
+			click: function(score, evt) {
+				$("#"+$(this).attr('id')+"Num").val(score);
+			}
+		});
+		$('#star2').raty({ score: star2Num,
+			click: function(score, evt) {
+				$("#"+$(this).attr('id')+"Num").val(score);
+			}
+		});
+		$('#star3').raty({ score: star3Num,
+			click: function(score, evt) {
+				$("#"+$(this).attr('id')+"Num").val(score);
+			}
+		});
+		$("#star").attr('style',"cursor: pointer; width: 100%;");
+		$("#star2").attr('style',"cursor: pointer; width: 100%;");
+		$("#star3").attr('style',"cursor: pointer; width: 100%;");
+	});
+
+
+</script>

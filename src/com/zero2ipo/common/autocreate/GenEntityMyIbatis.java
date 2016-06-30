@@ -13,19 +13,19 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class GenEntityMyIbatis {
-	
-	private String packageOutPath = "com.zero2ipo.common.entity.app";//指定实体生成所在包的路径
+
+	private String packageOutPath = "com.zero2ipo.sql";//指定实体生成所在包的路径
 	private String authorName = "郑云飞";//作者名字
-	private String tablename = "orders";//表名
+	private String tablename = "choujiang_result";//表名
 	private String[] colnames; // 列名数组
 	private String[] colTypes; //列名类型数组
 	private int[] colSizes; //列名大小数组
 	private boolean f_util = false; // 是否需要导入包java.util.*
 	private boolean f_sql = false; // 是否需要导入包java.sql.*
     //数据库连接
-	private static final String URL ="jdbc:mysql://172.168.7.10:3306/scar";
+	private static final String URL ="jdbc:mysql://119.29.239.176:3306/scar";
 	private static final String NAME = "root";
-	private static final String PASS = "zhengyunfei";
+	private static final String PASS = "password";
 	private static final String DRIVER ="com.mysql.jdbc.Driver";
 
 	/*
@@ -62,15 +62,15 @@ public class GenEntityMyIbatis {
 				}
 				colSizes[i] = rsmd.getColumnDisplaySize(i + 1);
 			}
-			
+
 			String content = parsexml(colnames,colTypes,colSizes);
-			
+
 			try {
 				File directory = new File("");
 				//System.out.println("绝对路径："+directory.getAbsolutePath());
 				//System.out.println("相对路径："+directory.getCanonicalPath());
 				String path=this.getClass().getResource("").getPath();
-				
+
 				System.out.println(path);
 				System.out.println("src/?/"+path.substring(path.lastIndexOf("/com/", path.length())) );
 //				String outputPath = directory.getAbsolutePath()+ "/src/"+path.substring(path.lastIndexOf("/com/", path.length()), path.length()) + initcap(tablename) + ".java";
@@ -83,7 +83,7 @@ public class GenEntityMyIbatis {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
@@ -127,7 +127,7 @@ public class GenEntityMyIbatis {
 		boToEntity(sb);
 		entityToBo(sb);
 		sb.append("}\r\n");
-		
+
     	//System.out.println(sb.toString());
 		return sb.toString();
 	}
@@ -145,14 +145,14 @@ public class GenEntityMyIbatis {
 		StringBuffer sb = new StringBuffer();
 		//生成ibatis头文件
 		sb.append("<!DOCTYPE sqlMap PUBLIC \"-//ibatis.apache.org//DTD SQL Map 2.0//EN\"" );
-		sb.append("\r\n\t\t \"http://ibatis.apache.org/dtd/sql-map-2.dtd\">");	
+		sb.append("\r\n\t\t \"http://ibatis.apache.org/dtd/sql-map-2.dtd\">");
 		sb.append("\r\n<sqlMap>\r\n");
 		sb.append("<typeAlias alias=\""+tablename+"\" type=\""+this.packageOutPath+"."+initcap(tablename)+"\"/>\r\n");
 		//生成resultMap
 	    sb.append("<resultMap class=\""+initcap(tablename)+"\""+" id=\""+initcap(tablename)+"\">\r\n");
 	    for (int i = 0; i < colnames.length; i++) {
 			String colname=replaceUnderlineAndfirstToUpper(colnames[i].toLowerCase(),"_","");//将数据库列转小写，去掉下划线并首字母大写
-			sb.append("\t<result property=\"" + colname + "\" column=\"" + colnames[i] + "\"/>"); 
+			sb.append("\t<result property=\"" + colname + "\" column=\"" + colnames[i] + "\"/>");
 			sb.append("\n");
 		}
 	    sb.append("</resultMap>\r\n");
@@ -162,11 +162,11 @@ public class GenEntityMyIbatis {
 	    sb.append("SELECT\r\n");
 	    for (int i = 0; i < colnames.length; i++) {
 	    	if(i<colnames.length-1){
-	    		sb.append("\t"+colnames[i] +",\t\r\n"); 
+	    		sb.append("\t"+colnames[i] +",\t\r\n");
 	    	}else{
-	    		sb.append("\t"+colnames[i] +"\t\r\n"); 
+	    		sb.append("\t"+colnames[i] +"\t\r\n");
 	    	}
-			
+
 		}
 	    sb.append("FROM "+tablename+"\r\n");
 	    sb.append("<dynamic prepend=\"WHERE\">\r\n");
@@ -180,18 +180,18 @@ public class GenEntityMyIbatis {
 	    sb.append("\tINSERT INTO "+tablename+"(\r\n");
 	    for (int i = 0; i < colnames.length; i++) {
 	    	if(i<colnames.length-1){
-	    		sb.append("\t"+colnames[i] +",\t\r\n"); 
+	    		sb.append("\t"+colnames[i] +",\t\r\n");
 	    	}else{
-	    		sb.append("\t"+colnames[i] +"\t\r\n"); 
+	    		sb.append("\t"+colnames[i] +"\t\r\n");
 	    	}
 		}
 	    sb.append(")VALUES(\r\n");
 	    for (int i = 0; i < colnames.length; i++) {
 			String colname=replaceUnderlineAndfirstToUpper(colnames[i].toLowerCase(),"_","");//将数据库列转小写，去掉下划线并首字母大写
 			if(i<colnames.length-1){
-				sb.append("\t#"+colname +"#,\t\r\n"); 
+				sb.append("\t#"+colname +"#,\t\r\n");
 			}else{
-				sb.append("\t#"+colname +"#\t\r\n"); 
+				sb.append("\t#"+colname +"#\t\r\n");
 			}
 		}
 	    sb.append(")\r\n");
@@ -200,14 +200,14 @@ public class GenEntityMyIbatis {
 	    sb.append("<!--修改-->\r\n");
 	    sb.append("<update id=\"updVipManage\" parameterClass=\"vipEntity\">\r\n");
 	    sb.append("\tUPDATE\r\n");
-	    sb.append("\t"+tablename+"\r\n"); 
+	    sb.append("\t"+tablename+"\r\n");
 	    sb.append("\tSET\r\n");
 	    for (int i = 0; i < colnames.length; i++) {
 			String colname=replaceUnderlineAndfirstToUpper(colnames[i].toLowerCase(),"_","");//将数据库列转小写，去掉下划线并首字母大写
 			if(i<colnames.length-1){
-				sb.append("\t"+colnames[i]+"=#"+colname +"#,\t\r\n"); 
+				sb.append("\t"+colnames[i]+"=#"+colname +"#,\t\r\n");
 			}else{
-				sb.append("\t"+colnames[i]+"=#"+colname +"#\t\r\n"); 
+				sb.append("\t"+colnames[i]+"=#"+colname +"#\t\r\n");
 			}
 		}
 		sb.append(" \tWHERE \r\n");
@@ -232,55 +232,55 @@ public class GenEntityMyIbatis {
 	 * @param sb
 	 */
 	private void processAllAttrs(StringBuffer sb) {
-		
+
 		for (int i = 0; i < colnames.length; i++) {
 			String colname=replaceUnderlineAndfirstToUpper(colnames[i].toLowerCase(),"_","");//将数据库列转小写，去掉下划线并首字母大写
 			sb.append("\tprivate " + sqlType2JavaType(colTypes[i]) + " " + colname+ ";\r\n");
 		}
-		
+
 	}
-	/** 
-	* 首字母大写 
-	*  
-	* @param srcStr 
-	* @return 
-	*/  
-	public static String firstCharacterToUpper(String srcStr) {  
-	   return srcStr.substring(0, 1).toUpperCase() + srcStr.substring(1);  
-	}  
-	/** 
-	* 替换字符串并让它的下一个字母为大写 
-	* @param srcStr 
-	* @param org 
-	* @param ob 
-	* @return 
-	*/  
-	public static String replaceUnderlineAndfirstToUpper(String srcStr,String org,String ob)  
-	{  
-	   String newString = "";  
-	   int first=0;  
-	   while(srcStr.indexOf(org)!=-1)  
-	   {  
-	    first=srcStr.indexOf(org);  
-	    if(first!=srcStr.length())  
-	    {  
-	     newString=newString+srcStr.substring(0,first)+ob;  
-	     srcStr=srcStr.substring(first+org.length(),srcStr.length());  
-	     srcStr=firstCharacterToUpper(srcStr);  
-	    }  
-	   }  
-	   newString=newString+srcStr;  
-	   return newString;  
-	}  
+	/**
+	* 首字母大写
+	*
+	* @param srcStr
+	* @return
+	*/
+	public static String firstCharacterToUpper(String srcStr) {
+	   return srcStr.substring(0, 1).toUpperCase() + srcStr.substring(1);
+	}
+	/**
+	* 替换字符串并让它的下一个字母为大写
+	* @param srcStr
+	* @param org
+	* @param ob
+	* @return
+	*/
+	public static String replaceUnderlineAndfirstToUpper(String srcStr,String org,String ob)
+	{
+	   String newString = "";
+	   int first=0;
+	   while(srcStr.indexOf(org)!=-1)
+	   {
+	    first=srcStr.indexOf(org);
+	    if(first!=srcStr.length())
+	    {
+	     newString=newString+srcStr.substring(0,first)+ob;
+	     srcStr=srcStr.substring(first+org.length(),srcStr.length());
+	     srcStr=firstCharacterToUpper(srcStr);
+	    }
+	   }
+	   newString=newString+srcStr;
+	   return newString;
+	}
 	/**
 	 * 功能：生成所有方法
 	 * @param sb
 	 */
 	private void processAllMethod(StringBuffer sb) {
-		
+
 		for (int i = 0; i < colnames.length; i++) {
 			String colname=replaceUnderlineAndfirstToUpper(colnames[i].toLowerCase(),"_","");//将数据库列转小写，去掉下划线并首字母大写
-			sb.append("\tpublic void set" + initcap(colname) + "(" + sqlType2JavaType(colTypes[i]) + " " + 
+			sb.append("\tpublic void set" + initcap(colname) + "(" + sqlType2JavaType(colTypes[i]) + " " +
 					colname + "){\r\n");
 			sb.append("\tthis." + colname + "=" + colname + ";\r\n");
 			sb.append("\t}\r\n");
@@ -288,7 +288,7 @@ public class GenEntityMyIbatis {
 			sb.append("\t\treturn " + colname + ";\r\n");
 			sb.append("\t}\r\n");
 		}
-		
+
 	}
 public void boToEntity(StringBuffer sb){
 	sb.append("\tpublic static "+initcap(tablename)+" boToEntity(" + initcap(tablename) + " bo){");
@@ -315,12 +315,12 @@ public void entityToBo(StringBuffer sb){
 	 * @return
 	 */
 	private String initcap(String str) {
-		
+
 		char[] ch = str.toCharArray();
 		if(ch[0] >= 'a' && ch[0] <= 'z'){
 			ch[0] = (char)(ch[0] - 32);
 		}
-		
+
 		return new String(ch);
 	}
 
@@ -330,7 +330,7 @@ public void entityToBo(StringBuffer sb){
 	 * @return
 	 */
 	private String sqlType2JavaType(String sqlType) {
-		
+
 		if(sqlType.equalsIgnoreCase("bit")){
 			return "boolean";
 		}else if(sqlType.equalsIgnoreCase("tinyint")){
@@ -343,12 +343,12 @@ public void entityToBo(StringBuffer sb){
 			return "long";
 		}else if(sqlType.equalsIgnoreCase("float")){
 			return "float";
-		}else if(sqlType.equalsIgnoreCase("decimal") || sqlType.equalsIgnoreCase("numeric") 
-				|| sqlType.equalsIgnoreCase("real") || sqlType.equalsIgnoreCase("money") 
+		}else if(sqlType.equalsIgnoreCase("decimal") || sqlType.equalsIgnoreCase("numeric")
+				|| sqlType.equalsIgnoreCase("real") || sqlType.equalsIgnoreCase("money")
 				|| sqlType.equalsIgnoreCase("smallmoney")){
 			return "double";
-		}else if(sqlType.equalsIgnoreCase("varchar") || sqlType.equalsIgnoreCase("char") 
-				|| sqlType.equalsIgnoreCase("nvarchar") || sqlType.equalsIgnoreCase("nchar") 
+		}else if(sqlType.equalsIgnoreCase("varchar") || sqlType.equalsIgnoreCase("char")
+				|| sqlType.equalsIgnoreCase("nvarchar") || sqlType.equalsIgnoreCase("nchar")
 				|| sqlType.equalsIgnoreCase("text")){
 			return "String";
 		}else if(sqlType.equalsIgnoreCase("datetime")){
@@ -356,10 +356,10 @@ public void entityToBo(StringBuffer sb){
 		}else if(sqlType.equalsIgnoreCase("image")){
 			return "Blod";
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * 出口
 	 * TODO
@@ -368,7 +368,7 @@ public void entityToBo(StringBuffer sb){
 	public static void main(String[] args) {
 		System.out.println("aaaaaaaaaaaaaaaaa");
 		new GenEntityMyIbatis();
-		
+
 	}
 
 }

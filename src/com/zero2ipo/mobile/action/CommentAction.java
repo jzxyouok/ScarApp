@@ -4,6 +4,7 @@ import com.zero2ipo.common.domain.Upload;
 import com.zero2ipo.common.entity.AdminBo;
 import com.zero2ipo.common.entity.Comment;
 import com.zero2ipo.common.http.FmUtils;
+import com.zero2ipo.framework.util.DateUtil;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.comment.ICommentService;
 import com.zero2ipo.mobile.services.config.IConfManage;
@@ -28,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 public class CommentAction {
-	
+
     @Resource(name = "commentService")
     private ICommentService commentService ;
     @Resource(name = "confManage")
@@ -46,19 +47,23 @@ public class CommentAction {
 	 */
 	@Resource(name = "domainUpload")
 	public Upload upload;
-	
+
 	/**
 	 * update washcar before after photo
 	 */
 	@RequestMapping(value = "/pinglun.html", method = RequestMethod.POST)
 	public String registerStep2POST(HttpServletRequest request,
-			HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile, String orderId,String content,RedirectAttributes redirectAttributes ) {
+			HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile,String starNum,String star2Num,String star3Num, String orderId,String content,RedirectAttributes redirectAttributes ) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		 Map<String, Object> resultMap=new HashMap<String, Object>();
 		 Comment comment2=new Comment();
+		comment2.setCommentId(DateUtil.getCurrentDate("yyyyMMddHHmmss"));
 		 comment2.setVipId(orderId);
 		 comment2.setContent(content);
+		comment2.setStarNum(starNum);
+		comment2.setStar2Num(star2Num);
+		comment2.setStar3Num(star3Num);
 		 Map<String, Object> queryMap=new HashMap<String, Object>();
 		 queryMap.put("orderId", orderId);
 		 AdminBo adminBo=userServices.findAdminLoginMessage(queryMap);
@@ -69,6 +74,6 @@ public class CommentAction {
 		String url="f/order"+orderId+".html";
 		return "redirect:/"+url+"?flag=success";
 	}
-	
+
 }
 

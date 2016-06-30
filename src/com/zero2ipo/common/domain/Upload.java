@@ -1,6 +1,5 @@
 package com.zero2ipo.common.domain;
 
-import com.sun.istack.logging.Logger;
 import com.zero2ipo.common.domain.exception.DomainFileUploadException;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.utils.SignUtils;
@@ -11,6 +10,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,154 +29,154 @@ import java.util.Map;
  *
  */
 public class Upload {
-	
+
 	Logger logger = Logger.getLogger(Upload.class);
-	
+
 	private String fileMax = "20";
 	private String domainUrl = "";
 	private String fileLocationTempDirectory = "";
-	
+
 	private Map<String, Object> rJsonMap = new HashMap<String, Object>();
-	
+
 	private String[] fileType = new String[]{".jpg",".gif",".bmp",".png", ".jpeg"};
-	
-	public Upload (String fileMax, String domainUrl, String fileLocationTempDirectory) 
+
+	public Upload (String fileMax, String domainUrl, String fileLocationTempDirectory)
 	{
 		this.fileMax = fileMax;
 		this.domainUrl = domainUrl.trim();
 		this.fileLocationTempDirectory = fileLocationTempDirectory;
 	}
-	
+
 	/*
 	 * 获取返回数据
 	 */
 	public String getStringValue(String field) {
 		String rStr = "";
 		Object o = rJsonMap.get(field);
-		if(o != null && !"".equals(o)) 
+		if(o != null && !"".equals(o))
 		{
 			rStr = o.toString();
 		}
 		return rStr;
 	}
-	
+
 	/*
 	 * 跨域请求
 	 * @return
 	 */
-	public String requestDomainUpload (HttpServletRequest request, String path) throws DomainFileUploadException 
+	public String requestDomainUpload (HttpServletRequest request, String path) throws DomainFileUploadException
 	{
-        Map<String, String> textMap = new HashMap<String, String>();  
-        Map<String, String> fileMap = new HashMap<String, String>();  
-        fileMap.put("file", path);  
+        Map<String, String> textMap = new HashMap<String, String>();
+        Map<String, String> fileMap = new HashMap<String, String>();
+        fileMap.put("file", path);
 		String str = formUpload(domainUrl, textMap, fileMap);
-		if(str != null && !"".equals(str)) 
+		if(str != null && !"".equals(str))
 		{
 			rJsonMap = StringUtil.JsonToMap(JSONObject.fromObject(str));
 		}
 		return str;
 	}
 
-	
+
 	/*
-     * 上传图片 
-     */  
-    private String formUpload(String urlStr, Map<String, String> textMap, Map<String, String> fileMap) throws DomainFileUploadException {  
-        String res = "";  
-        HttpURLConnection conn = null;  
-        String BOUNDARY = "---------------------------123821742118716"; //boundary就是request头和上传文件内容的分隔符    
-        try {  
-            URL url = new URL(urlStr);  
-            conn = (HttpURLConnection) url.openConnection();  
-            conn.setConnectTimeout(30000);  
-            conn.setReadTimeout(30000);  
-            conn.setDoOutput(true);  
-            conn.setDoInput(true);  
-            conn.setUseCaches(false);  
-            conn.setRequestMethod("POST");  
-            conn.setRequestProperty("Connection", "Keep-Alive");  
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-CN; rv:1.9.2.6)");  
-            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);  
-  
-            OutputStream out = new DataOutputStream(conn.getOutputStream());  
-            // text    
-            if (textMap != null) {  
-                StringBuffer strBuf = new StringBuffer();  
-                Iterator<Map.Entry<String, String>> iter = textMap.entrySet().iterator();  
-                while (iter.hasNext()) {  
-                    Map.Entry<String, String> entry = iter.next();  
-                    String inputName = (String) entry.getKey();  
-                    String inputValue = (String) entry.getValue();  
-                    if (inputValue == null) {  
-                        continue;  
-                    }  
-                    strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");  
-                    strBuf.append("Content-Disposition: form-data; name=\"" + inputName + "\"\r\n\r\n");  
-                    strBuf.append(inputValue);  
-                }  
-                out.write(strBuf.toString().getBytes());  
-            }  
-  
-            // file    
-            if (fileMap != null) {  
-                Iterator<Map.Entry<String, String>> iter = fileMap.entrySet().iterator();  
-                while (iter.hasNext()) {  
-                    Map.Entry<String, String> entry = iter.next();  
-                    String inputName = (String) entry.getKey();  
-                    String inputValue = (String) entry.getValue();  
-                    if (inputValue == null) {  
-                        continue;  
-                    }  
-                    File file = new File(inputValue);  
-                    String filename = file.getName();  
-                    MagicMatch match = Magic.getMagicMatch(file, false, true);  
-                    String contentType = match.getMimeType();  
-  
-                    StringBuffer strBuf = new StringBuffer();  
-                    strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");  
-                    strBuf.append("Content-Disposition: form-data; name=\"" + inputName + "\"; filename=\"" + filename + "\"\r\n");  
-                    strBuf.append("Content-Type:" + contentType + "\r\n\r\n");  
-  
-                    out.write(strBuf.toString().getBytes());  
-  
-                    DataInputStream in = new DataInputStream(new FileInputStream(file));  
-                    int bytes = 0;  
-                    byte[] bufferOut = new byte[1024];  
-                    while ((bytes = in.read(bufferOut)) != -1) {  
-                        out.write(bufferOut, 0, bytes);  
-                    }  
-                    in.close();  
-                }  
-            }  
-  
-            byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();  
-            out.write(endData);  
-            out.flush();  
-            out.close();  
-  
-            // 读取返回数据    
-            StringBuffer strBuf = new StringBuffer();  
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));  
-            String line = null;  
-            while ((line = reader.readLine()) != null) {  
-                strBuf.append(line).append("\n");  
-            }  
-            res = strBuf.toString();  
-            reader.close();  
-            reader = null;  
-        } catch (Exception e) {  
+     * 上传图片
+     */
+    private String formUpload(String urlStr, Map<String, String> textMap, Map<String, String> fileMap) throws DomainFileUploadException {
+        String res = "";
+        HttpURLConnection conn = null;
+        String BOUNDARY = "---------------------------123821742118716"; //boundary就是request头和上传文件内容的分隔符
+        try {
+            URL url = new URL(urlStr);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(30000);
+            conn.setReadTimeout(30000);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-CN; rv:1.9.2.6)");
+            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
+
+            OutputStream out = new DataOutputStream(conn.getOutputStream());
+            // text
+            if (textMap != null) {
+                StringBuffer strBuf = new StringBuffer();
+                Iterator<Map.Entry<String, String>> iter = textMap.entrySet().iterator();
+                while (iter.hasNext()) {
+                    Map.Entry<String, String> entry = iter.next();
+                    String inputName = (String) entry.getKey();
+                    String inputValue = (String) entry.getValue();
+                    if (inputValue == null) {
+                        continue;
+                    }
+                    strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");
+                    strBuf.append("Content-Disposition: form-data; name=\"" + inputName + "\"\r\n\r\n");
+                    strBuf.append(inputValue);
+                }
+                out.write(strBuf.toString().getBytes());
+            }
+
+            // file
+            if (fileMap != null) {
+                Iterator<Map.Entry<String, String>> iter = fileMap.entrySet().iterator();
+                while (iter.hasNext()) {
+                    Map.Entry<String, String> entry = iter.next();
+                    String inputName = (String) entry.getKey();
+                    String inputValue = (String) entry.getValue();
+                    if (inputValue == null) {
+                        continue;
+                    }
+                    File file = new File(inputValue);
+                    String filename = file.getName();
+                    MagicMatch match = Magic.getMagicMatch(file, false, true);
+                    String contentType = match.getMimeType();
+
+                    StringBuffer strBuf = new StringBuffer();
+                    strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");
+                    strBuf.append("Content-Disposition: form-data; name=\"" + inputName + "\"; filename=\"" + filename + "\"\r\n");
+                    strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
+
+                    out.write(strBuf.toString().getBytes());
+
+                    DataInputStream in = new DataInputStream(new FileInputStream(file));
+                    int bytes = 0;
+                    byte[] bufferOut = new byte[1024];
+                    while ((bytes = in.read(bufferOut)) != -1) {
+                        out.write(bufferOut, 0, bytes);
+                    }
+                    in.close();
+                }
+            }
+
+            byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
+            out.write(endData);
+            out.flush();
+            out.close();
+
+            // 读取返回数据
+            StringBuffer strBuf = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                strBuf.append(line).append("\n");
+            }
+            res = strBuf.toString();
+            reader.close();
+            reader = null;
+        } catch (Exception e) {
         	e.printStackTrace();
         	logger.info("发送POST请求出错。" + urlStr);
             throw new DomainFileUploadException();
-        } finally {  
-            if (conn != null) {  
-                conn.disconnect();  
-                conn = null;  
-            }  
-        }  
-        return res;  
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+                conn = null;
+            }
+        }
+        return res;
     }
-    
+
     /*
      * 获取上传文件目录
      */
@@ -264,24 +264,24 @@ public class Upload {
 
 		return path;
 	}
-	
+
 	/*
 	 * 目录不存在创建目录
 	 */
 	private void createDirectory(String directory) {
-		if(!new File(directory).isDirectory()) 
+		if(!new File(directory).isDirectory())
 		{
 			new File(directory).mkdirs();
 		}
 	}
-	
+
 	/*
 	 * 校验上传文件格式
 	 */
 	private boolean validateFileFmt(String fileName) {
 		for(String ftype : fileType)
 		{
-			if(fileName.endsWith(ftype)) 
+			if(fileName.endsWith(ftype))
 			{
 				return true;
 			}
@@ -293,17 +293,17 @@ public class Upload {
 	 * 删除本地上传文件
 	 */
 	public void removeLocationUploadFile(String filePath) {
-		if(filePath != null && !"".equals(filePath)) 
+		if(filePath != null && !"".equals(filePath))
 		{
 			File file = new File(filePath);
-			if(file.exists()) 
+			if(file.exists())
 			{
-				if(file.isFile()) 
+				if(file.isFile())
 				{
 					file.delete();
 				}
-			}	
+			}
 		}
 	}
-	
+
 }

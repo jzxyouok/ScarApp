@@ -85,8 +85,10 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                     // 将图文消息对象转换成xml字符串
                     respMessage = MessageUtil.newsMessageToXml(newsMessage);
                 }
-                if(content.equals("888888")){
+                if(content.equals("员工登陆入口")){
                     //respContent="";
+                    String domain=getValue(CodeCommon.DOMAIN);
+                    respContent=domain+"/adminLogin.html";
 
                 }
 
@@ -116,7 +118,19 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                 // 订阅
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 
-                    respContent =getValue(CodeCommon.WelcomeValue);
+                   // respContent =getValue(CodeCommon.WelcomeValue);
+                    Article article = new Article();
+                    article.setTitle("欢迎关注小海豚上门洗车服务平台");
+                    article.setDescription("");
+                    article.setPicUrl("https://mmbiz.qlogo.cn/mmbiz/yn5O41nyIFPRlMsiayZ3V15sWKrIUhOlWlHOZvaCQS9eibftENgAbwz2YfBGMtW9unX6iciacotibKfqQhLj8g514iaQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5");
+                    article.setUrl("http://mp.weixin.qq.com/s?__biz=MzI4NzMwNTUzMA==&mid=100000012&idx=1&sn=13c95dbd2e8fe27a174dd9611951abea#wechat_redirect");
+                    articleList.add(article);
+                    // 设置图文消息个数
+                    newsMessage.setArticleCount(articleList.size());
+                    // 设置图文消息包含的图文集合
+                    newsMessage.setArticles(articleList);
+                    // 将图文消息对象转换成xml字符串
+                    respMessage = MessageUtil.newsMessageToXml(newsMessage);
 
                 }
                 // 取消订阅

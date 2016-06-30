@@ -7,14 +7,14 @@ import java.io.Serializable;
  * @title 评论实体类
  * @description: 系统评论实体对象类，对应数据库中的S9_SYS_COMMENT表。
  * @author wangli
- * 
+ *
  */
 public class Comment implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private String commentId;// 评论标识
-	
+
 	private String vipId; // 会员标识;
 
 	private String content; // 评论内容;
@@ -22,10 +22,36 @@ public class Comment implements Serializable{
 	private String commentDate; // 评论时间;
 
 	private String commentLevel; // 评论等级;0 表示好，1 表示中，2 表示差
+	private String starNum;
+	private String star2Num;
+	private String star3Num;
+
 
 	private String status; // 有效标识; 0 表示无效，1表示有效
 
+	public String getStarNum() {
+		return starNum;
+	}
 
+	public void setStarNum(String starNum) {
+		this.starNum = starNum;
+	}
+
+	public String getStar2Num() {
+		return star2Num;
+	}
+
+	public void setStar2Num(String star2Num) {
+		this.star2Num = star2Num;
+	}
+
+	public String getStar3Num() {
+		return star3Num;
+	}
+
+	public void setStar3Num(String star3Num) {
+		this.star3Num = star3Num;
+	}
 
 	public String getCommentId() {
 		return commentId;
@@ -51,7 +77,7 @@ public class Comment implements Serializable{
 		this.content = content;
 	}
 
-	
+
 
 	public String getCommentDate() {
 		return commentDate;

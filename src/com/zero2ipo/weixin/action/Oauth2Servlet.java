@@ -10,6 +10,7 @@ import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.gkk.IGkkService;
 import com.zero2ipo.mobile.services.user.IUserServices;
 import com.zero2ipo.mobile.web.SessionHelper;
+import com.zero2ipo.plugins.contants.PluginsContants;
 import com.zero2ipo.weixin.contants.UrlContants;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.utils.HttpUtil;
@@ -108,6 +109,10 @@ public class Oauth2Servlet {
                        System.out.println("key==============="+key);
                        if(key.equals(UrlContants.MENU_KEY_31)){//钱包
                            page=MobilePageContants.MY_MONEY_PAGE;
+                           //model=gkkService.initMyOrder(model,openid,page,user);
+                       }
+                       if(key.equals(UrlContants.MENU_KEY_32)){//大转盘
+                           page= PluginsContants.DA_ZHUAN_PAN_PAGE;
                            //model=gkkService.initMyOrder(model,openid,page,user);
                        }
                    }

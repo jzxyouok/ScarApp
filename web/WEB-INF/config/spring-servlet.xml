@@ -73,7 +73,6 @@
 				<entry key="find_order_byid" value-ref="find_order_byid"></entry>
 				<entry key="love_address" value-ref="love_address"></entry>
 				<entry key="coupon_list" value-ref="coupon_list"></entry>
-				<entry key="student_list" value-ref="student_list"></entry>
 				<entry key="send_order" value-ref="send_order"></entry>
 				<entry key="findGgwash_couponList" value-ref="findGgwash_couponList"></entry>
 				<entry key="coupon_buy_list" value-ref="coupon_buy_list"></entry>
@@ -114,7 +113,6 @@
 	<bean id="find_order_byid" class="com.zero2ipo.common.freemarker.directives.FindOrderByIdDirective" />
 	<bean id="love_address" class="com.zero2ipo.common.freemarker.directives.LoveAddressListDirective" />
 	<bean id="coupon_list" class="com.zero2ipo.common.freemarker.directives.WashCarCouponListDirective"/>
-	<bean id="student_list" class="com.zero2ipo.common.freemarker.directives.StudentListDirective"/>
 	<bean id="send_order" class="com.zero2ipo.common.freemarker.directives.FindSendOrderByIorderIdDirective"/>
 	<bean id="findGgwash_couponList" class="com.zero2ipo.common.freemarker.directives.MyCouponListDirective"/>
 	<bean id="coupon_buy_list" class="com.zero2ipo.common.freemarker.directives.BuyCouponWashListDirective"/>
