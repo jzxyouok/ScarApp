@@ -1,3 +1,4 @@
+var $root=getRootPath();
 var lng;
 var lat;
 var map, geolocation;
@@ -82,7 +83,7 @@ function initLocation(){
  * 根据当前位置的经纬度，查询当前位置是否在后台配置的有效洗车距离范围内容
  */
 function queryAreaLogin(lng,lat){
-	var url="/getAreaRegion.html";
+	var url=$root+"/getAreaRegion.html";
 	$.ajax({
 		type: "POST",
 		url: url,
@@ -167,4 +168,16 @@ function autoSearch(){
 			placeSearch.search(e.poi.name)
 		});
 	});
+}
+function getRootPath(){
+	//获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+	var curWwwPath=window.document.location.href;
+	//获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+	var pathName=window.document.location.pathname;
+	var pos=curWwwPath.indexOf(pathName);
+	//获取主机地址，如： http://localhost:8083
+	var localhostPaht=curWwwPath.substring(0,pos);
+	//获取带"/"的项目名，如：/uimcardprj
+	var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	return(localhostPaht+projectName+"/");
 }

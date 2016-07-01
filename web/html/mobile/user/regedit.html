@@ -7,7 +7,7 @@
 	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
 	<meta content="telephone=no" name="format-detection" />
 <title>个人注册基本信息</title>
-<link rel="stylesheet" href="../../../res/css/ggwash/cfj.css"/>
+<link rel="stylesheet" href="${res}/css/ggwash/cfj.css"/>
 <link rel="stylesheet" href="${res}/css/book/pintuer.css"/>
 <link rel="stylesheet" href="${res}/css/book/app.css"/>
 <link rel="stylesheet" href="${res}/css/themes/default/jquery.alerts.css"/>
@@ -27,10 +27,10 @@
             Dialog.show($.messages['1003'], 2, 2000);
             return ;
         } else{
-		var myreg = /(^13\d{9}$)|(^14)[5,7]\d{8}$|(^15[0,1,2,3,5,6,7,8,9]\d{8}$)|(^17)[6,7,8]\d{8}$|(^18\d{9}$)/g ; 
-		
+		var myreg = /(^13\d{9}$)|(^14)[5,7]\d{8}$|(^15[0,1,2,3,5,6,7,8,9]\d{8}$)|(^17)[6,7,8]\d{8}$|(^18\d{9}$)/g ;
+
 		if (myreg.test(mobile)){
-			
+
 		}else{
 			errMsg='请输入正确的手机号';
 			Dialog.show(errMsg, 2, 2000);
@@ -56,7 +56,7 @@
                    }else{
                   	 timing(60000, $('#timing'));
                    }
-                    
+
                 },error:function(){
                     alert("操作一次");
                 }
@@ -71,36 +71,36 @@
     <input type="hidden" id="token" name="token" value="${token!''}"/>
 <div class="login_conter">
 	<div class="login_bd">
-		<img src="../../../res/css/ggwash/images/shouji.png" width="8%" />
+		<img src="${res}/css/ggwash/images/shouji.png" width="8%" />
 		<input type="text" id="mobile" name="mobile" class="login_dh" placeholder="请输入手机号" />
-		
+
 	</div>
     <div class="login_cw" id="errorMobile" style="display:none">输入的手机号有误</div>
     <div class="login_bda">
-	    <img src="../../../res/css/ggwash/images/yzma.png" width="13%"/>
+	    <img src="${res}/css/ggwash/images/yzma.png" width="13%"/>
 	    <input type="text" class="login_dha" id="vcode" name="vcode" placeholder="请输入您的验证码" />
     </div>
-    
+
     <div class="login_yzm"><a href="javascript:getCode()" id="vcodeBtn">获取验证码</a></div>
       <div class="login_yzma" style="display:none" id="timing"><a >6秒后重新获取</a></div>
-    
+
     <div class="login_bd">
-    	<img src="../../../res/css/ggwash/images/mima.png"  width="8%" />
+    	<img src="${res}/css/ggwash/images/mima.png"  width="8%" />
     	<input type="password" class="login_dh" id="userPassword" name="userPassword" placeholder="请输入您的登录密码" />
     </div>
     <div class="login_bd" >
-    	<img src="../../../res/css/ggwash/images/mima.png" width="8%"  />
+    	<img src="${res}/css/ggwash/images/mima.png" width="8%"  />
    		 <input type="password" class="login_dh" id="password1" name="password1" placeholder="请输入您的登录密码" />
     </div>
     <div class="login_bda"  style="padding-top:15px;">
-	    <img src="../../../res/css/ggwash/images/name.png" width="13%"/>
+	    <img src="${res}/css/ggwash/images/name.png" width="13%"/>
 	    <input type="text" class="login_dha" id="userIrId" name="userIrId" placeholder="请输入您的车牌号" />
     </div>
-    
+
     <div class="login_yzm" style="padding-top:15px;"><font color="red">车牌号作为洗车的唯一标识，填写后不可更改,请填写正确的车牌号&nbsp;&nbsp;&nbsp;</font></div>
     <div class="clear"></div>
     <div class="yytz"><a href="javascript:void(0);" onclick="javascript:submitC()">完成注册</a></div>
-    
+
 </div>
 
 </form>

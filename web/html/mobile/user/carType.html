@@ -16,7 +16,7 @@
             $(".category-item").bind('click',function(){
                 var carType=$(this).attr('data-name');
                 //把此carType赋值到页面
-                var url="${cmsReq}?carType="+carType;
+                var url="${base}/washcar/index.html?carType="+carType;
                 window.location.href=url;
             })
         })
@@ -39,7 +39,7 @@
 						</span>
                 <ul class="category-list" style="display: block">
                     <li class="category-item" data-id="5" data-name="奥迪">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/a32e1245-91b3-4a26-9044-203bd5d69cfa.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/a32e1245-91b3-4a26-9044-203bd5d69cfa.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">奥迪</span>
                     </li>
                     <li class="category-item" data-id="26" data-name="阿尔法罗密欧">
@@ -60,11 +60,11 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="1" data-name="奔驰">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/2879513c-c907-4665-85a9-e997f296d5bd.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/2879513c-c907-4665-85a9-e997f296d5bd.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">奔驰</span>
                     </li>
                     <li class="category-item" data-id="3" data-name="本田">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/db1ac8b9-17d3-4ce8-aad0-b7aae1d15912.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/db1ac8b9-17d3-4ce8-aad0-b7aae1d15912.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">本田</span>
                     </li>
                     <li class="category-item" data-id="4" data-name="宝马">
@@ -76,11 +76,11 @@
                         <span class="label">比亚迪</span>
                     </li>
                     <li class="category-item" data-id="15" data-name="布加迪威龙">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/31aa2137-690c-4ca5-b97a-fb39f57c8969.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/31aa2137-690c-4ca5-b97a-fb39f57c8969.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">布加迪威龙</span>
                     </li>
                     <li class="category-item" data-id="17" data-name="别克">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/b538e2b1-19ad-4944-b56d-ddd9636113bc.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/b538e2b1-19ad-4944-b56d-ddd9636113bc.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">别克</span>
                     </li>
                     <li class="category-item" data-id="28" data-name="巴博斯">
@@ -146,11 +146,11 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="6" data-name="大众">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/65a2df0c-0065-4e60-82ac-8e087b28813b.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/65a2df0c-0065-4e60-82ac-8e087b28813b.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">大众</span>
                     </li>
                     <li class="category-item" data-id="25" data-name="东风汽车">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/afce736f-f5b8-41df-98d8-a8b96a58f86f.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/afce736f-f5b8-41df-98d8-a8b96a58f86f.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">东风汽车</span>
                     </li>
                     <li class="category-item" data-id="39" data-name="DS">
@@ -179,11 +179,11 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="2" data-name="丰田">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/640d1113-f29b-4500-9f56-59f430c8e6d8.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/640d1113-f29b-4500-9f56-59f430c8e6d8.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">丰田</span>
                     </li>
                     <li class="category-item" data-id="16" data-name="福特">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/dbd81411-646f-44de-bccb-cb1027e2d3b3.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/dbd81411-646f-44de-bccb-cb1027e2d3b3.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">福特</span>
                     </li>
                     <li class="category-item" data-id="43" data-name="FM Auto">
@@ -249,7 +249,7 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="21" data-name="悍马">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/0faa4462-ab12-4491-9d5c-a47bd2d9bce2.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/0faa4462-ab12-4491-9d5c-a47bd2d9bce2.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">悍马</span>
                     </li>
                     <li class="category-item" data-id="54" data-name="哈飞">
@@ -306,15 +306,15 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="8" data-name="捷豹">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/eef747d5-ea9e-48be-855a-b54d079a7dba.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/eef747d5-ea9e-48be-855a-b54d079a7dba.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">捷豹</span>
                     </li>
                     <li class="category-item" data-id="14" data-name="江淮">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/78ac06a6-a8f0-4756-ba05-a8a066f2a147.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/78ac06a6-a8f0-4756-ba05-a8a066f2a147.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">江淮</span>
                     </li>
                     <li class="category-item" data-id="19" data-name="Jeep">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/b5cc800e-1456-4d4e-b496-820dce92cbfc.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/b5cc800e-1456-4d4e-b496-820dce92cbfc.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">Jeep</span>
                     </li>
                     <li class="category-item" data-id="65" data-name="吉利汽车">
@@ -347,7 +347,7 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="20" data-name="凯迪拉克">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/77095e59-1b79-4e75-aa2e-5c9fb1e08458.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/77095e59-1b79-4e75-aa2e-5c9fb1e08458.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">凯迪拉克</span>
                     </li>
                     <li class="category-item" data-id="70" data-name="KTM">
@@ -396,15 +396,15 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="11" data-name="路虎">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/49eddf24-1537-4109-acbe-4c0580983d27.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/49eddf24-1537-4109-acbe-4c0580983d27.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">路虎</span>
                     </li>
                     <li class="category-item" data-id="22" data-name="林肯">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/739740cc-2aed-47e7-86e0-d5ae8d0a6dee.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/739740cc-2aed-47e7-86e0-d5ae8d0a6dee.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">林肯</span>
                     </li>
                     <li class="category-item" data-id="23" data-name="雷克萨斯">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/10cf4275-0f19-4b36-b380-96a68a63823a.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/10cf4275-0f19-4b36-b380-96a68a63823a.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">雷克萨斯</span>
                     </li>
                     <li class="category-item" data-id="79" data-name="兰博基尼">
@@ -429,11 +429,11 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="7" data-name="玛莎拉蒂">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/d70b99b3-a7f4-4117-91df-5adcf9b75140.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/d70b99b3-a7f4-4117-91df-5adcf9b75140.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">玛莎拉蒂</span>
                     </li>
                     <li class="category-item" data-id="18" data-name="马自达">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/cff074d8-091e-4278-8a4b-77b92abdd4e9.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/cff074d8-091e-4278-8a4b-77b92abdd4e9.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">马自达</span>
                     </li>
                 </ul>
@@ -489,7 +489,7 @@
                         <span class="label">雪佛兰</span>
                     </li>
                     <li class="category-item" data-id="12" data-name="雪铁龙">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/03a25c9a-f0f8-4711-ab24-0caa19a44a13.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/03a25c9a-f0f8-4711-ab24-0caa19a44a13.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">雪铁龙</span>
                     </li>
                     <li class="category-item" data-id="82" data-name="现代">
@@ -510,7 +510,7 @@
 						</span>
                 <ul class="category-list">
                     <li class="category-item" data-id="24" data-name="英菲尼迪">
-                        <span class="category-logo" style="background-image: url('../../../res/images/carType/2240f8bc-265e-41cd-9cad-2bbd0661b1fa.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
+                        <span class="category-logo" style="background-image: url('${res}/images/carType/2240f8bc-265e-41cd-9cad-2bbd0661b1fa.jpg');background-size: contain;background-position: center;background-repeat: no-repeat"></span>
                         <span class="label">英菲尼迪</span>
                     </li>
                 </ul>
