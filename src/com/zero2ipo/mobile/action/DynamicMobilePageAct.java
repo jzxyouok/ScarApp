@@ -47,7 +47,7 @@ public class DynamicMobilePageAct {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/washcar/index.html", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request,
 							  HttpServletResponse response, ModelMap model,String couponId,String carType) {
 		FmUtils.FmData(request, model);

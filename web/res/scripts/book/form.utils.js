@@ -1,4 +1,4 @@
-
+var $root=getRootPath();
 function search(){
 	var bname=$("#bname").val();
 	var typeAge=$("#typeAge").val();
@@ -44,7 +44,7 @@ function login(){
                if(data.success){
                    Dialog.show("登陆成功", 1, 2000);
                    setTimeout(function() {
-                	    var page=data.page;	 
+                	    var page=data.page;
               			window.location.href=page;
                    },2000);
                }else{
@@ -54,7 +54,7 @@ function login(){
                	alert("服务器duang了,你可以休息片刻再回来");
            }
        });
-	
+
 }
 function delCollection(id){
 	var $this=$("#"+id);
@@ -73,7 +73,7 @@ function delCollection(id){
                 	$("#total2").html(sum-1);
               	 	Dialog.show("移除书包成功", 1, 2000);
                 	 $this.remove();
-                    
+
                 }else{
                     alert("您的人品也太不好了吧,收藏 失败了");
                 }
@@ -160,7 +160,7 @@ function submitOrder(){
 	                if(data.success){
 	                    Dialog.show("订单提交成功", 2, 2000);
 	                    window.location.href="/book/order.html";
-	                       
+
 	                }else{
 	                    alert("您的人品也太不好了吧,收藏 失败了");
 	                }
@@ -183,7 +183,7 @@ function preOrder(){
 		ids+=id;
 	})
 	ids=ids.substring(0,ids.length-1);
-	
+
 	Dialog.show("正在提交订单...", 3, -1);
 	var url="/order/precreate?cid="+ids;
 	window.location.href=url;
@@ -209,7 +209,7 @@ function ajax(id,user){
 				}
 
 		  },error:function(){
-			  
+
 		  }
 		  });
 	}
@@ -249,7 +249,7 @@ function ajaxSubmit(id){
 		                	 Dialog.show("您的人品也太不好了吧,加入失败了", 2, 2000);
 		                }
 		          }
-                
+
             },error:function(data){
                 	alert("服务器duang了,你可以休息片刻再回来收藏");
             }
@@ -264,10 +264,10 @@ var Dialog = new function () {
         }
         var m = f || 5000;
         var e = new Array();
-        e[0] = "../../../res/images/book/info.png";
-        e[1] = "../../../res/images/book/success.png";
-        e[2] = "../../../res/images/book/error.png";
-        e[3] = "../../../res/images/book/ajax-loader.gif";
+        e[0] = $root+"res/images/book/info.png";
+        e[1] = $root+"res/images/book/success.png";
+        e[2] = $root+"res/images/book/error.png";
+        e[3] = $root+"res/images/book/ajax-loader.gif";
         var a = document.createElement("div");
         a.id = "div_tip_1";
         a.className = "dialog-div-box";
@@ -300,3 +300,15 @@ var Dialog = new function () {
         }
     }
 };
+function getRootPath(){
+	//获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+	var curWwwPath=window.document.location.href;
+	//获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+	var pathName=window.document.location.pathname;
+	var pos=curWwwPath.indexOf(pathName);
+	//获取主机地址，如： http://localhost:8083
+	var localhostPaht=curWwwPath.substring(0,pos);
+	//获取带"/"的项目名，如：/uimcardprj
+	var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+	return(localhostPaht+projectName+"/");
+}

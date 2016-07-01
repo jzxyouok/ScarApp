@@ -1,22 +1,22 @@
 package com.zero2ipo.mobile.upload;
 
 import com.zero2ipo.common.domain.Upload;
-import com.zero2ipo.framework.util.ResponseUtils;
-import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.File;
 
 /**
  * 上传请求处理
- * 
+ *
  * @author liyang
  *
  */
@@ -33,11 +33,11 @@ public class UploadAct {
 	@RequestMapping(value = "/img/upload.act", method = RequestMethod.POST)
 	@ResponseBody
 	public void upload(HttpServletRequest request,
-			HttpServletResponse response, ModelMap model) {
-		Map<String, String> path=null;
+			HttpServletResponse response, ModelMap model,@RequestParam(value = "file", required = false) MultipartFile file) {
+		//Map<String, String> path=null;
 		System.out.println("文件上传开始==============================================");
 		// 上传图片到本地临时目录下
-		JSONObject json = new JSONObject();
+/*		JSONObject json = new JSONObject();
 		try {
 		    path = upload.fileLocationTempUpload(request, response);
 			System.out.println("path=================================="+path);
@@ -60,7 +60,28 @@ public class UploadAct {
 			}
 			ResponseUtils.renderHtml(response, json.toString());
 			return;
+		}*/
+		System.out.println("开始");
+		String path = request.getSession().getServletContext().getRealPath("upload");
+		String fileName = file.getOriginalFilename();
+//        String fileName = new Date().getTime()+".jpg";
+		System.out.println(path);
+		File targetFile = new File(path, fileName);
+		if(!targetFile.exists()){
+			targetFile.mkdirs();
 		}
+
+		//保存
+		try {
+			file.transferTo(targetFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String fileUrl=request.getContextPath()+"/upload/"+fileName;
+		model.addAttribute("fileUrl", request.getContextPath()+"/upload/"+fileName);
+
+		//return "result";
+
 	}
 
 	/*

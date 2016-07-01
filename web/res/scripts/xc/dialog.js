@@ -1,3 +1,4 @@
+var $root=getRootPath();
 var Dialog = new function () {
     this.show = function (b, l, f) {
         this.hide();
@@ -7,10 +8,10 @@ var Dialog = new function () {
         }
         var m = f || 5000;
         var e = new Array();
-        e[0] = "../../../res/images/book/info.png";
-        e[1] = "../../../res/images/book/success.png";
-        e[2] = "../../../res/images/book/error.png";
-        e[3] = "../../../res/images/book/ajax-loader.gif";
+        e[0] = $root+"res/images/book/info.png";
+        e[1] = $root+"res/images/book/success.png";
+        e[2] = $root+"res/images/book/error.png";
+        e[3] = $root+"res/images/book/ajax-loader.gif";
         var a = document.createElement("div");
         a.id = "div_tip_1";
         a.className = "dialog-div-box";
@@ -43,3 +44,15 @@ var Dialog = new function () {
         }
     }
 };
+function getRootPath(){
+    //获取当前网址，如： http://localhost:8083/uimcardprj/share/meun.jsp
+    var curWwwPath=window.document.location.href;
+    //获取主机地址之后的目录，如： uimcardprj/share/meun.jsp
+    var pathName=window.document.location.pathname;
+    var pos=curWwwPath.indexOf(pathName);
+    //获取主机地址，如： http://localhost:8083
+    var localhostPaht=curWwwPath.substring(0,pos);
+    //获取带"/"的项目名，如：/uimcardprj
+    var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+    return(localhostPaht+projectName+"/");
+}

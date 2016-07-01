@@ -32,7 +32,7 @@ public class Upload {
 
 	Logger logger = Logger.getLogger(Upload.class);
 
-	private String fileMax = "20";
+	private String fileMax = "50";
 	private String domainUrl = "";
 	private String fileLocationTempDirectory = "";
 
@@ -200,12 +200,12 @@ public class Upload {
 
         //配置
         DiskFileItemFactory factory = new DiskFileItemFactory();
-       // factory.setSizeThreshold(5 * 1024);
+        factory.setSizeThreshold(20 * 1024);
         factory.setRepository(new File(temp));
 
         ServletFileUpload upload = new ServletFileUpload(factory);
-        //upload.setSizeMax(Integer.valueOf(20) * 1024 * 1024);
-        //upload.setFileSizeMax(Integer.valueOf(20) * 1024 * 1024);
+        upload.setSizeMax(Integer.valueOf(20) * 1024 * 1024);
+        upload.setFileSizeMax(Integer.valueOf(20) * 1024 * 1024);
 
         //处理请求中的文件
         List<FileItem> items = null;

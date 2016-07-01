@@ -1,9 +1,8 @@
 package com.zero2ipo.common.http;
 
 import com.zero2ipo.common.GlobalConstant;
-import com.zero2ipo.common.entity.CodeCommon;
 import com.zero2ipo.common.entity.Site;
-import com.zero2ipo.framework.util.StringUtil;
+import com.zero2ipo.core.MobileContants;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.ServletContext;
@@ -21,7 +20,7 @@ import java.util.Date;
  *
  */
 public class FmUtils {
-
+	private static final String REQUEST_HTTP = "http://";
 	private static final String IMAGEPATH = "/images";
 	private static final String CSSPATH = "/style";
 	private static final String SCRIPTSPATH = "/scripts/portal";
@@ -49,21 +48,21 @@ public class FmUtils {
 		}
 
 		if (model != null && site != null) {
-			model.put("base", site.getContextPath());
-			System.out.println("base======"+site.getHttpUrIAddr());
+			String base=site.getContextPath();
+			model.put("base", base);
+			System.out.println("base======"+base);
+			ServletContext application =request.getSession().getServletContext();
+			String root=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
 			model.put("res", site.getContextPath() + RESPATH);
 			model.put("images", site.getContextPath() + IMAGEPATH);
 			model.put("css", site.getContextPath() + CSSPATH);
 			model.put("scripts", site.getContextPath() + SCRIPTSPATH);
-			ServletContext application =request.getSession().getServletContext();
-			String cmsRep=application.getAttribute(CodeCommon.DOMAIN)+"";
-			//model.put("cmsReq", site.getHttpUrIAddr());
-			System.out.println("cmsReq==================="+cmsRep);
-			if(StringUtil.isNullOrEmpty(cmsRep)){
-				cmsRep="http://xiche.suninpay.com";
-			}
-			model.put("cmsReq", cmsRep);
-
+			//ServletContext application =request.getSession().getServletContext();
+			//String cmsRep=application.getAttribute(CodeCommon.DOMAIN)+"";
+			String cmsReq= root+site.getContextPath()+"";
+			model.put("cmsReq",cmsReq);
+		//	model.put("cmsReq", cmsRep);
+			System.out.println("cmsReq==========="+cmsReq);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
 			String currDate = sdf.format(new Date());
 			model.put("now", currDate);

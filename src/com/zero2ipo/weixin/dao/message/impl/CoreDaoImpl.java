@@ -85,10 +85,10 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                     // 将图文消息对象转换成xml字符串
                     respMessage = MessageUtil.newsMessageToXml(newsMessage);
                 }
-                if(content.equals("员工登陆入口")){
+                if(content.contains("员工登陆")){
                     //respContent="";
                     String domain=getValue(CodeCommon.DOMAIN);
-                    respContent=domain+"/adminLogin.html";
+                    respContent="<a href=\""+domain+"/adminLogin.html\">员工入口</a>";
 
                 }
 

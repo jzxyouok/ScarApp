@@ -19,6 +19,9 @@ import com.zero2ipo.pay.util.OrderUtil;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateMessageUtils;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
+import com.zero2ipo.weixin.token.AccessToken;
+import com.zero2ipo.weixin.token.TokenThread;
+import com.zero2ipo.weixin.utils.Sign;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
@@ -63,8 +66,22 @@ public class CarAction {
 	{
 		ModelAndView mv=new ModelAndView(MobilePageContants.ADMIN_ORDER_DETAIL_PAGE);
 		FmUtils.FmData(request, model);
+		//首先从缓存中获取appid
+		String appId=request.getSession().getAttribute(MobileContants.APPID_KEY)+"";
+		//String appSecret=request.getSession().getAttribute(MobileContants.APPSCRET_KEY)+"";
+		AccessToken token=TokenThread.accessToken;
+		String access_token = token.getToken();
+		sweepParam(request,mv,appId,access_token);
 		mv.addObject("orderId", id);
 		return mv;
+	}
+	private void sweepParam(HttpServletRequest request, ModelAndView mv,String appId,String access_token) {
+		String url=request.getRequestURL().toString();
+		Map<String, String> res= Sign.getConfigMessageForWater(url,access_token);
+		mv.addObject("appid",appId);
+		mv.addObject("timestamp",res.get("timestamp"));
+		mv.addObject("nonceStr",res.get("nonceStr"));
+		mv.addObject("signature",res.get("signature"));
 	}
 	/**
 	 * 洗车工修改任务界面

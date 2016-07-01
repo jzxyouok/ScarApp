@@ -46,8 +46,6 @@ body {
 }
 
 #scroller li {
-	padding: 0 10px;
-	height: 40px;
 	line-height: 40px;
 	border-bottom: 1px solid #ccc;
 	border-top: 1px solid #fff;
@@ -179,7 +177,7 @@ body {
 	word-wrap: break-word
 }
 #d_ibefor,#d_iafter,#d_scomment{
-    padding: 10px 9px;   
+    padding: 10px 9px;
 }
 #d_ibefor,#d_iafter{
     width:90%;
@@ -199,7 +197,7 @@ body {
 	padding: 10px 9px
 }
 #d_srating{
-    text-align:right;   
+    text-align:right;
     float:right;
 }
 #d_note,#d_paymethod {
@@ -272,7 +270,7 @@ body {
 	height: 22px;
 	margin-right: 5px
 }
-#d_cimg {   
+#d_cimg {
 	background-image: url(../../../res/images/ggwash/icon_comment.png)
 }
 #d_pimg {
