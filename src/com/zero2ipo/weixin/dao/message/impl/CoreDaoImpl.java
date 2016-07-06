@@ -85,7 +85,7 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                     // 将图文消息对象转换成xml字符串
                     respMessage = MessageUtil.newsMessageToXml(newsMessage);
                 }
-                if(content.contains("员工登陆")){
+                if(content.equals("员工登陆")||content.equals("1")){
                     //respContent="";
                     String domain=getValue(CodeCommon.DOMAIN);
                     respContent="<a href=\""+domain+"/adminLogin.html\">员工入口</a>";
@@ -118,13 +118,19 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                 // 订阅
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 
-                   // respContent =getValue(CodeCommon.WelcomeValue);
+                   String domain  =getValue(CodeCommon.DOMAIN);
                     Article article = new Article();
-                    article.setTitle("欢迎关注小海豚上门洗车服务平台");
+                    article.setTitle("注册即可免费参与幸运大转盘抽奖");
                     article.setDescription("");
-                    article.setPicUrl("https://mmbiz.qlogo.cn/mmbiz/yn5O41nyIFPRlMsiayZ3V15sWKrIUhOlWlHOZvaCQS9eibftENgAbwz2YfBGMtW9unX6iciacotibKfqQhLj8g514iaQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5");
-                    article.setUrl("http://mp.weixin.qq.com/s?__biz=MzI4NzMwNTUzMA==&mid=100000012&idx=1&sn=13c95dbd2e8fe27a174dd9611951abea#wechat_redirect");
+                    article.setPicUrl("http://mmbiz.qpic.cn/mmbiz/yn5O41nyIFNBpou5icS5TgKXugdR3OAGiabXeI36MXdjSZgia4e6st1LvHXdPBE8PibJlfaALUuGqkW26NQvP0cdBQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5");
+                    article.setUrl(domain+"/hd/dazhuanpan.html");
                     articleList.add(article);
+                    Article article2 = new Article();
+                    article2.setTitle("欢迎关注小海豚上门洗车服务平台");
+                    article2.setDescription("");
+                    article2.setPicUrl("https://mmbiz.qlogo.cn/mmbiz/yn5O41nyIFPRlMsiayZ3V15sWKrIUhOlWlHOZvaCQS9eibftENgAbwz2YfBGMtW9unX6iciacotibKfqQhLj8g514iaQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5");
+                    article2.setUrl("http://mp.weixin.qq.com/s?__biz=MzI4NzMwNTUzMA==&mid=100000012&idx=1&sn=13c95dbd2e8fe27a174dd9611951abea#wechat_redirect");
+                    articleList.add(article2);
                     // 设置图文消息个数
                     newsMessage.setArticleCount(articleList.size());
                     // 设置图文消息包含的图文集合

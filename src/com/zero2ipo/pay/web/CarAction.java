@@ -66,18 +66,24 @@ public class CarAction {
 	{
 		ModelAndView mv=new ModelAndView(MobilePageContants.ADMIN_ORDER_DETAIL_PAGE);
 		FmUtils.FmData(request, model);
+		ServletContext application =request.getSession().getServletContext();
+
 		//首先从缓存中获取appid
-		String appId=request.getSession().getAttribute(MobileContants.APPID_KEY)+"";
+		String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
 		//String appSecret=request.getSession().getAttribute(MobileContants.APPSCRET_KEY)+"";
 		AccessToken token=TokenThread.accessToken;
 		String access_token = token.getToken();
+		System.out.println("appid================================================"+TokenThread.appid+"\t"+TokenThread.appsecret);
+		System.out.println("access_token======================================"+access_token);
 		sweepParam(request,mv,appId,access_token);
 		mv.addObject("orderId", id);
 		return mv;
 	}
 	private void sweepParam(HttpServletRequest request, ModelAndView mv,String appId,String access_token) {
 		String url=request.getRequestURL().toString();
+		System.out.println("url======================"+url);
 		Map<String, String> res= Sign.getConfigMessageForWater(url,access_token);
+		mv.addObject("url",url);
 		mv.addObject("appid",appId);
 		mv.addObject("timestamp",res.get("timestamp"));
 		mv.addObject("nonceStr",res.get("nonceStr"));

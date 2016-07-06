@@ -7,6 +7,7 @@ public interface IServiceChouJiangResult{
 	*@date Fri Nov 06 22:50:36 GMT+08:00 2015
 	*/
 	public String add(ChouJiangResult bo);
+	public String update(ChouJiangResult bo);
 
 	/**
 	*@author zhengYunFei

@@ -11,6 +11,7 @@ import java.util.Map;
 public class ServiceChouJiangResultImpl extends IbatisBaseDao implements IServiceChouJiangResult {
 	public final  static String COMMON="mobile.choujiang.";
 	public final  static String ADD=COMMON+"add";
+	public final  static String UPDATE=COMMON+"update";
 	public final  static String GET_TOTAL=COMMON+"findAllListCount";
 	public final  static String FIND_BYID=COMMON+"findById";
 	@Override
@@ -18,6 +19,18 @@ public class ServiceChouJiangResultImpl extends IbatisBaseDao implements IServic
 		String backInfo= "1";
 		try{
 			this.insert(ADD, bo);
+			backInfo= "1";
+		}catch(Exception e){
+			e.printStackTrace();
+			backInfo= "0";
+		}
+		return backInfo;
+	}
+	@Override
+	public String update(ChouJiangResult bo) {
+		String backInfo= "1";
+		try{
+			this.insert(UPDATE, bo);
 			backInfo= "1";
 		}catch(Exception e){
 			e.printStackTrace();

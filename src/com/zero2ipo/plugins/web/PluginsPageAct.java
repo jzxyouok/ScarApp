@@ -2,6 +2,7 @@ package com.zero2ipo.plugins.web;
 
 import com.zero2ipo.car.choujiang.bizc.IServiceChouJiangResult;
 import com.zero2ipo.car.choujiang.bo.ChouJiangResult;
+import com.zero2ipo.common.entity.CodeCommon;
 import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.framework.util.StringUtil;
@@ -31,7 +32,18 @@ import java.util.Map;
 
 @Controller
 public class PluginsPageAct {
-
+	@RequestMapping(value = "/hd/welcome.html", method = RequestMethod.GET)
+	public ModelAndView welcome(HttpServletRequest request,
+							  HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		try {
+			mv.setViewName(PluginsContants.WELCOME_PAGE);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mv;
+	}
 	/**
 	 * 跟路径控制
 	 * @param request
@@ -112,9 +124,35 @@ public class PluginsPageAct {
 				bo.setCarNum(carNum);
 				bo.setMobile(mobile);
 				bo.setContent(content);
-				String backInfo=choujiang.add(bo);
+				bo.setFlag(CodeCommon.FLAG_1);
+				String backInfo=choujiang.update(bo);
 				result.put("success",true);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	@RequestMapping(value = "/hd/dazhuanpan/save.html", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> SaveChouJiangFirst(HttpServletRequest request,
+										  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content) {
+		Map<String,Object> result=new HashMap<String, Object>();
+		//获取openid mobile name carnum
+		//首先根据openid查询此用户是否已经抽过一次奖
+		Map<String,Object> map=new HashMap<String,Object>();
+		String openId= SessionHelper.getStringAttribute(request, MobileContants.USER_OPEN_ID_KEY);
+		if(StringUtil.isNullOrEmpty(openId)){
+			openId=MobileContants.DEFAULT_OPEN_ID;
+		}
+		try {
+				//保存信息到数据库中
+				ChouJiangResult bo=new ChouJiangResult();
+				bo.setOpenId(openId);
+				bo.setContent(content);
+				bo.setFlag(CodeCommon.FLAG_0);
+				String backInfo=choujiang.add(bo);
+				result.put("success",true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 
 /**
  * 初始化servlet
- *
- * @author liuyq
  * @date 2013-05-02
  */
 public class InitServlet extends HttpServlet {

@@ -7,21 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
     <meta name="format-detection" content="telephone=no"/>
     <title>修改任务</title>
-    <!--  <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.css" />
-    <link rel="stylesheet" type="text/css" href="../../../res/css/ggwash/button.default.css" />-->
    <link rel="stylesheet" type="text/css" href="${res}/images/foot/foot.css">
     <link rel='stylesheet' type="text/css" href='${res}/css/ggwash/od.css'>
-    <link rel='stylesheet' type="text/css" href='${res}/css/ggwash/fileupload.css'>
-	<link rel="stylesheet" href="${res}/css/webui/weui.css?v=12"/>
+	<link rel='stylesheet' type="text/css" href='${res}/css/ggwash/fileupload.css'>
+	<link rel="stylesheet" href="${res}/css/webui/weui.css"/>
 	<link rel="stylesheet" href="${res}/css/webui/example.css"/>
-<style type="text/css">
-	form label.error{font-size:12px; color:#e89b01; text-align:left; width:92%; float:left; padding:0% 5%; padding-bottom:2%;}
-	.upload_file {width:62px; position:relative; float:left; left:-80px; cursor:pointer;  	opacity:0;}
-	.upload_text {position:fixed; opacity:0;}
-</style>
-    <script src="${res}/scripts/xc/jquery.min.js"></script>
-    <script type="text/javascript" src="${res}/scripts/mobile/user/fts.js"></script>
-    <script type="text/javascript" src="${res}/scripts/mobile/user/fileupload.js"></script>
+	<script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
     <script>
     $(document).ready(function() {
     	var msg="${flag!''}";
@@ -33,8 +24,8 @@
     		}
     	}
 
-    	fileChange('userCard');
-		fileChange('idCard');
+    	//fileChange('userCard');
+		//fileChange('idCard');
 	})
 	function start(){
 		var url="${base}/updateSendOrderStatus.html";
@@ -44,8 +35,16 @@
     </script>
 </head>
 <body style="display:block;font-size:17px;overflow-x:hidden;">
-<form id="step2Form" method="POST" action="${base}/updateSendOrder.html" enctype="multipart/form-data" >
-<input type="hidden" id="orderId" name="orderId" value="${orderId!''}"/>
+<form id="step2Form" method="POST" action="${base}/updateSendOrder.html"  >
+	<input type="hidden" id="orderId" name="orderId" value="${orderId!''}"/>
+	<input type="hidden" id="afterPhoto1" name="afterPhoto1" />
+	<input type="hidden" id="afterPhoto2" name="afterPhoto2" />
+	<input type="hidden" id="afterPhoto3" name="afterPhoto3" />
+	<input type="hidden" id="afterPhoto4" name="afterPhoto4" />
+	<input type="hidden" id="beforePhoto1" name="beforePhoto1" />
+	<input type="hidden" id="beforePhoto2" name="beforePhoto2" />
+	<input type="hidden" id="beforePhoto3" name="beforePhoto3" />
+	<input type="hidden" id="beforePhoto4" name="beforePhoto4" />
 <div id="">
 <div id="scroller">
 <div id="d_main">
@@ -159,13 +158,13 @@
 						</div>-->
 						<div class="weui_uploader_bd">
 							<ul class="weui_uploader_files">
-								<li class="weui_uploader_file" id="bfPic1" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-								<li class="weui_uploader_file" id="bfPic2" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-								<li class="weui_uploader_file" id="bfPic3" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-								<li class="weui_uploader_file" id="bfPic4" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+								<li class="weui_uploader_file" id="bfPic0" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+								<li class="weui_uploader_file" id="bfPic1" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+								<li class="weui_uploader_file" id="bfPic2" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+								<li class="weui_uploader_file" id="bfPic3" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
 							</ul>
 							<div class="weui_uploader_input_wrp">
-								<li id="beforePhoto" class="weui_uploader_file weui_uploader_status" style="background-image:url(${res}/images/webui/upload.png)">
+								<li id="chooseImage" class="weui_uploader_file weui_uploader_status" style="background-image:url(${res}/images/webui/upload.png)">
 								</li>
 								<!--<input class="weui_uploader_input" id="beforePhoto" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple />-->
 							</div>
@@ -187,14 +186,16 @@
 							</div>
 							<div class="weui_uploader_bd">
 								<ul class="weui_uploader_files" >
-									<li class="weui_uploader_file" id="afPic1" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-									<li class="weui_uploader_file" id="afPic2" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-									<li class="weui_uploader_file" id="afPic3" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
-									<li class="weui_uploader_file" id="afPic4" style="background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+									<li class="weui_uploader_file" id="afPic0" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+									<li class="weui_uploader_file" id="afPic1" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+									<li class="weui_uploader_file" id="afPic2" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
+									<li class="weui_uploader_file" id="afPic3" style="display:none;background-image:url(http://shp.qpic.cn/weixinsrc_pic/pScBR7sbqjOBJomcuvVJ6iacVrbMJaoJZkFUIq4nzQZUIqzTKziam7ibg/)"></li>
 
 								</ul>
 								<div class="weui_uploader_input_wrp">
-									<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple />
+									<!--<input class="weui_uploader_input" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" multiple />-->
+									<li id="afterImage" class="weui_uploader_file weui_uploader_status" style="background-image:url(${res}/images/webui/upload.png)">
+									</li>
 								</div>
 							</div>
 						</div>
@@ -202,32 +203,6 @@
 				</div>
 			</div>
 		</div>
-  			 <div class="login_sc">
-		    	<p>
-		    		<span>&nbsp;&nbsp;&nbsp;洗车前照片：</span>
-		    		<a href="javascript:void(0);">选择文件</a>
-		    		<input id="userCardText" name="userCardText" type="text" class="upload_text" />
-		    		<input id="userCard" name="userCard" type="file" class="upload_file"/>
-		    		<input type="hidden" name="userCardFile" id="userCardFile" value="${sendOrder.beforePhoto!''}"/>
-		    		<input type="hidden" name="tempFileName" id="userCardFileName" />
-		    	</p>
-		        <p class="login_scp">
-					<img id="userCardImg" src="${sendOrder.beforePhoto!'${res}/images/login_bg.png'}" width="30%" />
-				</p>
-		    </div>
-
-		    <div class="login_sc">
-		    	<p><span>&nbsp;&nbsp;&nbsp;洗车后照片：</span>
-			    	<a href="javascript:void(0);">选择文件</a>
-			    	<input id="idCardText" name="idCardText" type="text" class="upload_text" />
-			    	<input id="idCard" name="idCard" type="file" class="upload_file"/>
-		    		<input type="hidden" name="idCardFile" id="idCardFile" value="${sendOrder.afterPhoto!''}"/>
-		    		<input type="hidden" name="tempFileName" id="idCardFileName" />
-			    </p>
-		        <p class="login_scp">
-					<img id="idCardImg" src="${sendOrder.afterPhoto!'${res}/images/login_bg.png'}" width="30%" />
-				</p>
-		    </div>
 
 	    </div>
 	     <div class="login_bd">
@@ -265,8 +240,6 @@
 </div>
 
 </form>
-<iframe id="userCard_upload_return" name="userCard_upload_return" style="display:none"></iframe>
-	<iframe id="idCard_upload_return" name="idCard_upload_return" style="display:none"></iframe>
 
 </body>
 </html>
@@ -281,7 +254,7 @@
 		downloadId:[]
 	};
 	wx.config({
-		debug: false,
+		debug: true,
 		appId: '${appid}',
 		timestamp:'${timestamp}',
 		nonceStr: '${nonceStr}',
@@ -291,28 +264,50 @@
 			'chooseImage',
 			'previewImage',
 			'uploadImage',
-			'downloadImage',
-			'scanQRCode'
+			'downloadImage'
 		]
 	});
 	wx.ready(function () {
-		document.querySelector('#beforePhoto').onclick = function () {
+		document.querySelector('#chooseImage').onclick = function () {
 			wx.chooseImage({
 				success: function (res) {
 					images.localId = res.localIds;
-					$(function () {
+					//$(function () {
 						if (images.localId.length >4) {
 							alert('只能选择四张图片');
 							return;
 						}
 						$.each(res.localIds, function (i, n) {
-							// $("#chooseImage").removeAttr('<img src="' + n + '" width="100%" height="120"/>');
-							$("#afPic"+(i+1)).removeAttr('style');
-							$("#afPic"+(i+1)).attr('style','background-image:url('+n+')');
-							$("#afPic"+(i+1)).show();
+							$("#bfPic"+i).removeAttr('style');
+							$("#bfPic"+i).attr('style','background-image:url('+n+')');
+
+							$("#bfPic"+i).show();
 							upload();
 						});
-					});
+					//});
+				},error:function(err){
+					alert(err);
+				}
+			});
+		};
+		document.querySelector('#afterImage').onclick = function () {
+			wx.chooseImage({
+				success: function (res) {
+					images.localId = res.localIds;
+					//$(function () {
+						if (images.localId.length >4) {
+							alert('只能选择四张图片');
+							return;
+						}
+						$.each(res.localIds, function (i, n) {
+							$("#afPic"+i).removeAttr('style');
+							$("#afPic"+i).attr('style','background-image:url('+n+')');
+							$("#afPic"+i).show();
+							afterupload();
+						});
+					//});
+				},error:function(err){
+					alert(err);
 				}
 			});
 		};
@@ -330,9 +325,23 @@
 				images.serverId.push(res.serverId);
 				bfdownimage(res.serverId);
 				//根据medir_id将微信素材下载到本地服务器
-				if (i < length) {
+				if (i < 1) {
 					upload();
 				}
+			}, fail: function (res) {
+				alert(JSON.stringify(res));
+			}
+		});
+	}
+	function afterupload() {
+		var i = 0,length =  images.localId.length;
+		images.serverId = [] ;
+		wx.uploadImage({
+			localId: images.localId[i].toString(),
+			success: function (res) {
+				i++;
+				images.serverId.push(res.serverId);
+				afdownimage(res.serverId);
 			}, fail: function (res) {
 				alert(JSON.stringify(res));
 			}
@@ -347,12 +356,51 @@
 			dataType: 'json',
 			success: function (data) {
 				var flg = data.success;
-				var base64Image=data.base64Image;
 				if(flg){
-					 alert("下载到本地成功");
-					//var src="/upload/"+media_id+"";
-					alert("afpic1===="+data.afpic1);
-					alert("afpic12===="+data.afpic12);
+					if(data.bfPic0){
+						$("#beforePhoto1").val(data.bfPic0);
+					}
+					if(data.bfPic1){
+						$("#beforePhoto2").val(data.bfPic1);
+					}
+					if(data.bfPic2){
+						$("#beforePhoto3").val(data.bfPic2);
+					}
+					if(data.bfPic3){
+						$("#beforePhoto4").val(data.bfPic3);
+					}
+				}
+
+			}, error: function (err) {
+				alert("error:" + eval("("+err.toString()+")"));
+			}
+
+		});
+	}
+	function afdownimage(media_id){
+		var url="${cmsReq}/afpic/downimage.html";
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: {"media_id":media_id},
+			dataType: 'json',
+			success: function (data) {
+				var flg = data.success;
+				if(flg){
+					var length=data.length;
+					if(data.afPic0){
+						$("#afterPhoto1").val(data.afPic0);
+					}
+					if(data.afPic1){
+						$("#afterPhoto2").val(data.afPic1);
+					}
+					if(data.afPic2){
+						$("#afterPhoto3").val(data.afPic2);
+					}
+					if(data.afPic3){
+						$("#afterPhoto4").val(data.afPic3);
+					}
+
 				}
 
 			}, error: function (err) {

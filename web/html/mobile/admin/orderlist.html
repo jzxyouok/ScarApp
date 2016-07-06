@@ -48,8 +48,8 @@
 					        	<span class="amount">派单时间：<font>${sendOrder.operatorDate?substring(0,16)}</font></span>
 				        	</p>
 
-					          <span class="btn_rectangle greyframe color_blue f_r vieworder"><a href="/renwu/order${sendOrder.orderId!''}.html">查看订单</a></span>
-				        	
+					          <span class="btn_rectangle greyframe color_blue f_r vieworder"><a href="${base}/renwu/order${sendOrder.orderId!''}.html">查看订单</a></span>
+
 	                                [#if sendOrder.status=='-1']
 	                               	 	<span class="orderstate color_orange" >未支付</span>
 	                                [/#if]
@@ -79,9 +79,9 @@
 					        	<!--<p class="username">洪宝洗车</p>-->
 					        	<p >  暂无订单</p>
 					        </div>
-					       
+
 					    </div>
-					    
+
 			     </div>
             [/#if]
             [/@admin_order_list]

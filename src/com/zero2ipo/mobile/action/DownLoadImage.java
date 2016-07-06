@@ -54,6 +54,7 @@ public class DownLoadImage {
 				requestUrl = requestUrl.replace("ACCESS_TOKEN",access_token).replace("MEDIA_ID",args[i]);
 				String base64Image= GetImage.downImageForNetUrl(requestUrl,media_id);
 				map.put("bfPic"+i,base64Image);
+				System.out.println("bfPic"+i+"=================================="+base64Image);
 			}
 			map.put("success",true);
 		}catch (Exception e){
@@ -88,6 +89,7 @@ public class DownLoadImage {
 			for(int i=0;i<count;i++){
 				requestUrl = requestUrl.replace("ACCESS_TOKEN",access_token).replace("MEDIA_ID",args[i]);
 				String base64Image= GetImage.downImageForNetUrl(requestUrl,media_id);
+				System.out.println("afPic"+i+"=================================="+base64Image);
 				map.put("afPic"+i,base64Image);
 			}
 			map.put("success",true);

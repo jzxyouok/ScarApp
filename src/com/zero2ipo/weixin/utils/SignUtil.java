@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * 请求校验工具类
- * 
+ *
  */
 public class SignUtil {
 
@@ -19,11 +19,11 @@ public class SignUtil {
 	/**
 	 * 与开发模式接口配置信息中的Token保持一致
 	 */
-	private static String token = "bsbServlet";
+	private static String token = "cwmwsToken";
 
 	/**
 	 * 校验签名
-	 * 
+	 *
 	 * @param signature
 	 *            微信加密签名
 	 * @param timestamp
@@ -63,7 +63,7 @@ public class SignUtil {
 
 	/**
 	 * 将字节数组转换为十六进制字符串
-	 * 
+	 *
 	 * @param byteArray
 	 * @return
 	 */
@@ -77,7 +77,7 @@ public class SignUtil {
 
 	/**
 	 * 将字节转换为十六进制字符串
-	 * 
+	 *
 	 * @param mByte
 	 * @return
 	 */

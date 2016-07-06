@@ -1,7 +1,6 @@
 package com.zero2ipo.mobile.action;
 
 import com.zero2ipo.common.domain.Upload;
-import com.zero2ipo.common.domain.exception.DomainFileUploadException;
 import com.zero2ipo.common.entity.*;
 import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
@@ -61,11 +60,12 @@ public class SendOrderAction {
 	 */
 	@RequestMapping(value = "/updateSendOrder.html", method = RequestMethod.POST)
 	public String registerStep2POST(HttpServletRequest request,
-									HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile, String orderId,String content,RedirectAttributes redirectAttributes ) {
+									HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
 		FmUtils.FmData(request, model);
+		String orderId=sendOrder.getOrderId();
 		ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
-		boolean flag=registerStep2(request,response,model,userCardFile,idCardFile,orderId,content);
+		boolean flag=registerStep2(request,response,model,sendOrder);
 		if(flag){
 			mv.addObject("orderId", orderId);
 			mv.addObject("success",true);
@@ -80,15 +80,12 @@ public class SendOrderAction {
 	 */
 	@RequestMapping(value = "/updateSendOrderStatus.html", method = RequestMethod.POST)
 	public String updateSendOrderStatus(HttpServletRequest request,
-										HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile, String orderId,String content,RedirectAttributes redirectAttributes ) {
+										HttpServletResponse response, ModelMap model, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
 		FmUtils.FmData(request, model);
+		String orderId=sendOrder.getOrderId();
 		ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
-		//SendOrder  sendOrder=new SendOrder();
-		//sendOrder.setStatus("3");
-		//sendOrder.setOrderId(orderId);
-		//boolean flag= sendOrderService.updSendOrder(sendOrder);
-		boolean flag=startWashCar(request, response, model, userCardFile, idCardFile, orderId, content);
+		boolean flag=startWashCar(request, response, model, sendOrder);
 		if(flag){
 			mv.addObject("orderId", orderId);
 			mv.addObject("success",true);
@@ -160,23 +157,18 @@ public class SendOrderAction {
 	 * @param request
 	 * @param response
 	 * @param model
-	 * @param userCardFile
-	 * @param idCardFile
-	 * @param orderId
-	 * @param content
 	 * @return
 	 */
 	public boolean registerStep2(HttpServletRequest request,
-								 HttpServletResponse response, ModelMap model, String userCardFile,
-								 String idCardFile,String orderId,String content) {
+								 HttpServletResponse response, ModelMap model,SendOrder sendOrder) {
 
 		String userCardUrl = "";
 		String idCardUrl = "";
-
+		String orderId=sendOrder.getOrderId();
 
 		try {
 			//首先根据orderId查询派单任务
-
+/*
 			String uploadDirectory = upload.getUploadFileDirectory();
 			if(userCardFile != null && !"".equals(userCardFile)&&userCardFile.split("upload").length==1)
 			{
@@ -197,7 +189,7 @@ public class SendOrderAction {
 				upload.removeLocationUploadFile(idCardPath);
 			}else {
 				idCardUrl=idCardFile;
-			}
+			}*/
 
 
 			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
@@ -205,20 +197,20 @@ public class SendOrderAction {
 			{
 				//UserEntity user = (UserEntity)o;
 				//user.setUserRegisterStep(3);
-				SendOrder  sendOrder=new SendOrder();
-				if(userCardUrl != null && !"".equals(userCardUrl))
+				/*SendOrder  sendOrder=new SendOrder();*/
+				/*if(userCardUrl != null && !"".equals(userCardUrl))
 				{
 					sendOrder.setBeforePhoto(userCardUrl);
 				}
 				if(idCardUrl != null && !"".equals(idCardUrl))
 				{
 					sendOrder.setAfterPhoto(idCardUrl);
-				}
-				if(!StringUtil.isNullOrEmpty(orderId)){
-					sendOrder.setOrderId(orderId);
+				}*/
+				if(!StringUtil.isNullOrEmpty(sendOrder)){
+					//sendOrder.setOrderId(orderId);
 					//update sender status
 					sendOrder.setStatus("4");
-					sendOrder.setContent(content);
+					//sendOrder.setContent(content);
 				}
 
 				boolean u = sendOrderService.updSendOrder(sendOrder);
@@ -255,7 +247,7 @@ public class SendOrderAction {
 				}
 			}
 
-		}  catch (DomainFileUploadException e) {
+		}  catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -267,22 +259,17 @@ public class SendOrderAction {
 	 * @param request
 	 * @param response
 	 * @param model
-	 * @param userCardFile
-	 * @param idCardFile
-	 * @param orderId
-	 * @param content
 	 * @return
 	 */
 	public boolean startWashCar(HttpServletRequest request,
-								 HttpServletResponse response, ModelMap model, String userCardFile,
-								 String idCardFile,String orderId,String content) {
+								 HttpServletResponse response, ModelMap model, SendOrder sendOrder) {
 
 		String userCardUrl = "";
 		String idCardUrl = "";
 		boolean flg=false;
 
 		try {
-			//首先根据orderId查询派单任务
+			/*//首先根据orderId查询派单任务
 
 			String uploadDirectory = upload.getUploadFileDirectory();
 			if(userCardFile != null && !"".equals(userCardFile)&&userCardFile.split("upload").length==1)
@@ -305,14 +292,14 @@ public class SendOrderAction {
 			}else {
 				idCardUrl=idCardFile;
 			}
-
+*/
 
 			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
 			if(o != null )
 			{
 				//UserEntity user = (UserEntity)o;
 				//user.setUserRegisterStep(3);
-				SendOrder  sendOrder=new SendOrder();
+			/*	SendOrder  sendOrder=new SendOrder();
 				if(userCardUrl != null && !"".equals(userCardUrl))
 				{
 					sendOrder.setBeforePhoto(userCardUrl);
@@ -320,12 +307,12 @@ public class SendOrderAction {
 				if(idCardUrl != null && !"".equals(idCardUrl))
 				{
 					sendOrder.setAfterPhoto(idCardUrl);
-				}
-				if(!StringUtil.isNullOrEmpty(orderId)){
-					sendOrder.setOrderId(orderId);
+				}*/
+				if(!StringUtil.isNullOrEmpty(sendOrder)){
+					//sendOrder.setOrderId(orderId);
 					//update sender status
 					sendOrder.setStatus("3");
-					sendOrder.setContent(content);
+					//sendOrder.setContent(content);
 				}
 
 				flg = sendOrderService.updSendOrder(sendOrder);
@@ -362,7 +349,7 @@ public class SendOrderAction {
 				}*/
 			}
 
-		}  catch (DomainFileUploadException e) {
+		}  catch (Exception e) {
 			e.printStackTrace();
 		}
 		return flg;

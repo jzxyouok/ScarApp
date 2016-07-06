@@ -50,5 +50,10 @@ public class CodeCommon {
 	public static final String QIANG_DAN_DAOJISHI="QIANG_DAN_DAOJISHI";//抢单倒计时
 
 
+	public static final int FLAG_0=0;
+	public static final int FLAG_1=1;
+	public static final int FLAG_2=2;
+
+
 
 }

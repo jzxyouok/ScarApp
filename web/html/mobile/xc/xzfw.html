@@ -115,9 +115,18 @@
 			            	洗车前
 			        </div>
 			         <div style="text-align:center;">
-			         [#if sendOrder.beforePhoto??]
-			       		 	<img id="d_ibefor"  src="${sendOrder.beforePhoto}"/>
+			         [#if sendOrder.beforePhoto1??]
+			       		 	<img id="d_ibefor"  src="${sendOrder.beforePhoto1}"/>
 			       	 [/#if]
+					 [#if sendOrder.beforePhoto2??]
+						 <img   src="${sendOrder.beforePhoto2}"/>
+					 [/#if]
+					 [#if sendOrder.beforePhoto3??]
+						 <img   src="${sendOrder.beforePhoto3}"/>
+					 [/#if]
+					 [#if sendOrder.beforePhoto4??]
+						 <img   src="${sendOrder.beforePhoto4}"/>
+					 [/#if]
 			       	 </div>
 			   		 </div>
 				    <div id="d_after">
@@ -125,8 +134,17 @@
 				        		    洗车后
 				        </div>
 				        <div style="text-align:center;">
-				        [#if sendOrder.afterPhoto??]
-				        	<img id="d_iafter"  src="${sendOrder.afterPhoto}"/>
+				        [#if sendOrder.afterPhoto1??]
+				        	<img id="d_iafter"  src="${sendOrder.afterPhoto1}"/>
+				        [/#if]
+						[#if sendOrder.afterPhoto2??]
+				        	<img   src="${sendOrder.afterPhoto2}"/>
+				        [/#if]
+						[#if sendOrder.afterPhoto3??]
+				        	<img   src="${sendOrder.afterPhoto3}"/>
+				        [/#if]
+						[#if sendOrder.afterPhoto4??]
+				        	<img   src="${sendOrder.afterPhoto4}"/>
 				        [/#if]
 				        </div>
 				    </div>

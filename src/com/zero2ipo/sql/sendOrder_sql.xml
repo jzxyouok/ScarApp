@@ -11,15 +11,37 @@
 		<result property="operatorDate" column="OPERATOR_DATE" />
 		<result property="finishDate" column="FINISH_DATE" />
 		<result property="status" column="STATUS" />
-		<result property="beforePhoto" column="BEFORE_PHOTO" />
-		<result property="afterPhoto" column="AFTER_PHOTO" />
+		<result property="beforePhoto1" column="BEFORE_PHOTO1" />
+		<result property="beforePhoto2" column="BEFORE_PHOTO2" />
+		<result property="beforePhoto3" column="BEFORE_PHOTO3" />
+		<result property="beforePhoto4" column="BEFORE_PHOTO4" />
+		<result property="afterPhoto1" column="AFTER_PHOTO1" />
+		<result property="afterPhoto2" column="AFTER_PHOTO2" />
+		<result property="afterPhoto3" column="AFTER_PHOTO3" />
+		<result property="afterPhoto4" column="AFTER_PHOTO4" />
 	</resultMap>
 <!--查询-->
 <!-- 根据Id查信息 -->
 	<select id="findSendOrderById" resultMap="sendOrderMap">
 	 SELECT
-		ID, ORDER_ID,
-		USER_ID, CONTENT, OPERATOR_ID,OPERATOR_DATE,FINISH_DATE,STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM BSB_SEND_ORDER
+		ID,
+		ORDER_ID,
+		USER_ID,
+		CONTENT,
+		OPERATOR_ID,
+		OPERATOR_DATE,
+		FINISH_DATE,
+		STATUS,
+		BEFORE_PHOTO1,
+		BEFORE_PHOTO2,
+		BEFORE_PHOTO3,
+		BEFORE_PHOTO4,
+		AFTER_PHOTO1,
+		AFTER_PHOTO2,
+		AFTER_PHOTO3,
+		AFTER_PHOTO4
+		FROM
+		BSB_SEND_ORDER
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="id">
 				ID=#id#
@@ -32,7 +54,16 @@
 	</select>
 		<!-- 派单列表信息查询 -->
 	<select id="findSendOrderList" resultMap="sendOrderMap">
-		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM
+		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,
+		BEFORE_PHOTO1,
+		BEFORE_PHOTO2,
+		BEFORE_PHOTO3,
+		BEFORE_PHOTO4,
+		AFTER_PHOTO1,
+		AFTER_PHOTO2,
+		AFTER_PHOTO3,
+		AFTER_PHOTO4
+		FROM
 		BSB_SEND_ORDER
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="status">
@@ -46,7 +77,16 @@
 	</select>
 	<!--根据订单id查询派单信息-->
 	<select id="findSendOrderByOrderId" resultMap="sendOrderMap">
-		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,BEFORE_PHOTO,AFTER_PHOTO FROM
+		SELECT ID, ORDER_ID, USER_ID, OPERATOR_DATE,CONTENT,FINISH_DATE,OPERATOR_ID, STATUS,
+		BEFORE_PHOTO1,
+		BEFORE_PHOTO2,
+		BEFORE_PHOTO3,
+		BEFORE_PHOTO4,
+		AFTER_PHOTO1,
+		AFTER_PHOTO2,
+		AFTER_PHOTO3,
+		AFTER_PHOTO4
+		FROM
 		BSB_SEND_ORDER
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="orderId">
@@ -82,11 +122,29 @@
 			<isNotEmpty prepend="," property="status">
 				STATUS=#status#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="beforePhoto">
-				BEFORE_PHOTO=#beforePhoto#
+			<isNotEmpty prepend="," property="beforePhoto1">
+				BEFORE_PHOTO1=#beforePhoto1#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="afterPhoto">
-				AFTER_PHOTO=#afterPhoto#
+			<isNotEmpty prepend="," property="beforePhoto2">
+				BEFORE_PHOTO2=#beforePhoto2#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="beforePhoto3">
+				BEFORE_PHOTO3=#beforePhoto3#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="beforePhoto4">
+				BEFORE_PHOTO4=#beforePhoto4#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="afterPhoto1">
+				AFTER_PHOTO1=#afterPhoto1#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="afterPhoto2">
+				AFTER_PHOTO2=#afterPhoto2#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="afterPhoto3">
+				AFTER_PHOTO3=#afterPhoto3#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="afterPhoto4">
+				AFTER_PHOTO4=#afterPhoto4#
 			</isNotEmpty>
 		WHERE
 			ORDER_ID=#orderId#

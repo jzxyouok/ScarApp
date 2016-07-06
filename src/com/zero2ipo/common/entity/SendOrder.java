@@ -19,8 +19,14 @@ public class SendOrder implements Serializable {
 	private String operatorId;//派单人
 	private String status;//完成情况 0表示未完成，1表示已完成
 	private String finishDate;// 完成时间
-	private String beforePhoto;
-	private String afterPhoto;
+	private String beforePhoto1;
+	private String beforePhoto2;
+	private String beforePhoto3;
+	private String beforePhoto4;
+	private String afterPhoto1;
+	private String afterPhoto2;
+	private String afterPhoto3;
+	private String afterPhoto4;
 	private int returnCode;
 	private String returnMsg;
 
@@ -94,21 +100,72 @@ public class SendOrder implements Serializable {
 		this.sendOrderTime = sendOrderTime;
 	}
 
+	public String getBeforePhoto1() {
+		return beforePhoto1;
+	}
+
+	public void setBeforePhoto1(String beforePhoto1) {
+		this.beforePhoto1 = beforePhoto1;
+	}
+
+	public String getBeforePhoto2() {
+		return beforePhoto2;
+	}
+
+	public void setBeforePhoto2(String beforePhoto2) {
+		this.beforePhoto2 = beforePhoto2;
+	}
+
+	public String getBeforePhoto3() {
+		return beforePhoto3;
+	}
+
+	public void setBeforePhoto3(String beforePhoto3) {
+		this.beforePhoto3 = beforePhoto3;
+	}
+
+	public String getBeforePhoto4() {
+		return beforePhoto4;
+	}
+
+	public void setBeforePhoto4(String beforePhoto4) {
+		this.beforePhoto4 = beforePhoto4;
+	}
+
+	public String getAfterPhoto1() {
+		return afterPhoto1;
+	}
+
+	public void setAfterPhoto1(String afterPhoto1) {
+		this.afterPhoto1 = afterPhoto1;
+	}
+
+	public String getAfterPhoto2() {
+		return afterPhoto2;
+	}
+
+	public void setAfterPhoto2(String afterPhoto2) {
+		this.afterPhoto2 = afterPhoto2;
+	}
+
+	public String getAfterPhoto3() {
+		return afterPhoto3;
+	}
+
+	public void setAfterPhoto3(String afterPhoto3) {
+		this.afterPhoto3 = afterPhoto3;
+	}
+
+	public String getAfterPhoto4() {
+		return afterPhoto4;
+	}
+
+	public void setAfterPhoto4(String afterPhoto4) {
+		this.afterPhoto4 = afterPhoto4;
+	}
+
 	/**扩展信息*/
 
-
-	public String getBeforePhoto() {
-		return beforePhoto;
-	}
-	public void setBeforePhoto(String beforePhoto) {
-		this.beforePhoto = beforePhoto;
-	}
-	public String getAfterPhoto() {
-		return afterPhoto;
-	}
-	public void setAfterPhoto(String afterPhoto) {
-		this.afterPhoto = afterPhoto;
-	}
 	public String getOperatorDate() {
 		return operatorDate;
 	}
