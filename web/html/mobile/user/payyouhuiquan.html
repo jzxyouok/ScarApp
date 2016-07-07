@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>购买优惠券</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -11,11 +11,11 @@
 
     <link href="../../res/css/xc/normalize.css" rel="stylesheet">
     <link href="../../res/css/xc/main.css" rel="stylesheet">
-    <link href="../../res/css/xc/xiche.css" rel="stylesheet">    
+    <link href="../../res/css/xc/xiche.css" rel="stylesheet">
     </head>
 <body>
 <div class="loading" style="display:none;">
-		<div class="loadmodal"></div>	
+		<div class="loadmodal"></div>
 	    <span class="" id="turnPic"></span>
 	    <p class="tipTxt">数据处理中，请耐心等待...</p>
 	</div>
@@ -39,7 +39,7 @@
                                 <span class="coupon-price">98.00元</span>
                             </div>
                             <div class="buy-coupon-words">每次使用可从订单总价中抵扣38元, 有效期为90天</div>
-                        
+
                     </li><li class="singleoption">
                             <div class="buy-coupon-info">
                                 <i class="radio-click radio-sel" res_id="12" value="168.00"></i>
@@ -48,7 +48,7 @@
                                 <span class="coupon-price">168.00元</span>
                             </div>
                             <div class="buy-coupon-words">每次使用可从订单总价中抵扣38元, 有效期为180天</div>
-                        
+
                     </li>                </ul>
             </div>
         </section>
@@ -68,11 +68,11 @@
 
 <script type="text/javascript">
 $(document).ready(function(e) {
-	
+
 	var can_pay=1;
 	/* 单选 */
 	$( ".radio-click" ).click(function(){
-		
+
 		if($(this).hasClass('radio-sel'))
 		{
 			$( this ).removeClass( "radio-sel");
@@ -89,12 +89,12 @@ $(document).ready(function(e) {
 			$("#sum_pirce").html($(this).attr('value')+'元');
 			$("#res_id").val($(this).attr('res_id'));
 		}
-		
+
 	});
-	
+
 	/* 点击支付 */
 	$("#coupon_pay").click(function(){
-		
+
 		if(can_pay=1)
 		{
 			can_pay=0;
@@ -104,13 +104,13 @@ $(document).ready(function(e) {
 			{
 				$.ajax({
 					type:'POST',
-					url: "/order/buy.html",
+					url: "${base}/order/buy.html",
 					data:{res_id:res_id} ,
 					dataType:'json',
 					success:function(data){
 						hideloading();
 						if(data.status=='ok'){
-							
+
 var type=data.type;
 
 wx.config({
@@ -131,43 +131,43 @@ wx.chooseWXPay({
         //alert(res);
 		if(type=='order')
         {
-        	window.location.href="/order/detail"+'/order_id/'+data.orderId;
+        	window.location.href="${base}/order/detail"+'/order_id/'+data.orderId;
         }
         else if(type=='coupon')
         {
-        	window.location.href="/center/coupon.html";
+        	window.location.href="${base}/center/coupon.html";
         }
         // 支付成功后的回调函数
     },
     fail:function(res){
         if(type=='order')
         {
-        	window.location.href="/order/detail"+'/order_id/'+data.orderId;
+        	window.location.href="${base}/order/detail"+'/order_id/'+data.orderId;
         }
         else if(type=='coupon')
         {
-        	window.location.href="/center/coupon.html";
+        	window.location.href="${base}/center/coupon.html";
         }
     },
     cancel:function(res){
         if(type=='order')
         {
-        	window.location.href="/order/detail"+'/order_id/'+data.orderId;
+        	window.location.href="${base}/order/detail"+'/order_id/'+data.orderId;
         }
         else if(type=='coupon')
         {
-        	window.location.href="/center/coupon.html";
+        	window.location.href="${base}/center/coupon.html";
         }
     }
 });
 						}else if(data.status=='login'){
 							alert(data.msg);
-							window.location.href="/user/login.html";
+							window.location.href="${base}/user/login.html";
 							can_pay=1;
-						}else{                   
+						}else{
 							alert(data.msg);
 							can_pay=1;
-							return false;					
+							return false;
 						}
 					}
 				});
@@ -178,7 +178,7 @@ wx.chooseWXPay({
 				return false;
 			}
 		}
-	});	
+	});
 })
 
 </script>

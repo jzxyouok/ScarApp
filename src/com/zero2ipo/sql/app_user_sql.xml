@@ -78,6 +78,34 @@ FROM users
 		ORDER BY create_time DESC
 		limit 0,1
 	</select>
+
+
+	<select id='findUsersByMapCount' resultClass='java.lang.Integer'>
+		SELECT
+		count(0)
+		FROM users
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="userId">
+				INSTR(USER_ID,#userId#)>0
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="mobile">
+				phone_num=#mobile#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="password">
+				password=#password#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="openId">
+				open_id=#openId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="orderId">
+				user_id=(select user_id from orders where order_id=#orderId#)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="id">
+				user_id=(select user_id from orders where id=#id#)
+			</isNotEmpty>
+		</dynamic>
+		ORDER BY create_time DESC
+	</select>
 <!--新增-->
 <insert id="addAppUsers" parameterClass="appUserBo">
 	INSERT INTO users(
@@ -160,6 +188,14 @@ FROM users
 	where
 		USER_ID=#userId#
 </update>
+	<update id="updateUserQianBaoByOpenId" parameterClass="appUserBo">
+		UPDATE
+		users
+		set
+		account=account+#account#
+		where
+		open_id=#openId#
+	</update>
 <!--钱包抵扣-->
 	<update id="reduceQianBao" parameterClass="appUserBo">
 		UPDATE

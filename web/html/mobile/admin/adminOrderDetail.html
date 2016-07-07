@@ -29,8 +29,51 @@
 	})
 	function start(){
 		var url="${base}/updateSendOrderStatus.html";
-		$("#step2Form").attr('action',url);
-		$("#step2Form").submit();
+		var data=$("#step2Form").serialize();
+		//$("#step2Form").attr('action',url);
+		//$("#step2Form").submit();
+		//采用ajax方式
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: data,
+			dataType: 'json',
+			success: function (data) {
+				var flg = data.success;
+				if(flg){
+					alert("洗车开始");
+				}
+
+			}, error: function (err) {
+				alert("error:" + eval("("+err.toString()+")"));
+			}
+
+		});
+
+	}
+	function complete(){
+		var url="${base}/updateSendOrder.html";
+		var data=$("#step2Form").serialize();
+		//$("#step2Form").attr('action',url);
+		//$("#step2Form").submit();
+		//采用ajax方式
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: data,
+			dataType: 'json',
+			success: function (data) {
+				var flg = data.success;
+				if(flg){
+					alert("洗车完成");
+				}
+
+			}, error: function (err) {
+				alert("error:" + eval("("+err.toString()+")"));
+			}
+
+		});
+
 	}
     </script>
 </head>
@@ -210,7 +253,7 @@
 	            <textarea rows="5" cols="5" style="width:100%;border:1px solid #2EC5C0" id="content" name="content">${sendOrder.content!''}</textarea>
 	        </div>
  			 <div class="yytz_x">
-  		    	<a href="javascript:void(0);" onclick="$('#step2Form').submit();">完成洗车</a>
+  		    	<a href="javascript:void(0);" onclick="complete();">完成洗车</a>
   		    </div>
   		    <div class="yytz_s">
   		    	<a href="javascript:void(0)" onclick="start();">开始洗车</a>
@@ -280,16 +323,19 @@
 						$.each(res.localIds, function (i, n) {
 							$("#bfPic"+i).removeAttr('style');
 							$("#bfPic"+i).attr('style','background-image:url('+n+')');
-
+							alert("n"+i+"======="+n)
 							$("#bfPic"+i).show();
-							upload();
+							//选择完毕，开始上传
+							//upload();
 						});
+						upload();
+
 					//});
 				},error:function(err){
-					alert(err);
+					alert("error:"+err);
 				}
 			});
-		};
+			};
 		document.querySelector('#afterImage').onclick = function () {
 			wx.chooseImage({
 				success: function (res) {
@@ -317,21 +363,25 @@
 	});
 	function upload() {
 		var i = 0,length =  images.localId.length;
+		var media_ids="";
+		alert("length======="+length);
 		images.serverId = [] ;
-		wx.uploadImage({
-			localId: images.localId[i].toString(),
-			success: function (res) {
-				i++;
-				images.serverId.push(res.serverId);
-				bfdownimage(res.serverId);
-				//根据medir_id将微信素材下载到本地服务器
-				if (i < 1) {
-					upload();
+		for(var i=0;i<length;i++){
+			wx.uploadImage({
+				localId: images.localId[i].toString(),
+				success: function (res) {
+					alert("serverId"+i+"======="+res.serverId);
+					images.serverId.push(res.serverId);
+				}, fail: function (res) {
+					alert("上传error："+JSON.stringify(res));
 				}
-			}, fail: function (res) {
-				alert(JSON.stringify(res));
-			}
-		});
+			});
+		}
+
+		alert(images.serverId.length);
+		alert("media_ids======="+images.serverId[0]);
+		//bfdownimage(media_ids);
+
 	}
 	function afterupload() {
 		var i = 0,length =  images.localId.length;
@@ -348,13 +398,18 @@
 		});
 	}
 	function bfdownimage(media_id){
-		var url="${cmsReq}/bfpic/downimage.html";
+		alert("开始下载图片到本地");
+		alert("media_id1========="+media_id);
+		var url="${base}/bfpic/downimage.html";
+		alert(url);
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: {"media_id":media_id},
 			dataType: 'json',
 			success: function (data) {
+				alert(JSON.stringify(data));
+
 				var flg = data.success;
 				if(flg){
 					if(data.bfPic0){
@@ -376,18 +431,24 @@
 			}
 
 		});
+		alert("下载完成222");
 	}
 	function afdownimage(media_id){
-		var url="${cmsReq}/afpic/downimage.html";
+		alert("media_id======"+media_id);
+		var url="${base}/afpic/downimage.html";
 		$.ajax({
 			type: 'POST',
 			url: url,
 			data: {"media_id":media_id},
 			dataType: 'json',
 			success: function (data) {
+				alert("下载成功");
 				var flg = data.success;
+				alert(JSON.stringify(data));
+
 				if(flg){
 					var length=data.length;
+					alert(data.afPic1);
 					if(data.afPic0){
 						$("#afterPhoto1").val(data.afPic0);
 					}

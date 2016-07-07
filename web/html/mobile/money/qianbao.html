@@ -46,7 +46,7 @@
 			function wxpay(){
 				var money=$("#money").val();
 				var zsmoney=$("#zsmoney").val();
-				var url="/order/getPayParam.html";
+				var url="${base}/order/getPayParam.html";
 				$.ajax({
 					type: "POST",
 					url: url,

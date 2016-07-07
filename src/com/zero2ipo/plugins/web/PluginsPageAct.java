@@ -3,9 +3,11 @@ package com.zero2ipo.plugins.web;
 import com.zero2ipo.car.choujiang.bizc.IServiceChouJiangResult;
 import com.zero2ipo.car.choujiang.bo.ChouJiangResult;
 import com.zero2ipo.common.entity.CodeCommon;
+import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.framework.util.StringUtil;
+import com.zero2ipo.mobile.services.user.IUserServices;
 import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.plugins.contants.PluginsContants;
 import com.zero2ipo.weixin.services.message.ICoreService;
@@ -75,17 +77,25 @@ public class PluginsPageAct {
 				openId=MobileContants.DEFAULT_OPEN_ID;
 			}
 			map.put("openId",openId);
-			map.put("flag",MobileContants.status_0);
-			int count=choujiang.findAllListCount(map);
-			if(count>0) {
-				result.put("error", true);
+			//首先判断此用户是否注册
+			int isZhuCe=userServices.findUserByMapCount(map);
+			if(isZhuCe==0){
+				result.put("result", MobileContants.FLG_0);
 			}else{
-				//保存抽奖记录
-				ChouJiangResult bo=new ChouJiangResult();
-				bo.setOpenId(openId);
-				choujiang.add(bo);
-				//bo.setFlag();
+				//再判断是否已经抽过奖
+				map.put("flag",MobileContants.FLG_0);
+				int count=choujiang.findAllListCount(map);
+				if(count>0) {
+					result.put("result",  MobileContants.FLG_2);
+				}else{
+					//保存抽奖记录
+					//ChouJiangResult bo=new ChouJiangResult();
+					//bo.setOpenId(openId);
+					//choujiang.add(bo);
+					//bo.setFlag();
+				}
 			}
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +105,7 @@ public class PluginsPageAct {
 	@RequestMapping(value = "/hd/dazhuanpan/get.html", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> getJiangPin(HttpServletRequest request,
-							  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content) {
+							  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,int money,String content) {
 		Map<String,Object> result=new HashMap<String, Object>();
 		//获取openid mobile name carnum
 		//首先根据openid查询此用户是否已经抽过一次奖
@@ -124,8 +134,14 @@ public class PluginsPageAct {
 				bo.setCarNum(carNum);
 				bo.setMobile(mobile);
 				bo.setContent(content);
+				bo.setMoney(money);
 				bo.setFlag(CodeCommon.FLAG_1);
 				String backInfo=choujiang.update(bo);
+				//保存成功之后，增加红包金额到钱包里面
+				Users u=new Users();
+				u.setOpenId(openId);
+				u.setAccount(money);
+				userServices.updateUserQianBaoByOpenId(u);
 				result.put("success",true);
 			}
 		} catch (Exception e) {
@@ -162,5 +178,7 @@ public class PluginsPageAct {
 	protected ICoreService coreService;
 	@Autowired
 	protected IServiceChouJiangResult choujiang;
+	@Autowired
+	protected IUserServices userServices;
 
 }

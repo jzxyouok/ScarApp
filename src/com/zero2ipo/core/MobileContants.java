@@ -51,8 +51,9 @@ public class MobileContants {
 	public static final String status_fu_1="-1";
 	public static final String ORDER_PAY_STATUS_DEFAULT="1";//订单默认支付状态
 	public static final String SEND_ORDER_STATUS_1="1";//已派单状态
-
-	/*-----------------------------------------审核短信-----------------------------------------------*/
-	public static final String CHECK_TEL_INFO = "提示：财富街网站有新会员({0})注册信息，请及时到后台查阅并审核。【财富街】";			//审核短信内容
+   public static final int FLG_0=0;
+   public static final int FLG_1=1;
+   public static final int FLG_2=2;
+   public static final int FLG_3=3;
 
 }

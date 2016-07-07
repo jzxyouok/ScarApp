@@ -3,7 +3,6 @@ package com.zero2ipo.mobile.action;
 import com.zero2ipo.common.domain.Upload;
 import com.zero2ipo.common.entity.*;
 import com.zero2ipo.common.entity.app.Users;
-import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.framework.util.DateUtil;
 import com.zero2ipo.framework.util.StringUtil;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -59,38 +58,41 @@ public class SendOrderAction {
 	 * update washcar before after photo
 	 */
 	@RequestMapping(value = "/updateSendOrder.html", method = RequestMethod.POST)
-	public String registerStep2POST(HttpServletRequest request,
-									HttpServletResponse response, ModelMap model, String userCardFile, String idCardFile, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
-		FmUtils.FmData(request, model);
+	@ResponseBody
+	public Map<String, Object> registerStep2POST(HttpServletRequest request,
+									HttpServletResponse response, ModelMap model, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
+		//FmUtils.FmData(request, model);
 		String orderId=sendOrder.getOrderId();
-		ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
+		//ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
 		boolean flag=registerStep2(request,response,model,sendOrder);
 		if(flag){
-			mv.addObject("orderId", orderId);
-			mv.addObject("success",true);
-			redirectAttributes.addFlashAttribute("success",true);
-			redirectAttributes.addFlashAttribute("orderId",orderId);
+			resultMap.put("orderId", orderId);
+			resultMap.put("success",true);
+			//redirectAttributes.addFlashAttribute("success",true);
+			//redirectAttributes.addFlashAttribute("orderId",orderId);
 		}
-		String url="renwu/order"+orderId+"/f4"+".html";
-		return "redirect:/"+url;
+		//String url="renwu/order"+orderId+"/f4"+".html";
+		//return "redirect:/"+url;
+		return resultMap;
 	}
 	/**
 	 *开始洗车，修改洗车状态为开始洗车
 	 */
 	@RequestMapping(value = "/updateSendOrderStatus.html", method = RequestMethod.POST)
-	public String updateSendOrderStatus(HttpServletRequest request,
+	@ResponseBody
+	public Map<String, Object>  updateSendOrderStatus(HttpServletRequest request,
 										HttpServletResponse response, ModelMap model, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
-		FmUtils.FmData(request, model);
+		//FmUtils.FmData(request, model);
 		String orderId=sendOrder.getOrderId();
-		ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
+		//ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
 		boolean flag=startWashCar(request, response, model, sendOrder);
 		if(flag){
-			mv.addObject("orderId", orderId);
-			mv.addObject("success",true);
-			redirectAttributes.addFlashAttribute("success",true);
-			redirectAttributes.addFlashAttribute("orderId",orderId);
+			resultMap.put("orderId", orderId);
+			resultMap.put("success",true);
+			//redirectAttributes.addFlashAttribute("success",true);
+			//redirectAttributes.addFlashAttribute("orderId",orderId);
 			//根据订单id查询订单信息
 			Map<String,Object> orderMap=new HashMap<String, Object>();
 			orderMap.put("id",orderId);
@@ -134,8 +136,9 @@ public class SendOrderAction {
 				coreService.send_template_message(appid,appscret,openId,wxTemplate);
 			}
 		}
-		String url="renwu/order"+orderId+"/f3"+".html";
-		return "redirect:/"+url;
+		//String url="renwu/order"+orderId+"/f3"+".html";
+		//return "redirect:/"+url;
+		return resultMap;
 	}
 
 	/**

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 
 @Component("userServices")
-public class UserServicesImpl implements IUserServices{
+	public class UserServicesImpl implements IUserServices{
 
 	/**
 	 * 根据用户名密码查找用户
@@ -123,6 +123,16 @@ public class UserServicesImpl implements IUserServices{
 	@Override
 	public List<AdminBo> findAdminList() {
 		return userDao.findAdminList();
+	}
+
+	@Override
+	public int findUserByMapCount(Map<String, Object> map) {
+		return userDao.findUserByMapCount(map);
+	}
+
+	@Override
+	public void updateUserQianBaoByOpenId(Users u) {
+		userDao.updateUserQianBaoByOpenId(u);
 	}
 
 	/**

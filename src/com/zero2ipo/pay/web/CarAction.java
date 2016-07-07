@@ -19,8 +19,7 @@ import com.zero2ipo.pay.util.OrderUtil;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateMessageUtils;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
-import com.zero2ipo.weixin.token.AccessToken;
-import com.zero2ipo.weixin.token.TokenThread;
+import com.zero2ipo.weixin.utils.GetAccessTokenUtil;
 import com.zero2ipo.weixin.utils.Sign;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -70,10 +69,12 @@ public class CarAction {
 
 		//首先从缓存中获取appid
 		String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
-		//String appSecret=request.getSession().getAttribute(MobileContants.APPSCRET_KEY)+"";
-		AccessToken token=TokenThread.accessToken;
-		String access_token = token.getToken();
-		System.out.println("appid================================================"+TokenThread.appid+"\t"+TokenThread.appsecret);
+		String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+		//AccessToken token=TokenThread.accessToken;
+		//String access_token = token.getToken();
+
+		String access_token =GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+		System.out.println("appid================================================"+appId+"\t"+appSecret);
 		System.out.println("access_token======================================"+access_token);
 		sweepParam(request,mv,appId,access_token);
 		mv.addObject("orderId", id);

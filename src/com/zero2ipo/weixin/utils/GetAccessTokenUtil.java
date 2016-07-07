@@ -49,7 +49,7 @@ public class GetAccessTokenUtil {
         return accessToken;
     }
     public static void main(String args[]){
-        String token=getAccess_token2("wx81cb8cad1447d0b6","812beb1774934d7d9ec9577f33f0856b");
+        String token=getAccess_token2("wxf9aab63ad5f52164","70e89fdcbfdfccf5e77cdb2dd053c57c");
         System.out.println(token);
     }
 }

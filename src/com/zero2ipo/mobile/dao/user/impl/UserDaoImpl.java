@@ -33,6 +33,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 
 	private static final String FIND_USERINFO_BY_ID = "zero2ipo.mobile.user.findUserInfoByUserId";
 	private static final String FIND_USER_BY_MAP = "com.app.mobile.user.findUsersByMap";
+	private static final String FIND_USER_BY_MAP_COUNT = "com.app.mobile.user.findUsersByMapCount";
 	//根据邮箱查找用户
 	private static final String FIND_USERS_BY_EMAIL = "zero2ipo.mobile.user.findUserByEmail";
 	//保存用户信息
@@ -54,6 +55,7 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 	private static final String UPDATE_USER_MOBILE = "com.app.mobile.user.updateUserMobile";
 	private static final String UPDATE_USER_OPENID = "com.app.mobile.user.updateUserOpenId";
 	private static final String UPDATE_USER_QIANBAO = "com.app.mobile.user.updateUserQianBao";
+	private static final String UPDATE_USER_QIANBAO_BY_OPENID = "com.app.mobile.user.updateUserQianBaoByOpenId";
 	private static final String REDUCE_USER_QIANBAO = "com.app.mobile.user.reduceQianBao";
 	private static final String FIND_ADMIN_BYMAP = "zero2ipo.mobile.admin.findUserById";
 	private static final String FIND_ALL_ADMINS = "zero2ipo.mobile.admin.findUserInfoList";
@@ -153,6 +155,16 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		}
 
 	}
+
+	@Override
+	public void updateUserQianBaoByOpenId(Users u) {
+		try{
+			this.update(UPDATE_USER_QIANBAO_BY_OPENID, u);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+	}
 	public void reduceQianBao(Users user){
 		try{
 			this.update(REDUCE_USER_QIANBAO, user);
@@ -172,6 +184,18 @@ public class UserDaoImpl extends IbatisBaseDao implements IUserDao{
 		}
 		return list;
 	}
+
+	@Override
+	public int findUserByMapCount(Map<String, Object> map) {
+		int count=0;
+		try{
+			count= (Integer) this.query(FIND_USER_BY_MAP_COUNT, map);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return count;
+	}
+
 
 
 	/**

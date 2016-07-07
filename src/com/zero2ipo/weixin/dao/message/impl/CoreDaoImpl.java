@@ -88,7 +88,10 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                 if(content.equals("员工登陆")||content.equals("1")){
                     //respContent="";
                     String domain=getValue(CodeCommon.DOMAIN);
-                    respContent="<a href=\""+domain+"/adminLogin.html\">员工入口</a>";
+                    String appId=getValue(CodeCommon.APPID);
+                    String url= "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=210#wechat_redirect";
+                   // respContent="<a href=\""+domain+"/adminLogin.html\">员工入口</a>";
+                    respContent="<a href=\""+url+"\">员工入口</a>";
 
                 }
 
@@ -119,11 +122,14 @@ public class CoreDaoImpl extends IbatisBaseDao implements ICoreDao{
                 if (eventType.equals(MessageUtil.EVENT_TYPE_SUBSCRIBE)) {
 
                    String domain  =getValue(CodeCommon.DOMAIN);
+                    String appId=getValue(CodeCommon.APPID);
                     Article article = new Article();
                     article.setTitle("注册即可免费参与幸运大转盘抽奖");
                     article.setDescription("");
                     article.setPicUrl("http://mmbiz.qpic.cn/mmbiz/yn5O41nyIFNBpou5icS5TgKXugdR3OAGiabXeI36MXdjSZgia4e6st1LvHXdPBE8PibJlfaALUuGqkW26NQvP0cdBQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5");
-                    article.setUrl(domain+"/hd/dazhuanpan.html");
+                   String url= "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=320#wechat_redirect";
+                   // article.setUrl(domain+"/hd/dazhuanpan.html");
+                    article.setUrl(url);
                     articleList.add(article);
                     Article article2 = new Article();
                     article2.setTitle("欢迎关注小海豚上门洗车服务平台");

@@ -122,4 +122,8 @@ public interface IUserDao {
 	public void reduceQianBao(Users user);
 
 	public List<AdminBo> findAdminList();
+
+	int findUserByMapCount(Map<String, Object> map);
+
+	void updateUserQianBaoByOpenId(Users u);
 }
