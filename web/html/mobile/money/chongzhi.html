@@ -15,7 +15,7 @@
 			function wxpay(){
 				var money=$('input:radio:checked').attr('money');
 				var zsmoney=$('input:radio:checked').attr('zsmoney');
-				var url="/order/chongzhiWxPay.html";
+				var url="${base}/order/chongzhiWxPay.html";
 				$.ajax({
 					type: "POST",
 					url: url,

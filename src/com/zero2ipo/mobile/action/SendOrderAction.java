@@ -196,8 +196,8 @@ public class SendOrderAction {
 
 
 			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
-			if(o != null )
-			{
+			//if(o != null )
+			//{
 				//UserEntity user = (UserEntity)o;
 				//user.setUserRegisterStep(3);
 				/*SendOrder  sendOrder=new SendOrder();*/
@@ -248,7 +248,7 @@ public class SendOrderAction {
 
 					return u;
 				}
-			}
+			//}
 
 		}  catch (Exception e) {
 			e.printStackTrace();
@@ -298,8 +298,8 @@ public class SendOrderAction {
 */
 
 			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
-			if(o != null )
-			{
+			//if(o != null )
+			//{
 				//UserEntity user = (UserEntity)o;
 				//user.setUserRegisterStep(3);
 			/*	SendOrder  sendOrder=new SendOrder();
@@ -350,7 +350,7 @@ public class SendOrderAction {
 
 					return u;
 				}*/
-			}
+			//}
 
 		}  catch (Exception e) {
 			e.printStackTrace();

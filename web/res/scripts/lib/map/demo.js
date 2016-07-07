@@ -114,7 +114,7 @@ function getLocation(lo, la) {
  * 根据当前位置的经纬度，查询当前位置是否在后台配置的有效洗车距离范围内容
  */
 function queryAreaLogin(lng,lat){
-	var url="/getAreaRegion.html";
+	var url="${base}/getAreaRegion.html";
 	$.ajax({
 		type: "POST",
 		url: url,

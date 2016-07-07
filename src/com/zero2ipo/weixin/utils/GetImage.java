@@ -49,8 +49,9 @@ public class GetImage {
             conn.setRequestMethod("GET");
             String contentType = conn.getHeaderField("Content-disposition");
             System.out.println("type======================"+contentType);
-            String prixName=getFileEndWitsh(contentType);
-            conn.setConnectTimeout(5 * 1000);
+            //String prixName=getFileEndWitsh(contentType);
+
+            conn.setConnectTimeout(20 * 1000);
             InputStream inStream = conn.getInputStream();//通过输入流获取图片数据
             byte[] btImg = readInputStream(inStream);//得到图片的二进制数据
             ByteArrayInputStream in = new ByteArrayInputStream(btImg);    //将b作为输入流；
@@ -109,6 +110,19 @@ public class GetImage {
         }
         return null;
     }
+    public static String getBase64Image(InputStream inStream ){
+        byte[] btImg = new byte[0];//得到图片的二进制数据
+        String base64Image="";
+        try {
+            btImg = readInputStream(inStream);
+            ByteArrayInputStream in = new ByteArrayInputStream(btImg);    //将b作为输入流；
+            BufferedImage image = ImageIO.read(in);     //将in作为输入流，读取图片存入image中，而这里in可以为ByteArrayInputStream();
+            base64Image=getImageBinary(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return base64Image;
+    }
     /**
      * 将图片写入到磁盘
      * @param img 图片数据流
@@ -164,4 +178,5 @@ public class GetImage {
         inStream.close();
         return outStream.toByteArray();
     }
+
 }
