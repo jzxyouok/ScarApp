@@ -22,9 +22,9 @@
 					itemHeight       : "120px",                     // 文件项的高度
 					url              : "/html5/upload.html",  	// 上传文件的路径
 					multiple         : true,  						// 是否可以多个文件上传
-					dragDrop         : true,  						// 是否可以拖动上传文件
+					dragDrop         : false,  						// 是否可以拖动上传文件
 					del              : true,  						// 是否可以删除文件
-					finishDel        : false,  						// 是否在上传文件完成后删除预览
+					finishDel        : true,  						// 是否在上传文件完成后删除预览
 					/* 提供给外部的接口方法 */
 					onSelect         : function(selectFiles, files){},// 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
 					onDelete		 : function(file, files){},     // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
