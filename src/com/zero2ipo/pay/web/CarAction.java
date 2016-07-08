@@ -44,7 +44,7 @@ import java.util.*;
  */
 @Controller
 public class CarAction {
-	String notifyUrl = "order/wxpayHdMethod.html";//微信支付成功回调方法,修改订单状态以及自动派单
+	String notifyUrl = "/order/wxpayHdMethod.html";//微信支付成功回调方法,修改订单状态以及自动派单
 	/**
 	 * 订单流程页面
 	 * */
