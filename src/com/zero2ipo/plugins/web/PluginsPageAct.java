@@ -152,7 +152,7 @@ public class PluginsPageAct {
 	@RequestMapping(value = "/hd/dazhuanpan/save.html", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> SaveChouJiangFirst(HttpServletRequest request,
-										  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content) {
+										  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content,int money) {
 		Map<String,Object> result=new HashMap<String, Object>();
 		//获取openid mobile name carnum
 		//首先根据openid查询此用户是否已经抽过一次奖
@@ -161,14 +161,26 @@ public class PluginsPageAct {
 		if(StringUtil.isNullOrEmpty(openId)){
 			openId=MobileContants.DEFAULT_OPEN_ID;
 		}
+		map.put("openId",openId);
 		try {
+			int count=choujiang.findAllListCount(map);
+			if(count>0){
+				result.put("result",CodeCommon.FLAG_1);//已经抽过奖了
+			}else{
 				//保存信息到数据库中
 				ChouJiangResult bo=new ChouJiangResult();
 				bo.setOpenId(openId);
 				bo.setContent(content);
 				bo.setFlag(CodeCommon.FLAG_0);
 				String backInfo=choujiang.add(bo);
-				result.put("success",true);
+				//保存成功之后，增加红包金额到钱包里面
+				Users u=new Users();
+				u.setOpenId(openId);
+				u.setAccount(money);
+				userServices.updateUserQianBaoByOpenId(u);
+				result.put("result",CodeCommon.FLAG_0);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

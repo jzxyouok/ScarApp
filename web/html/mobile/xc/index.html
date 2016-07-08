@@ -69,6 +69,7 @@
 			}
 
 			$( document ).ready(function(e) {
+				isHideCheckBox();
 				getMyCurrentLocation();
 				$("#carColor").val("${bo.carColor!''}");
 				$("#carType option").each(function (){
@@ -112,8 +113,7 @@
 					}
 				})
 			})
-		</script>
-		  <script>
+
 		  	function coupon_buy(){
 		  		window.location.href="${base}/pay/buycouponPage.html";
 		  	}
@@ -146,10 +146,10 @@
 			            return false;
 			        }
 
-			        if(carColor==""||carColor==null){
+			      /*  if(carColor==""||carColor==null){
 			            alert("请填写车颜色");
 			            return false;
-			        }
+			        }*/
 			        if(carType==""||carType==null){
 			            alert("请填写车型");
 			           // hideloading();
@@ -179,6 +179,24 @@
 			       ajax(url,data);
 		  	      //$("#myform").submit();
 		  	}
+			//是否隐藏基本信息和其他 checkbox
+			function isHideCheckBox(){
+				var name="${bo.name!''}";
+				var carNo="${(bo.carNo)!''}";
+
+				if(''==name||null==name||''==carNo||null==carNo){
+				}else{
+					$("#info_switch").removeAttr("checked");
+					$("#other_switch").removeAttr("checked");
+					$("#other1").hide();
+					$("#other2").hide();
+					$("#showmap").hide();
+					for(var j=1;j<6;j++){
+						$("#info"+j).hide();
+					}
+				}
+
+			}
 		  </script>
 	</head>
 	<body >
@@ -194,7 +212,7 @@
 						<div class="weui_cell weui_cell_switch">
 							<div class="weui_cell_hd weui_cell_primary">基本信息</div>
 							<div class="weui_cell_ft">
-								<input class="weui_switch" type="checkbox" checked="false" id="info_switch"/>
+								<input class="weui_switch" type="checkbox"  id="info_switch"/>
 							</div>
 						</div>
 					</td>
@@ -244,7 +262,7 @@
 					</td>
 
 				</tr>
-				<tr id="info5">
+				<tr id="info5" style="display: none">
 					<td class="lable">
 						<img src="${res}/images/ggwash/car_color.png" />
 						颜色
@@ -268,7 +286,7 @@
 							<div class="weui_cell weui_cell_switch">
 								<div class="weui_cell_hd weui_cell_primary">其他</div>
 								<div class="weui_cell_ft">
-									<input class="weui_switch" type="checkbox" id="other_switch" checked="false"/>
+									<input class="weui_switch" type="checkbox" id="other_switch" />
 								</div>
 							</div>
 						</div>
@@ -362,7 +380,7 @@
 						   <!----选择服务项目end----------->
 					   </td>
 				   </tr>
-					<tr>
+					<tr style="display: none">
 						<td class="lable" nowrap="nowrap">
 							<img src="${res}/images/ggwash/property_index_coupon.png" style="width:42px;height:30px"/>
 							洗车券
@@ -415,7 +433,7 @@
 										[/#if]
 									 [/@find_user_byId]
 								</span>￥
-								<span><a href="${base}/order/chongzhi.html"><font color="green">余额不够点我充值</font></a></span>
+								<span><a href="${base}/order/chongzhi.html"><font color="#04BE02">余额不够点我充值</font></a></span>
 							</p>
 						</article>
 					</td>
@@ -438,22 +456,20 @@
 						</td>
 					</tr>
 					<tr id="wxpayTr">
-						<td>
+						<td style="width: 10%;">
 							<span class="sum">共计: <font class="color_orange"><span id="total">0</span>￥</font></span>
 							<input type="hidden" id="totalPrice" name="totalPrice">
 							<input type="hidden" id="projectName" name="projectName">
 						</td>
 						<td colspan='' style="border: 0;">
-							<input id='o' type='button' style="display: block;width: 70px;float:left;background-color:#51AD8F;color: white"
+							<input id='o' type='button' style="display: block;width: 90px;margin-right: 125px;float:left;background-color:#04BE02;color: white"
 								class='ui-btn green' value='微信支付'
 								onclick="weixinPay()" />
-							<input id='order' type='button' style="display: block;width:85px;margin-left: 75px"
+							<input id='order' type='button' style="display: none;width:85px;margin-left: 75px"
 								   class='ui-btn green' value='洗车券下单'
 								   onclick="save_order()"/>
 						</td>
-						<td>
-
-						</td>
+						<td style="width: 15%"></td>
 					</tr>
 					<tr id="qbpayTr" style="display: none;">
 						<td>
