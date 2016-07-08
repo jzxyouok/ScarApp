@@ -171,6 +171,7 @@ public class PluginsPageAct {
 				ChouJiangResult bo=new ChouJiangResult();
 				bo.setOpenId(openId);
 				bo.setContent(content);
+				bo.setMoney(money);
 				bo.setFlag(CodeCommon.FLAG_0);
 				String backInfo=choujiang.add(bo);
 				//保存成功之后，增加红包金额到钱包里面
