@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<!-- saved from url=(0041)http://www.js-css.cn/jscode/award/award3/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<title>幸运大转盘抽奖</title>
+<meta name="viewport" content="width=320, maximum-scale=1, user-scalable=no">
+<meta content="telephone=no" name="format-detection">
+<meta content="email=no" name="format-detection">
+<meta name="apple-touch-fullscreen" content="NO">
+<link href="${base}/html/plugins/dazhuanpan/css/wap_Lottery.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="${base}/html/plugins/dazhuanpan/js/jquery-2.1.1.min.js"></script>
+<script>
+	var classid = 6;//最终中奖奖品位置1-6
+	//从一个给定的数组arr中,随机返回num个不重复项
+	function getArrayItems(arr, num) {
+		//新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
+		var temp_array = new Array();
+		for (var index in arr) {
+			temp_array.push(arr[index]);
+		}
+		//取出的数值项,保存在此数组
+		var return_array = new Array();
+		for (var i = 0; i<num; i++) {
+			//判断如果数组还有可以取出的元素,以防下标越界
+			if (temp_array.length>0) {
+				//在数组中产生一个随机索引
+				var arrIndex = Math.floor(Math.random()*temp_array.length);
+				//将此随机索引的对应的数组元素值复制出来
+				return_array[i] = temp_array[arrIndex];
+				//然后删掉此索引的数组元素,这时候temp_array变为新的数组
+				temp_array.splice(arrIndex, 1);
+			} else {
+				//数组中数据项取完后,退出循环,比如数组本来只有10项,但要求取出20项.
+				break;
+			}
+		}
+		return return_array;
+	}
+	//测试
+	var ArrList=new Array (100);
+	for(var i=1;i<=100;i++){
+		ArrList[i]=i;
+	}
+	function getZhongJiang(){
+		//var arrayOne = getArrayItems(ArrList, 2);
+		//var arraySox=getArrayItems(ArrList,37);
+		//假设1等奖中奖号码为1 2等奖中奖号码为2 三等奖中奖号码为3，4等级中奖号码为4 5等奖中奖号码为5 6等奖中奖号码为6
+		var one = 1;
+		var two = 2;
+		var three = 3;
+		var four = 4;
+		var five = 5;
+		var six = 6;
+		var flg=true;
+		/*for (var i = 0; i < arrayOne.length; i++) {
+			if (arrayOne[i] == one) {
+				classid = 1;
+				flg=false;
+			}
+		}
+		alert("1等奖抽取："+arrayOne);*/
+		//如果没有中1等奖，再抽二等奖
+		/*if(flg){
+			var arrayTwo = getArrayItems(ArrList, 5-2);
+			//抽完之后，把1等奖抽的数字也放进来
+			for(var i=0;i<arrayOne.length;i++){
+				arrayTwo.push(arrayOne[i]);
+			}
+			for (var i = 0; i < arrayTwo.length; i++){
+				if (arrayTwo[i] == two) {
+					classid = 2;
+					flg=false;
+				}
+			}
+		}
+		alert("二等奖抽取:"+arrayTwo);*/
+		//还没中，再抽三等奖
+		if(flg){
+			var arrayThree = getArrayItems(ArrList,1);
+			//同时把二等奖抽出来的数字，也放到这里来
+		/*	for(var i=0;i<arrayTwo.length;i++){
+				arrayThree.push(arrayTwo[i])
+			}*/
+
+			for (var i = 0; i < arrayThree.length; i++)
+			{
+				if(arrayThree[i]==three){
+					classid=3;
+					flg=false;
+					$("#jp").html("一次整车打蜡");
+				}
+			}
+		}
+//如果三等奖没中，再抽四等奖
+		/*if(flg){
+			var arrayFour = getArrayItems(ArrList, 20-arrayThree.length);
+			for(var i=0;i<arrayThree.length;i++){
+				arrayFour.push(arrayThree[i]);
+			}
+			for (var i = 0; i < arrayFour.length; i++)
+			{
+				if(arrayFour[i]==four){
+					classid=4;
+					flg=false;
+				}
+			}
+		}
+		alert("4等奖抽取:"+arrayFour);*/
+
+		//如果四等奖不中，再抽五等奖
+if(flg){
+	var arrayFive = getArrayItems(ArrList, 9-arrayThree.length);
+	for(var i=0;i<arrayThree.length;i++){
+		arrayFive.push(arrayThree[i]);
+	}
+	for (var i = 0; i < arrayFive.length; i++)
+	{
+		if(arrayFive[i]==five){
+			classid=5;
+			flg=false;
+			$("#jp").html("20元代金券");
+			$("#content").val("20元代金券");
+			$("#money").val("20");
+		}
+	}
+
+}
+if(flg){
+	$("#jp").html("10元代金券");
+	$("#money").val("10");
+
+
+}
+$("#content").val($("#jp").html());
+	}
+function choujiangStart(){
+	getZhongJiang();
+	//设置中奖概况
+	var Pnum=$(".prize").length;
+	if(Pnum<classid){alert("奖品不存在")}
+	$(".lotCenter").addClass("lotCenter-animation"+Pnum+"-"+classid);
+	$(".lotLight").removeClass("lotLight-animation2").addClass("lotLight-animation1");
+	setTimeout(function(){
+		$(".lotCenter").removeClass("lotCenter-animation"+Pnum+"-"+classid);
+		$(".lotLight").removeClass("lotLight-animation1").addClass("lotLight-animation2");
+	},8000);
+	setTimeout(function(){
+		saveChouJiangResult();
+	},6000);
+	//抽完奖品之后，再保存保存记录到数据库张
+
+}
+$(document).ready(function(e) {
+
+	//getZhongJiang();
+
+	$(".lotCenter").click(function(){
+		var Pnum=$(".prize").length;
+		//判断是否抽过奖
+		var url="${_domain_key!''}/hd/isChouJiang.html";
+		$.ajax({
+			url:url,
+			dataType:'json',
+			type:'post',
+			success:function(r){
+				if(r.result==0){
+					$("#msgupdata").hide();
+					$("#info").html("您还没注册,请先注册后再抽奖");
+					$("#msgend").fadeIn(300);
+				}else if(r.result==2){
+					$("#msgupdata").hide();
+					$("#info").html("您已经抽过奖了,把机会留给他人吧");
+					$("#msgend").fadeIn(300);
+				}
+				else{
+					choujiangStart();
+				}
+			},error:function (error) {
+
+			}
+		})
+
+	});
+	var Pnum=$(".prize").length;
+
+	var deg=360/Pnum;
+	for(var i=1;i<=Pnum;i++){
+		var numdeg=deg*i-deg;
+		if(Pnum==6){var pdeg1=i*deg+deg;};
+		if(Pnum==5){
+			var pdeg1=i*deg+54;
+			$(".prize1 .prizebg").css("background","#fcb600");
+			$(".prize2 .prizebg").css("background","#f28501");
+			$(".prize3 .prizebg").css("background","#f9a700");
+			$(".prize4 .prizebg").css("background","#f69601");
+			$(".prize5 .prizebg").css("background","#fec000");
+			$(".prize6 .prizebg").css("background","#feb560");
+			$(".prize7 .prizebg").css("background","#bac600");
+			$(".prize8 .prizebg").css("background","#bac070");
+			$(".prize9 .prizebg").css("background","#mec830");
+			$(".prize10 .prizebg").css("background","#aec960");
+		};
+		if(Pnum==4){var pdeg1=i*deg+45;};
+		if(Pnum==3){
+			var pdeg1=i*deg+deg+30;
+			$(".prize1 .prizebg").css("background","#fcb600");
+			$(".prize2 .prizebg").css("background","#f28501");
+			$(".prize3 .prizebg").css("background","#f9a700");
+		};
+		if(Pnum==2){var pdeg1=i*deg+deg;};
+		var pdeg2=90-deg;
+		$(".img"+i).css("transform","rotate("+numdeg+"deg)");
+		$(".txt"+i).css("transform","rotate("+numdeg+"deg)");
+		$(".prize"+i).css("transform","rotate("+pdeg1+"deg)");
+		$(".prizebg").css("transform","rotate("+pdeg2+"deg)");
+	}
+	//页面大小
+	initialise();
+});
+$(window).resize(function(e) {
+	initialise();
+});
+function initialise(){
+	var windowwidth=$(window).width();
+	if(windowwidth>640){windowwidth=640;}
+	var scale=windowwidth/320;
+	$("#main").css("padding-top",scale*40);
+	$(".lotterynum").css({"margin-left":scale*30,"margin-right":scale*30});
+}
+function msgclose() {
+	$('.loginForm').fadeOut(300);
+}
+function msgupdata() {
+	//领取奖品
+	var url = "${_domain_key!''}/hd/dazhuanpan/get.html";
+	var data = $("#form1").serialize();
+	$.ajax({
+		url: url,
+		dataType: 'json',
+		type: 'post',
+		data: data,
+		success: function (r) {
+			if (r.error) {
+				$("#msgupdata").hide();
+				$("#info").html("您已经抽过奖了,把机会留给他人吧");
+				$("#msgend").fadeIn(300);
+			} else {
+				$("#msgupdata").hide();
+				$("#msgend").fadeIn(300);
+			}
+		}, error: function (error) {
+			alert(error);
+		}
+	})
+}
+	function saveChouJiangResult() {
+		var url = "${_domain_key!''}/hd/dazhuanpan/save.html";
+		var data = $("#form1").serialize();
+		$.ajax({
+			url: url,
+			dataType: 'json',
+			type: 'post',
+			data: data,
+			success: function (r) {
+				if(r.result==1){
+					//已经抽过奖了
+					$("#msgupdata").hide();
+					$("#info").html("您已经抽过奖了,把机会留给他人吧");
+					$("#msgend").fadeIn(300);
+				}else{
+					//抽奖成功
+					$("#info").html("恭喜你抽中"+$("#jp").html());
+					$("#msgupdata").hide();
+					$("#msgend").fadeIn(300);
+				}
+			}, error: function (error) {
+				alert(error);
+			}
+		})
+	}
+
+</script>
+</head>
+<body>
+<div id="wrapper">
+    <div id="container">
+        <div id="main" style="padding-top: 80px;">
+        	<div class="lotteryTitle">幸福大转盘</div>
+            <div id="lottery">
+            	<div class="lotBg">
+            		<div class="lotLight lotLight-animation2">
+                    	<li class="lotLight1"><i></i></li>
+                    	<li class="lotLight2"><i></i></li>
+                    	<li class="lotLight3"><i></i></li>
+                    	<li class="lotLight4"><i></i></li>
+                    	<li class="lotLight5"><i></i></li>
+                    	<li class="lotLight6"><i></i></li>
+                    	<li class="lotLight7"><i></i></li>
+                    	<li class="lotLight8"><i></i></li>
+                    	<li class="lotLight9"><i></i></li>
+                    	<li class="lotLight10"><i></i></li>
+                    	<li class="lotLight11"><i></i></li>
+                    	<li class="lotLight12"><i></i></li>
+                    	<li class="lotLight13"><i></i></li>
+                    	<li class="lotLight14"><i></i></li>
+                    	<li class="lotLight15"><i></i></li>
+                    	<li class="lotLight16"><i></i></li>
+                    	<li class="lotLight17"><i></i></li>
+                    	<li class="lotLight18"><i></i></li>
+                    	<li class="lotLight19"><i></i></li>
+                    	<li class="lotLight20"><i></i></li>
+                    	<li class="lotLight21"><i></i></li>
+                    	<li class="lotLight22"><i></i></li>
+                    	<li class="lotLight23"><i></i></li>
+                    	<li class="lotLight24"><i></i></li>
+                    	<li class="lotLight25"><i></i></li>
+                    	<li class="lotLight26"><i></i></li>
+                    	<li class="lotLight27"><i></i></li>
+                    	<li class="lotLight28"><i></i></li>
+                    	<li class="lotLight29"><i></i></li>
+                    	<li class="lotLight30"><i></i></li>
+                    	<li class="lotLight31"><i></i></li>
+                    	<li class="lotLight32"><i></i></li>
+                    	<li class="lotLight33"><i></i></li>
+                    	<li class="lotLight34"><i></i></li>
+                    	<li class="lotLight35"><i></i></li>
+                    	<li class="lotLight36"><i></i></li>
+
+                    </div>
+                    <div class="lotCon">
+                    	<div class="prize prize1" style="transform: rotate(120deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    	<div class="prize prize2" style="transform: rotate(180deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    	<div class="prize prize3" style="transform: rotate(240deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    	<div class="prize prize4" style="transform: rotate(300deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    	<div class="prize prize5" style="transform: rotate(360deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    	<div class="prize prize6" style="transform: rotate(420deg);"><div class="prizebg" style="transform: rotate(30deg);"></div></div>
+                    </div>
+                    <div class="lotTxt">
+                    	<p class="txt1" style="transform: rotate(0deg);"><span>500代金券</span></p>
+                    	<p class="txt2" style="transform: rotate(60deg);"><span>200元</span></p>
+                    	<p class="txt3" style="transform: rotate(120deg);"><span>1次整车打蜡</span></p>
+                    	<p class="txt4" style="transform: rotate(180deg);"><span>1次整车洗</span></p>
+                    	<p class="txt5" style="transform: rotate(240deg);"><span>20元代金券</span></p>
+                    	<p class="txt6" style="transform: rotate(300deg);"><span>10元代金券</span></p>
+
+                    </div>
+                    <div class="lotImg">
+                    	<p class="img1" style="transform: rotate(0deg);"><img src="${base}/html/plugins/dazhuanpan/img/TV.png"></p>
+                    	<p class="img2" style="transform: rotate(60deg);"><img src="${base}/html/plugins/dazhuanpan/img/2011050210463931.png"></p>
+                    	<p class="img3" style="transform: rotate(120deg);"><img src="${base}/html/plugins/dazhuanpan/img/dala.png"></p>
+                    	<p class="img4" style="transform: rotate(180deg);"><img src="${base}/html/plugins/dazhuanpan/img/yicizhengxi.png"></p>
+                    	<p class="img5" style="transform: rotate(240deg);"><img src="${base}/html/plugins/dazhuanpan/img/20yuan.png"></p>
+                    	<p class="img6" style="transform: rotate(300deg);"><img src="${base}/html/plugins/dazhuanpan/img/10yuan.png"></p>
+                    </div>
+                    <div class="lotCenter">
+                    	<i></i>
+                        <a href="javascript:void(0)"><span>开始<br>抽奖</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lotterynum" style="margin-left: 60px; margin-right: 60px;">
+				活动说明:只有注册用户才可以抽奖,请凭借真实资料领取奖品
+			</div>
+
+            <div id="msgupdata" class="loginForm dn" style="display: none;">
+				<form id="form1" method="post" onsubmit="return false;">
+                <ul class="sOne-loginForm">
+                    <li>
+                    	<p id="jp">恭喜您，获得六等奖（奖品：Ipad一部）</p>
+						<input type="hidden" id="content" name="content">
+						<input type="hidden" id="money" name="money">
+                    </li>
+                  <!--  <li>
+                    	<input type="text" class="sOne-loginInput-half" name="" placeholder="请输入您的手机号">
+                        <input type="button" class="sOne-getpasscode" value="获取动态密码" id="getpasscode" data-href="">
+                        <span class="dn">手机号错误</span>
+                    </li>
+					<li>
+						<input type="text" class="sOne-loginInput-half" name="" placeholder="请输入您的车牌号">
+						<input type="button" class="sOne-getpasscode" value="获取动态密码" id="" data-href="">
+						<span class="dn">车牌号错误</span>
+					</li>-->
+                    <li class="bd-b">
+                    	<input type="text" class="sOne-loginInput" id="name" name="name" placeholder="姓名">
+                        <span class="dn">姓名错误</span>
+                    </li>
+					<li class="bd-b">
+						<input type="text" class="sOne-loginInput" name="mobile" id="mobile" placeholder="手机号">
+						<span class="dn">手机号错误</span>
+					</li>
+					<li class="bd-b">
+						<input type="text" class="sOne-loginInput" name="carNum" id="carNum" placeholder="车牌号">
+						<span class="dn">车牌号错误</span>
+					</li>
+                   <!-- <li>
+                    	<input type="text" class="sOne-loginInput-half" name="" placeholder="输入验证码">
+                        <img src="" class="sOne-loginInput-code">
+                        <span class="dn">验证码错误</span>
+                    </li>-->
+                    <li>
+                    	<input type="submit" name="doSubmit" class="sOne-loginInput-btn" value="领取" onclick="msgupdata()">
+                    </li>
+                </ul>
+                <div class="fn"><a href="javascript:void(0)" class="close-loginForm" onclick="msgclose()">+</a></div>
+				</form>
+            </div>
+
+            <div id="msgend" class="loginForm dn">
+                <ul class="sOne-loginForm">
+                    <li>
+                    	<p id="info">领取成功</p>
+                    </li>
+                </ul>
+                <div class="fn"><a href="javascript:void(0)" class="close-loginForm" onclick="msgclose()">+</a></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<section style="display: none;" class="fullHtml loadingBox" id="loadingBox"><i></i><span>加载中...</span></section>
+</body>
+</html>
