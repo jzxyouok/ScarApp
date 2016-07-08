@@ -80,7 +80,7 @@ public class GetImage {
         BASE64Encoder encoder = new BASE64Encoder();
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bi, "jpg", baos);
+            ImageIO.write(bi, "png", baos);
             byte[] bytes = baos.toByteArray();
             return "data:image/png;base64,"+encoder.encodeBuffer(bytes).trim();
         } catch (IOException e) {

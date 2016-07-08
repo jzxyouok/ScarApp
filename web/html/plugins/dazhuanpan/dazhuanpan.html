@@ -150,6 +150,7 @@ function choujiangStart(){
 	//抽完奖品之后，再保存保存记录到数据库张
 
 }
+var isDisableBtn=true;
 $(document).ready(function(e) {
 
 	//getZhongJiang();
@@ -157,28 +158,36 @@ $(document).ready(function(e) {
 	$(".lotCenter").click(function(){
 		var Pnum=$(".prize").length;
 		//判断是否抽过奖
-		var url="${_domain_key!''}/hd/isChouJiang.html";
-		$.ajax({
-			url:url,
-			dataType:'json',
-			type:'post',
-			success:function(r){
-				if(r.result==0){
-					$("#msgupdata").hide();
-					$("#info").html("您还没注册,请先注册后再抽奖");
-					$("#msgend").fadeIn(300);
-				}else if(r.result==2){
-					$("#msgupdata").hide();
-					$("#info").html("您已经抽过奖了,把机会留给他人吧");
-					$("#msgend").fadeIn(300);
-				}
-				else{
-					choujiangStart();
-				}
-			},error:function (error) {
+		if(isDisableBtn){
+			var url="${_domain_key!''}/hd/isChouJiang.html";
+			$.ajax({
+				url:url,
+				dataType:'json',
+				type:'post',
+				beforeSend:function(){//发送请求
+					//禁用点击按钮
+					isDisableBtn=false;
+				},
+				success:function(r){
+					if(r.result==0){
+						$("#msgupdata").hide();
+						$("#info").html("您还没注册,请先注册后再抽奖");
+						$("#msgend").fadeIn(300);
+						isDisableBtn=true;
+					}else if(r.result==2){
+						$("#msgupdata").hide();
+						$("#info").html("您已经抽过奖了,把机会留给他人吧");
+						$("#msgend").fadeIn(300);
+						isDisableBtn=true;
+					}
+					else{
+						choujiangStart();
+					}
+				},error:function (error) {
 
-			}
-		})
+				}
+			})
+		}
 
 	});
 	var Pnum=$(".prize").length;
@@ -267,11 +276,13 @@ function msgupdata() {
 					$("#msgupdata").hide();
 					$("#info").html("您已经抽过奖了,把机会留给他人吧");
 					$("#msgend").fadeIn(300);
+					isDisableBtn=true;
 				}else{
 					//抽奖成功
 					$("#info").html("恭喜你抽中"+$("#jp").html());
 					$("#msgupdata").hide();
 					$("#msgend").fadeIn(300);
+					isDisableBtn=true;
 				}
 			}, error: function (error) {
 				alert(error);

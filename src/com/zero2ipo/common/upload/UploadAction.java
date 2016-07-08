@@ -1,5 +1,6 @@
 package com.zero2ipo.common.upload;
 
+import com.zero2ipo.framework.util.Config;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -43,15 +44,19 @@ public class UploadAction {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
         //文件保存目录路径
-         String compon= "/home/upload";
-         String savePath = compon + configPath;
+        Config config=new Config();
+        String localPath=config.getString("downimage");
+         String compon= localPath;
+         String savePath = compon;
+
         // 临时文件目录
         String tempPath =savePath+ dirTemp;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
         String ymd = sdf.format(new Date());
-        savePath += "/" + ymd + "/";
+        String imageDate="/image/" + ymd + "/";
+        savePath += imageDate;
         //回调路径
-        hdUrl+=configPath + ymd + "/";
+       // hdUrl+=configPath + ymd + "/";
         //创建文件夹
         File dirFile = new File(savePath);
         if (!dirFile.exists()) {
@@ -92,12 +97,14 @@ public class UploadAction {
                         while( (length = is.read(buf)) > 0 ){
                             os.write(buf, 0, length);
                         }
+                        //将is转换为base64格式图片
+                        //String base64Image=GetImage.getBase64Image(is);
                         //关闭流
                         os.flush();
                         os.close();
                         is.close();
                         System.out.println("上传成功！路径："+savePath+"/"+newFileName);
-                        out.print(hdUrl+newFileName);
+                        out.print(imageDate+newFileName);
                     }catch(Exception e){
                         e.printStackTrace();
                     }

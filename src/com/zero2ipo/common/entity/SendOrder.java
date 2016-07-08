@@ -23,10 +23,10 @@ public class SendOrder implements Serializable {
 	private String beforePhoto2;
 	private String beforePhoto3;
 	private String beforePhoto4;
-	private String afterPhoto5;
-	private String afterPhoto6;
-	private String afterPhoto7;
-	private String afterPhoto8;
+	private String afterPhoto1;
+	private String afterPhoto2;
+	private String afterPhoto3;
+	private String afterPhoto4;
 	private int returnCode;
 	private String returnMsg;
 
@@ -132,36 +132,36 @@ public class SendOrder implements Serializable {
 		this.beforePhoto4 = beforePhoto4;
 	}
 
-	public String getAfterPhoto5() {
-		return afterPhoto5;
+	public String getAfterPhoto1() {
+		return afterPhoto1;
 	}
 
-	public void setAfterPhoto5(String afterPhoto5) {
-		this.afterPhoto5 = afterPhoto5;
+	public void setAfterPhoto1(String afterPhoto1) {
+		this.afterPhoto1 = afterPhoto1;
 	}
 
-	public String getAfterPhoto6() {
-		return afterPhoto6;
+	public String getAfterPhoto2() {
+		return afterPhoto2;
 	}
 
-	public void setAfterPhoto6(String afterPhoto6) {
-		this.afterPhoto6 = afterPhoto6;
+	public void setAfterPhoto2(String afterPhoto2) {
+		this.afterPhoto2 = afterPhoto2;
 	}
 
-	public String getAfterPhoto7() {
-		return afterPhoto7;
+	public String getAfterPhoto3() {
+		return afterPhoto3;
 	}
 
-	public void setAfterPhoto7(String afterPhoto7) {
-		this.afterPhoto7 = afterPhoto7;
+	public void setAfterPhoto3(String afterPhoto3) {
+		this.afterPhoto3 = afterPhoto3;
 	}
 
-	public String getAfterPhoto8() {
-		return afterPhoto8;
+	public String getAfterPhoto4() {
+		return afterPhoto4;
 	}
 
-	public void setAfterPhoto8(String afterPhoto8) {
-		this.afterPhoto8 = afterPhoto8;
+	public void setAfterPhoto4(String afterPhoto4) {
+		this.afterPhoto4 = afterPhoto4;
 	}
 
 	/**扩展信息*/

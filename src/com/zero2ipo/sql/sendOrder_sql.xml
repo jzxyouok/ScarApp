@@ -15,10 +15,10 @@
 		<result property="beforePhoto2" column="BEFORE_PHOTO2" />
 		<result property="beforePhoto3" column="BEFORE_PHOTO3" />
 		<result property="beforePhoto4" column="BEFORE_PHOTO4" />
-		<result property="afterPhoto5" column="AFTER_PHOTO1" />
-		<result property="afterPhoto6" column="AFTER_PHOTO2" />
-		<result property="afterPhoto7" column="AFTER_PHOTO3" />
-		<result property="afterPhoto8" column="AFTER_PHOTO4" />
+		<result property="afterPhoto1" column="AFTER_PHOTO1" />
+		<result property="afterPhoto2" column="AFTER_PHOTO2" />
+		<result property="afterPhoto3" column="AFTER_PHOTO3" />
+		<result property="afterPhoto4" column="AFTER_PHOTO4" />
 	</resultMap>
 <!--查询-->
 <!-- 根据Id查信息 -->
@@ -134,17 +134,17 @@
 			<isNotEmpty prepend="," property="beforePhoto4">
 				BEFORE_PHOTO4=#beforePhoto4#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="afterPhoto5">
-				AFTER_PHOTO1=#afterPhoto5#
+			<isNotEmpty prepend="," property="afterPhoto1">
+				AFTER_PHOTO1=#afterPhoto1#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="afterPhoto6">
-				AFTER_PHOTO2=#afterPhoto6#
+			<isNotEmpty prepend="," property="afterPhoto2">
+				AFTER_PHOTO2=#afterPhoto2#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="afterPhoto7">
-				AFTER_PHOTO3=#afterPhoto7#
+			<isNotEmpty prepend="," property="afterPhoto3">
+				AFTER_PHOTO3=#afterPhoto3#
 			</isNotEmpty>
-			<isNotEmpty prepend="," property="afterPhoto8">
-				AFTER_PHOTO4=#afterPhoto8#
+			<isNotEmpty prepend="," property="afterPhoto4">
+				AFTER_PHOTO4=#afterPhoto4#
 			</isNotEmpty>
 		WHERE
 			ORDER_ID=#orderId#
