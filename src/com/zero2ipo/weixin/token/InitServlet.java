@@ -31,6 +31,7 @@ public class InitServlet extends HttpServlet {
 		String paiDanTemplate=coreService.getValue(CodeCommon.PAIDAN_TEMPLATE_MESSAGE);
 		String qiangDanTemplate=coreService.getValue(CodeCommon.QIANGDAN_TEMPLATE_MESSAGE);
 		String qiangdanTime=coreService.getValue(CodeCommon.QIANG_DAN_DAOJISHI);
+		String imageUploadDomain=coreService.getValue(CodeCommon.UPLOAD_IMAGE_SERVER_URL);
 		wac.getServletContext().setAttribute(MobileContants.APPID_KEY,appid);//保存appid到缓存中
 		wac.getServletContext().setAttribute(MobileContants.APPSCRET_KEY,appsecret);//保存appid到缓存中
 		wac.getServletContext().setAttribute(MobileContants.PARTNERID_KEY,partnerId);//保存商户id到缓存中
@@ -40,6 +41,9 @@ public class InitServlet extends HttpServlet {
 		wac.getServletContext().setAttribute(MobileContants.PAIDAN_TEMPLATE_KEY,paiDanTemplate);//保存域名到缓存中
 		wac.getServletContext().setAttribute(MobileContants.QIANGDAN_TEMPLATE_KEY,qiangDanTemplate);//保存域名到缓存中
 		wac.getServletContext().setAttribute(MobileContants.QIANGDAN_TIME_KEY,qiangdanTime);//保存域名到缓存中
+		wac.getServletContext().setAttribute(MobileContants.UPLOAD_IMAGE_SERVER_URL_KEY,imageUploadDomain);//保存图片上传服务器地址到缓存中
+		//获取图片缓存服务器地址
+
 		System.out.println("缓存中获取的appid======================" + appid);
 		System.out.println("缓存中获取的appsecret======================"+appsecret);
 		System.out.println("缓存中获取的商户号======================"+partnerId);

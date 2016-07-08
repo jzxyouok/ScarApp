@@ -19,6 +19,7 @@ public class MobileContants {
 	public static final String PARTNERVALUE_KEY = "_partnervalue_key";
 	public static final String PREPAYBODY_KEY = "_prepaybody_key";
 	public static final String DOMAIN_KEY = "_domain_key";
+	public static final String UPLOAD_IMAGE_SERVER_URL_KEY = "_img_domain";
 	public static final String QIANGDAN_TIME_KEY = "_qiangdan_time_key";
 	public static final String CURRENT_ORDER_KEY = "_current_order_key";
 	public static final String CURRENT_CHONGZHI_KEY = "_current_chongzhi_key";

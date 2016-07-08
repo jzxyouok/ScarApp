@@ -20,6 +20,7 @@ public class CodeCommon {
 	public static final String WASH_CAR_COMPLETE_MESSAGE="WASH_CAR_MESSAGE";//洗车完成后发送消息通知
 	public static final String WASH_CAR_START_MESSAGE="WASH_CAR_MESSAGE_START";//洗车开始后发送消息通知
 	public static final String DOMAIN="DOMAIN";
+	public static final String UPLOAD_IMAGE_SERVER_URL="UploadImageServerUrl";
 	public static final String TEST_TEMPLATE_MESSAGE="TEMPLATE_MESSAGE_TEST_SEND_APPID";
 	public static final String CLICK_KEY_ZHAOGONG="CLICK_KEY_ZHAOGONG";//菜单点击事件key
 	public static final String CLICK_KEY_1="CLICK_KEY_1";//菜单点击事件key
