@@ -9,11 +9,11 @@
 <link href="${res}/css/xc/myorder.css" rel="stylesheet">
 <link href="${res}/css/xc/list.css" rel="stylesheet">
 <link href="${res}/images/foot/foot.css" rel="stylesheet">
-<script src="${res}/scripts/xc/jquery.min.js?V=1"></script>
+<script src="${res}/scripts/xc/jquery.min.js"></script>
 <script>
 	//ajax微信付款，首先获取jsParam
 	function wxpay(id){
-		var url="/order/getJsParam.html";
+		var url="${base}/order/getJsParam.html";
 		$.ajax({
 			type: "POST",
 			url: url,
@@ -100,7 +100,7 @@
 						[#if order.status=='-1']
 							<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: right;background-color: #51AD8F;color:white" onclick="javascript:wxpay('${order.id}')">支付</span>
 						[#else]
-						<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: left;" onclick="window.location.href='/f/order${order.id}.html'">查看</span>
+						<span class="btn_rectangle greyframe color_blue f_r vieworder" style="float: left;" onclick="window.location.href='${base}/f/order${order.id}.html'">查看</span>
 						[/#if]
 		        	</div>
 	        	</div>
@@ -110,7 +110,7 @@
 	            <div class="userlist">
 			        	<div class="listinfo">
 				        	<div class="userinfo p_r">
-					        	<p >  暂无订单<a href="/"><font color="green" >去下单</font></a></p>
+					        	<p >  暂无订单<a href="${base}/washcar/index.html"><font color="green" >去下单</font></a></p>
 					        </div>
 
 					    </div>
