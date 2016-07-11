@@ -354,7 +354,7 @@
 								   <img class="radiooper i_b v_m" id="${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png"/>
 								   <span>${project.name!''}</span>
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
-								  	[#if project.washCount>1]
+								  	[#if project.washCount>0]
 								         <!--判断当前会员洗车次数-->
 								   		[@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
 								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->

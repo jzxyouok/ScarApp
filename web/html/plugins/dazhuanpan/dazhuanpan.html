@@ -75,14 +75,14 @@
 		}
 		alert("二等奖抽取:"+arrayTwo);*/
 		//还没中，再抽三等奖
-		if(flg){
-			var arrayThree = getArrayItems(ArrList,1);
+		/**if(flg){
+			var arrayThree = getArrayItems(ArrList,2);//中奖概率2%，随机抽取2个数
 			//同时把二等奖抽出来的数字，也放到这里来
 		/*	for(var i=0;i<arrayTwo.length;i++){
 				arrayThree.push(arrayTwo[i])
 			}*/
 
-			for (var i = 0; i < arrayThree.length; i++)
+		/**	for (var i = 0; i < arrayThree.length; i++)
 			{
 				if(arrayThree[i]==three){
 					classid=3;
@@ -90,10 +90,10 @@
 					$("#jp").html("一次整车打蜡");
 				}
 			}
-		}
+		}**/
 //如果三等奖没中，再抽四等奖
-		/*if(flg){
-			var arrayFour = getArrayItems(ArrList, 20-arrayThree.length);
+		/**if(flg){
+			var arrayFour = getArrayItems(ArrList, 8-arrayThree.length);//中奖概率为8%，随机抽取8个
 			for(var i=0;i<arrayThree.length;i++){
 				arrayFour.push(arrayThree[i]);
 			}
@@ -102,14 +102,18 @@
 				if(arrayFour[i]==four){
 					classid=4;
 					flg=false;
+					$("#jp").html("一次整车洗");
+
 				}
 			}
-		}
-		alert("4等奖抽取:"+arrayFour);*/
+		}**/
+		//alert("4等奖抽取:"+arrayFour);
 
 		//如果四等奖不中，再抽五等奖
 if(flg){
-	var arrayFive = getArrayItems(ArrList, 9-arrayThree.length);
+	var arrayThree = getArrayItems(ArrList, 0);//中奖概率为8%，随机抽取8个
+
+	var arrayFive = getArrayItems(ArrList, 40-arrayThree.length);//中奖概率是30%
 	for(var i=0;i<arrayThree.length;i++){
 		arrayFive.push(arrayThree[i]);
 	}
@@ -127,6 +131,7 @@ if(flg){
 }
 if(flg){
 	$("#jp").html("10元代金券");
+	$("#content").val("10元代金券");
 	$("#money").val("10");
 
 
