@@ -52,8 +52,13 @@ $(document).ready(function(e) {
     //余额付款
     $(".yuepay").click( function(){
             var projectName=$("#projectName").val();
+            var isShare=$("#isShare").val();
             if(''==projectName||null==projectName){
                 alert("请选择服务项目");
+                return ;
+            }
+            if(1==isShare){
+                alert("首单优惠不可与钱包同时使用");
                 return ;
             }
             var flg=$(this).hasClass('on');

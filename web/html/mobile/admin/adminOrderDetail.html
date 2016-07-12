@@ -35,7 +35,17 @@
 				showMessage("洗车结束");
     		}
     	}
-
+		$("#addressDaoHang").bind('click',function(){
+			var value=$(this).html();
+			var country,city;
+			if(''!=value&&null!=value){
+				if(value.length>6){
+					country=value.substr(0,6);
+					city=value.substr(6,value.length);
+				}
+			}
+			//daoHang(country,city);
+		})
     	//fileChange('userCard');
 		//fileChange('idCard');
 		//洗车前图片
@@ -195,6 +205,10 @@
 
 			}
 		}
+		function daoHang(country,city){
+			var url="http://apis.map.qq.com/uri/v1/search?keyword="+city+"&region="+country+"&referer=myapp";
+			window.location.href=url;
+		}
     </script>
 </head>
 <body style="display:block;font-size:17px;overflow-x:hidden;">
@@ -288,7 +302,7 @@
 					<div id="d_addr">
 						<div id="d_aimg" class="c_fllf c_imgsize c_moreimg"></div>
 						<span id="s_loc" class='c_vtext'>停放位置</span>
-						<span id="d_saddr" class='c_vtext'>${order.address!''}</span>
+						<span id="d_saddr" class='c_vtext'><a href="javascript:void(0)" id="addressDaoHang">${order.address!''}</a></span>
 					</div>
 
 					<div id="d_note">

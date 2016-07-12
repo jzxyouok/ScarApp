@@ -28,13 +28,13 @@
 				border: 0px solid #d1d1d1;
 			}
 		</style>
-		<link rel="stylesheet" href="${res}/css/webui/weui.css"/>
+		<link rel="stylesheet" href="${res}/css/webui/weui.css?v=3"/>
 		<link rel="stylesheet" href="${res}/css/webui/example.css"/>
 		<script src="${res}/scripts/lib/jquery/jquery.min.js" type="text/javascript"></script>
 		<script src="${res}/scripts/xc/easydialog.js"></script>
 		<script src="${res}/scripts/xc/mobile_common.js"></script>
 		<script src="${res}/scripts/xc/pre_order.js"></script>
-		<script src="${res}/scripts/ggwash/selectProject.js"></script>
+		<script src="${res}/scripts/ggwash/selectProject.js?v=1"></script>
 		<link href="${res}/css/xc/style2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/main2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/easydialog.css" rel="stylesheet" />
@@ -112,6 +112,22 @@
 						$("#service1").hide();
 					}
 				})
+				//单选按钮控制开关
+				$(":radio").click(function(){
+					var isShare=$("#isShare").val();
+					if(1==isShare){
+						var price=$(this).attr('data-price');
+						var name=$(this).attr('data-name');
+						$("#sum").html(price);
+						$("#total").html(price);
+						$("#totalPrice").val(price);
+						$("#projectName").val(name);
+					}else{
+						$(this).removeAttr("checked");
+						alert("请先分享");
+					}
+
+				});
 			})
 
 		  	function coupon_buy(){
@@ -304,7 +320,7 @@
 
 					</td>
 					<td>
-						<input type="button" class="ui-btn green" value="定位" onclick="javascript:getMyCurrentLocation()" style="cursor: pointer;width:50px;float:right"></input>
+						<input type="button" class="ui-btn green" value="定位" onclick="javascript:getMyCurrentLocation()" style="cursor: pointer;width:50px;float:right"/>
 					</td>
 					</tr>
 				    <tr id="other2">
@@ -346,6 +362,42 @@
 								   <input class="weui_switch" type="checkbox" id="service_switch" checked="false"/>
 							   </div>
 						   </div>
+						   <!--判断当前会员洗车次数-->
+						   [@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
+							[#if count==0]
+							<input type="hidden" id="isShare" name="isShare" />
+						   <div class="weui_cells weui_cells_radio">
+							   <label class="weui_cell weui_check_label" for="x11">
+								   <div class="weui_cell_ft">
+									   <input type="radio" class="weui_check" name="radio1" id="x11" data-price="6" data-name="首单外洗6元">
+									   <span class="weui_icon_checked"></span>
+								   </div>
+								   <div class="weui_cell_bd weui_cell_primary">
+									   <p>首单外洗6元 <span><font color="green">分享朋友圈后享此价</font></span></p>
+								   </div>
+								   <div class="weui_cell_ft">
+									   <a href="javascript:shareFriend();" style="width: 55px" class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
+								   </div>
+
+							   </label>
+							   <label class="weui_cell weui_check_label" for="x12">
+								   <div class="weui_cell_ft">
+									   <input type="radio" name="radio1" class="weui_check" id="x12" data-price="16" data-name="首单整车洗16元">
+									   <span class="weui_icon_checked"></span>
+								   </div>
+								   <div class="weui_cell_bd weui_cell_primary">
+									   <p>整车洗16元&nbsp;<font color="green">分享朋友圈后享此价</font></p>
+								   </div>
+								   <div class="weui_cell_ft">
+									   <a href="javascript:shareFriend();" style="width: 55px"  class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
+								   </div>
+							   </label>
+
+
+						   </div>
+						    [/#if]
+
+
 						   <article class="crashintro" id="service1">
 							   [@serviceProjectListDirective]
 							   [#if fwxmList?? && fwxmList?size>0]
@@ -353,10 +405,9 @@
 							   <p class="singleoption clearfix">
 								   <img class="radiooper i_b v_m" id="${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png"/>
 								   <span>${project.name!''}</span>
+
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
 								  	[#if project.washCount>0]
-								         <!--判断当前会员洗车次数-->
-								   		[@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
 								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->
 														 [#if count>0]
 															 [#if count gte project.washCount]
@@ -365,9 +416,10 @@
 								                                 <span class="f_r color_orange" value="${(project.carPrice)?default('')}" id="default_${project_index+1}">${(project.carPrice)?default('')}￥</span><!--执行原价-->
 														     [/#if]
 														 [#else]
+
 																 <span class="f_r color_orange" value="${project.firstPrice!'0'}" id="default_${project_index+1}">${project.firstPrice?default('0')?string('#.##')}￥</span><!--首次洗车-->
 														  [/#if]
-								   		[/@FindWashCountByUserId]
+
 								   [#else]
 								  		 <span class="f_r color_orange" id="default_${project_index+1}" value="${project.carPrice!''}">${project.carPrice!''}￥</span>
 								   [/#if]
@@ -377,6 +429,7 @@
 							   [/@serviceProjectListDirective]
 
 						   </article>
+						   [/@FindWashCountByUserId]
 						   <!----选择服务项目end----------->
 					   </td>
 				   </tr>
@@ -530,7 +583,7 @@
    		</div>
    	<div class="nav_fp">
 	<ul>
-        <li><a href="${base}/" class="nav_cpjx">上门洗车</a></li>
+        <li><a href="${base}/washcar/index.html" class="nav_cpjx">上门洗车</a></li>
         <li><a href="${base}/order/myorderlist.html" class="nav_gkka">洗车订单</a></li>
         <li><a href="${base}/mycoupon.html" class="nav_grzxa">洗车券</a></li>
     </ul>
@@ -540,4 +593,54 @@
 	</body>
 <iframe src="${base}/order/mycoupon.html" id="vipCouponIframe" width="100%" height="100%" frameborder="0" scrolling="no" style="display: none"></iframe>
 <script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+	wx.config({
+		debug: false,
+		appId: '${appid}',
+		timestamp:'${timestamp}',
+		nonceStr: '${nonceStr}',
+		signature: '${signature}',
+		jsApiList: [
+			'checkJsApi',
+			'onMenuShareTimeline',
+			'onMenuShareAppMessage',
+			'onMenuShareQQ',
+			'onMenuShareWeibo'
+		]
+	});
+
+	wx.error(function (res) {
+		alert('wx.error: '+JSON.stringify(res));
+	});
+	function shareFriend(){
+		alert("请点击右上角分享到朋友圈");
+		wx.ready(function () {
+			wx.checkJsApi({
+				jsApiList: [
+					'onMenuShareTimeline'
+				]
+			});
+			wx.onMenuShareTimeline({
+				title: '分享后可享受首单外洗6元整车洗16元优惠',
+				link: '${base}/washcar/index.html',
+				imgUrl: 'http://blog.dqccc.com/upload/2015/10/28/6a4eb92f-4755-4faf-aadf-ff961c430422.jpg',
+				trigger: function (res) {
+					//alert('用户点击分享到朋友圈');
+				},
+				success: function (res) {
+					$("#isShare").val('1');
+				},
+				cancel: function (res) {
+					//alert('已取消');
+				},
+				fail: function (res) {
+					//alert('wx.onMenuShareTimeline:fail: '+JSON.stringify(res));
+					alert("${appid!''}");
+				}
+			});
+		});
+	}
+
+</script>
 </html>

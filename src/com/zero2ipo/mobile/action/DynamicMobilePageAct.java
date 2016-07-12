@@ -14,7 +14,9 @@ import com.zero2ipo.mobile.services.bsb.IWashCouponService;
 import com.zero2ipo.mobile.utils.DateUtil;
 import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.mobile.web.URLHelper;
+import com.zero2ipo.pay.web.CarAction;
 import com.zero2ipo.weixin.services.message.ICoreService;
+import com.zero2ipo.weixin.utils.GetAccessTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -57,6 +60,16 @@ public class DynamicMobilePageAct {
 			//获取当前登录的用户id
 			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
 			if(!StringUtil.isNullOrEmpty(user)){
+				System.out.println("userId2====================================================="+user.getUserId());
+				//if(user.getUserId().equals("13717625140")){
+				//	mv.setViewName("mobile/xc/test");
+					//首先从缓存中获取appid
+					ServletContext application =request.getSession().getServletContext();
+					String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+					String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+					String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+					CarAction.sweepParam(request,mv,appId,access_token);
+				//}
 				mv.addObject("user",user);
 				List<Car> list=new ArrayList<Car>();
 				Car car=null;
@@ -141,6 +154,16 @@ public class DynamicMobilePageAct {
 				mv.addObject("couponMoney", couponMoney);
 				List<String> preDates= (List<String>) request.getSession().getAttribute(MobileContants.PRE_DATES_KEY);//保存录入的车辆信息到缓存中
 				mv.addObject("preDates",preDates);
+				System.out.println("userId====================================================="+user.getUserId());
+				//if(user.getUserId().equals("13717625140")){
+					//mv.setViewName("mobile/xc/test");
+					//首先从缓存中获取appid
+					ServletContext application =request.getSession().getServletContext();
+					String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+					String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+					String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+					CarAction.sweepParam(request,mv,appId,access_token);
+				//}
 			}else{
 				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 			}
@@ -148,6 +171,12 @@ public class DynamicMobilePageAct {
 			//if(!StringUtil.isNullOrEmpty(vipCouponId)){
 				//request.getSession().setAttribute(MobileContants.VIP_COUPON_ID_KEY,vipCouponId);
 			//}
+			//首先从缓存中获取appid
+			/*ServletContext application =request.getSession().getServletContext();
+			String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+			String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+			String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+			CarAction.sweepParam(request,mv,appId,access_token);*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

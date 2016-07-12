@@ -478,8 +478,10 @@ input.weui_btn_plain_default {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 .weui_check {
-    position: absolute;
+    /*position: absolute;*/
     left: -9999em;
+    width:25px;
+    height: 25px;
 }
 .weui_cells_radio .weui_cell_ft {
     padding-left: 0.35em;
@@ -487,12 +489,12 @@ input.weui_btn_plain_default {
 .weui_cells_radio .weui_cell:active {
     background-color: #ECECEC;
 }
-.weui_cells_radio .weui_check:checked + .weui_icon_checked:before {
+/*.weui_cells_radio .weui_check:checked + .weui_icon_checked:before {
     display: block;
     content: '\EA08';
     color: #09BB07;
     font-size: 16px;
-}
+}*/
 .weui_cells_checkbox .weui_cell_hd {
     padding-right: 0.35em;
 }

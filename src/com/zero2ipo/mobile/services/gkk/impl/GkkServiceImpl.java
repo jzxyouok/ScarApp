@@ -86,6 +86,7 @@ public class GkkServiceImpl implements IGkkService {
 			 List<String> preDates=DateUtil.getLast2Hours(Integer.parseInt(days),Integer.parseInt(hours));
 			 model.put("preDates", preDates);
 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

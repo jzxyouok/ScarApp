@@ -7,7 +7,7 @@
 <meta content="telephone=no" name="format-detection">
 <meta content="email=no" name="format-detection">
 <meta name="apple-touch-fullscreen" content="NO">
-<link href="${base}/html/plugins/dazhuanpan/css/wap_Lottery.css" rel="stylesheet" type="text/css">
+<link href="${base}/html/plugins/dazhuanpan/css/wap_Lottery.css?v=1" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${base}/html/plugins/dazhuanpan/js/jquery-2.1.1.min.js"></script>
 <script>
 	var classid = 6;//最终中奖奖品位置1-6
@@ -76,21 +76,22 @@
 		alert("二等奖抽取:"+arrayTwo);*/
 		//还没中，再抽三等奖
 		/**if(flg){
-			var arrayThree = getArrayItems(ArrList,2);//中奖概率2%，随机抽取2个数
+			var arrayThree = getArrayItems(ArrList,5);//中奖概率5%，随机抽取5个数
 			//同时把二等奖抽出来的数字，也放到这里来
-		/*	for(var i=0;i<arrayTwo.length;i++){
+		/*for(var i=0;i<arrayTwo.length;i++){
 				arrayThree.push(arrayTwo[i])
 			}*/
 
-		/**	for (var i = 0; i < arrayThree.length; i++)
+		/**for (var i = 0; i < arrayThree.length; i++)
 			{
 				if(arrayThree[i]==three){
 					classid=3;
 					flg=false;
 					$("#jp").html("一次整车打蜡");
+					$("#jpType").val(1);//代表优惠券
 				}
 			}
-		}**/
+		}
 //如果三等奖没中，再抽四等奖
 		/**if(flg){
 			var arrayFour = getArrayItems(ArrList, 8-arrayThree.length);//中奖概率为8%，随机抽取8个
@@ -422,13 +423,18 @@ function msgupdata() {
 				</form>
             </div>
 
-            <div id="msgend" class="loginForm dn">
+            <div id="msgend" class="loginForm dn" >
                 <ul class="sOne-loginForm">
                     <li>
-                    	<p id="info">领取成功</p>
+						<p id="info">领取成功</p>
                     </li>
+					<li>
+						<p style="float:center;font-weight: bold"><a href="${base}/washcar/index.html" style="text-align: center;font-weight: bold">下单洗车</a></p>
+					</li>
                 </ul>
-                <div class="fn"><a href="javascript:void(0)" class="close-loginForm" onclick="msgclose()">+</a></div>
+                <div class="fn">
+					<a href="javascript:void(0)" class="close-loginForm" onclick="msgclose()">+</a>
+				</div>
             </div>
 
         </div>

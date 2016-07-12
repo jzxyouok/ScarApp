@@ -95,7 +95,10 @@ public class Oauth2Servlet {
             }else{
             	   if(!StringUtil.isNullOrEmpty(key)){//在线下单
                        if(key.equals(UrlContants.MENU_KEY_11)){
-                           page=MobilePageContants.FM_PAGE_MAIN;
+                           page="mobile/xc/main";
+                         /* ServletContext application =request.getSession().getServletContext();
+                           String access_token = GetAccessTokenUtil.getAccess_token2(appid,appsecret);
+                           CarAction.sweepParam(request,mv,appid,access_token);*/
                            model=gkkService.initGkkPage(model,openid,user);
                        }
                        if(key.equals(UrlContants.MENU_KEY_12)){//洗车订单

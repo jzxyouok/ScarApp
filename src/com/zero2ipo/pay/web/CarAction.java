@@ -80,7 +80,7 @@ public class CarAction {
 		mv.addObject("orderId", id);
 		return mv;
 	}
-	private void sweepParam(HttpServletRequest request, ModelAndView mv,String appId,String access_token) {
+	public static void sweepParam(HttpServletRequest request, ModelAndView mv,String appId,String access_token) {
 		String url=request.getRequestURL().toString();
 		System.out.println("url======================"+url);
 		Map<String, String> res= Sign.getConfigMessageForWater(url,access_token);
