@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0041)http://www.js-css.cn/jscode/award/award3/ -->
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <title>幸运大转盘抽奖</title>
@@ -41,6 +40,39 @@
 	for(var i=1;i<=100;i++){
 		ArrList[i]=i;
 	}
+	function RandomChouJiang(){
+		var num=Math.ceil(Math.random()*100);//随机抽取1-100数
+		alert("你抽的号码为==="+num);
+		if(num<=100&&num>95){
+			classid=3;
+			$("#jp").html("一次整车打蜡");
+			$("#content").val("一次整车打蜡");
+			$("#money").val("88");
+			$("#jpType").val(1);//代表优惠券
+		}
+		if(num<=95&&num>85){
+			classid=4;
+			$("#jp").html("一次整车洗");
+			$("#content").val("一次整车洗");
+			$("#money").val("30");
+			$("#jpType").val(1);//代表优惠券
+		}
+		if(num<=85&&num>45){
+			classid=5;
+			flg=false;
+			$("#jp").html("20元代金券");
+			$("#content").val("20元代金券");
+			$("#money").val("20");
+			$("#jpType").val(0);//代表钱包
+		}
+		if(num<=45&&num>0){
+			$("#jp").html("10元代金券");
+			$("#content").val("10元代金券");
+			$("#money").val("10");
+			$("#jpType").val(0);//代表优惠券
+		}
+
+	}
 	function getZhongJiang(){
 		//var arrayOne = getArrayItems(ArrList, 2);
 		//var arraySox=getArrayItems(ArrList,37);
@@ -75,26 +107,28 @@
 		}
 		alert("二等奖抽取:"+arrayTwo);*/
 		//还没中，再抽三等奖
-		/**if(flg){
+		if(flg){
 			var arrayThree = getArrayItems(ArrList,5);//中奖概率5%，随机抽取5个数
 			//同时把二等奖抽出来的数字，也放到这里来
-		/*for(var i=0;i<arrayTwo.length;i++){
-				arrayThree.push(arrayTwo[i])
-			}*/
+			/*for(var i=0;i<arrayTwo.length;i++){
+					arrayThree.push(arrayTwo[i])
+				}*/
 
-		/**for (var i = 0; i < arrayThree.length; i++)
+		for (var i = 0; i < arrayThree.length; i++)
 			{
 				if(arrayThree[i]==three){
 					classid=3;
 					flg=false;
 					$("#jp").html("一次整车打蜡");
+					$("#content").val("一次整车打蜡");
+					$("#money").val("88");
 					$("#jpType").val(1);//代表优惠券
 				}
 			}
 		}
 //如果三等奖没中，再抽四等奖
-		/**if(flg){
-			var arrayFour = getArrayItems(ArrList, 8-arrayThree.length);//中奖概率为8%，随机抽取8个
+		if(flg){
+			var arrayFour = getArrayItems(ArrList, 10-arrayThree.length);//中奖概率为10%，随机抽取10个
 			for(var i=0;i<arrayThree.length;i++){
 				arrayFour.push(arrayThree[i]);
 			}
@@ -104,10 +138,13 @@
 					classid=4;
 					flg=false;
 					$("#jp").html("一次整车洗");
+					$("#content").val("一次整车洗");
+					$("#money").val("30");
+					$("#jpType").val(1);//代表优惠券
 
 				}
 			}
-		}**/
+		}
 		//alert("4等奖抽取:"+arrayFour);
 
 		//如果四等奖不中，再抽五等奖
@@ -126,6 +163,7 @@ if(flg){
 			$("#jp").html("20元代金券");
 			$("#content").val("20元代金券");
 			$("#money").val("20");
+			$("#jpType").val(0);//代表钱包
 		}
 	}
 
@@ -134,13 +172,15 @@ if(flg){
 	$("#jp").html("10元代金券");
 	$("#content").val("10元代金券");
 	$("#money").val("10");
+	$("#jpType").val(0);//代表优惠券
 
 
 }
 $("#content").val($("#jp").html());
 	}
 function choujiangStart(){
-	getZhongJiang();
+	//getZhongJiang();
+	RandomChouJiang();
 	//设置中奖概况
 	var Pnum=$(".prize").length;
 	if(Pnum<classid){alert("奖品不存在")}
@@ -180,6 +220,7 @@ $(document).ready(function(e) {
 						$("#info").html("您还没注册,请先注册后再抽奖");
 						$("#msgend").fadeIn(300);
 						isDisableBtn=true;
+						choujiangStart();
 					}else if(r.result==2){
 						$("#msgupdata").hide();
 						$("#info").html("您已经抽过奖了,把机会留给他人吧");
@@ -382,11 +423,13 @@ function msgupdata() {
 
             <div id="msgupdata" class="loginForm dn" style="display: none;">
 				<form id="form1" method="post" onsubmit="return false;">
+
                 <ul class="sOne-loginForm">
                     <li>
                     	<p id="jp">恭喜您，获得六等奖（奖品：Ipad一部）</p>
 						<input type="hidden" id="content" name="content">
 						<input type="hidden" id="money" name="money">
+						<input type="hidden" id="jpType" name="jpType" value="0">
                     </li>
                   <!--  <li>
                     	<input type="text" class="sOne-loginInput-half" name="" placeholder="请输入您的手机号">

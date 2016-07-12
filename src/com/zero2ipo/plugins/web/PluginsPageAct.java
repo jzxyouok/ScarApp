@@ -2,10 +2,13 @@ package com.zero2ipo.plugins.web;
 
 import com.zero2ipo.car.choujiang.bizc.IServiceChouJiangResult;
 import com.zero2ipo.car.choujiang.bo.ChouJiangResult;
+import com.zero2ipo.car.vipcoupon.bizc.IVipCouponService;
+import com.zero2ipo.car.vipcoupon.bo.VipCoupon;
 import com.zero2ipo.common.entity.CodeCommon;
 import com.zero2ipo.common.entity.app.Users;
 import com.zero2ipo.common.http.FmUtils;
 import com.zero2ipo.core.MobileContants;
+import com.zero2ipo.framework.util.DateUtil;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.user.IUserServices;
 import com.zero2ipo.mobile.web.SessionHelper;
@@ -152,7 +155,7 @@ public class PluginsPageAct {
 	@RequestMapping(value = "/hd/dazhuanpan/save.html", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String,Object> SaveChouJiangFirst(HttpServletRequest request,
-										  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content,int money) {
+										  HttpServletResponse response, ModelMap model,String name,String mobile,String carNum,String content,int money,int jpType) {
 		Map<String,Object> result=new HashMap<String, Object>();
 		//获取openid mobile name carnum
 		//首先根据openid查询此用户是否已经抽过一次奖
@@ -175,10 +178,24 @@ public class PluginsPageAct {
 				bo.setFlag(CodeCommon.FLAG_0);
 				String backInfo=choujiang.add(bo);
 				//保存成功之后，增加红包金额到钱包里面
-				Users u=new Users();
-				u.setOpenId(openId);
-				u.setAccount(money);
-				userServices.updateUserQianBaoByOpenId(u);
+				if(CodeCommon.FLAG_0==jpType){//增加钱包
+					Users u=new Users();
+					u.setOpenId(openId);
+					u.setAccount(money);
+					userServices.updateUserQianBaoByOpenId(u);
+				}
+				if(CodeCommon.FLAG_1==jpType){//增加优惠券
+					VipCoupon vipCoupon=new VipCoupon();
+					vipCoupon.setCouponName(content);
+					vipCoupon.setCouponMoney(money+"");
+					vipCoupon.setCouponStartTime(DateUtil.getCurrentDate("yyyy-MM-dd HH:mm:ss"));
+					Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+					if(!StringUtil.isNullOrEmpty(user)){
+						vipCoupon.setUserId(user.getUserId());
+						vipCoupon.setCouponRemark("大转盘抽奖");
+						vipCouponService.add(vipCoupon);
+					}
+				}
 				result.put("result",CodeCommon.FLAG_0);
 			}
 
@@ -193,5 +210,7 @@ public class PluginsPageAct {
 	protected IServiceChouJiangResult choujiang;
 	@Autowired
 	protected IUserServices userServices;
+	@Autowired
+	protected IVipCouponService vipCouponService;
 
 }

@@ -39,13 +39,16 @@ public class MyVipCouponListDirective implements TemplateDirectiveModel{
 			 String endTime=list.get(i).getCouponEndTime();
 			 String currentDate=DateUtil.getCurrentDateStr().substring(0,10);
 			    Date startDate=StringUtil.str2SqlDate(currentDate,"yyyy-MM-dd");
-				Date endDate=StringUtil.str2SqlDate(endTime, "yyyy-MM-dd");
-				int start=startDate.getDate();
-				int end=endDate.getDate();
-				int value=end-start;
-				if(value<0){//已过期
-					list.get(i).setStatus("2");
+				if(!StringUtil.isNullOrEmpty(endTime)){
+					Date endDate=StringUtil.str2SqlDate(endTime, "yyyy-MM-dd");
+					int start=startDate.getDate();
+					int end=endDate.getDate();
+					int value=end-start;
+					if(value<0){//已过期
+						list.get(i).setStatus("2");
+					}
 				}
+
 			}
 			env.setVariable("vipCouponList", ObjectWrapper.DEFAULT_WRAPPER.wrap(list));
 
