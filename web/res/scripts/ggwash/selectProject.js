@@ -259,7 +259,7 @@ function qbpay(){
     $("#qianbao").val(qbdk);
     var url=$root+"/order/qbpay.html";
     $("#myform").attr('action',url);
-    var data=$('#myform').serialize();
+   // var data=$('#myform').serialize();
     $("#myform").submit();
 }
 /*获取所有选中的服务*/
