@@ -34,7 +34,7 @@
 		<script src="${res}/scripts/xc/easydialog.js"></script>
 		<script src="${res}/scripts/xc/mobile_common.js"></script>
 		<script src="${res}/scripts/xc/pre_order.js"></script>
-		<script src="${res}/scripts/ggwash/selectProject.js?v=1"></script>
+		<script src="${res}/scripts/ggwash/selectProject.js?v=22"></script>
 		<link href="${res}/css/xc/style2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/main2.css" rel="stylesheet" />
 		<link href="${res}/css/xc/easydialog.css" rel="stylesheet" />
@@ -115,16 +115,16 @@
 				//单选按钮控制开关
 				$(":radio").click(function(){
 					var isShare=$("#isShare").val();
+					var price=$(this).attr('data-price');
+					var name=$(this).attr('data-name');
 					if(1==isShare){
-						var price=$(this).attr('data-price');
-						var name=$(this).attr('data-name');
 						$("#sum").html(price);
 						$("#total").html(price);
 						$("#totalPrice").val(price);
 						$("#projectName").val(name);
 					}else{
 						$(this).removeAttr("checked");
-						alert("请先分享");
+						shareFriend(price);
 					}
 
 				});
@@ -224,7 +224,7 @@
 		<div id="orderinfo" class="border_out">
 			<table class="infotable">
 				<tr>
-					<td colspan="3">
+					<td colspan="2">
 						<div class="weui_cell weui_cell_switch">
 							<div class="weui_cell_hd weui_cell_primary">基本信息</div>
 							<div class="weui_cell_ft">
@@ -270,20 +270,16 @@
 						车型
 					</td>
 					<td colspan='1' >
-						 <input class="input-text" placeholder="请选择车型"  id="carType" name="carType" value="${(bo.carType)!''}">
-                        </input>
-					</td>
-					<td>
+						 <input class="input-text" placeholder="请选择车型"  id="carType" name="carType" value="${(bo.carType)!''}"/>
 						<input type="button" class="ui-btn green" value="选择" onclick="javascript:selectCarType()" style="cursor: pointer;width:50px;float:right"/>
 					</td>
-
 				</tr>
 				<tr id="info5" style="display: none">
 					<td class="lable">
 						<img src="${res}/images/ggwash/car_color.png" />
 						颜色
 					</td>
-					<td colspan='2'>
+					<td colspan='1'>
 						 <select id="carColor" name="carColor"  class="input-text">
 							 <option value="">选择车辆颜色</option>
 							 <option value="红色">红色</option>
@@ -296,7 +292,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3">
+					<td colspan="2">
 
 						<div class="weui_cells weui_cells_form">
 							<div class="weui_cell weui_cell_switch">
@@ -317,18 +313,16 @@
 					<td colspan="1" onclick="showLocation()">
 						<textarea id='washAddr' type='text' name="washAddr" class="input-text"
 							  placeholder='定位中，请稍后......' ></textarea>
-
-					</td>
-					<td>
 						<input type="button" class="ui-btn green" value="定位" onclick="javascript:getMyCurrentLocation()" style="cursor: pointer;width:50px;float:right"/>
 					</td>
+
 					</tr>
 				    <tr id="other2">
 						<td class="lable" nowrap="nowrap">
 						<img src="${res}/images/ggwash/123.png" />
 							时间
 						</td>
-						<td colspan='2'>
+						<td colspan='1'>
 							 <article class="editcar" style="border-bottom:none;">
 						        <div class="oneline appointmenttime">
 						            <p class="clearfix bb_none">
@@ -354,7 +348,7 @@
 						</td>
 					</tr>
 				   <tr>
-					   <td class="lable" colspan="3" nowrap="nowrap">
+					   <td class="lable" colspan="2" nowrap="nowrap">
 						   <!--选择服务项目-->
 						   <div class="weui_cell weui_cell_switch">
 							   <div class="weui_cell_hd weui_cell_primary">服务项目</div>
@@ -366,6 +360,7 @@
 						   [@FindWashCountByUserId userId="${(_user_key.userId)?default('')}"]
 							[#if count==0]
 							<input type="hidden" id="isShare" name="isShare" />
+							<input type="hidden" id="isShareFlag" name="isShareFlag" />
 						   <div class="weui_cells weui_cells_radio">
 							   <label class="weui_cell weui_check_label" for="x11">
 								   <div class="weui_cell_ft">
@@ -373,10 +368,10 @@
 									   <span class="weui_icon_checked"></span>
 								   </div>
 								   <div class="weui_cell_bd weui_cell_primary">
-									   <p>首单外洗6元 <span><font color="green">分享朋友圈后享此价</font></span></p>
+									   <p>首单外洗6元 <span><font color="green" size="2">分享朋友圈后享此价</font></span></p>
 								   </div>
 								   <div class="weui_cell_ft">
-									   <a href="javascript:shareFriend();" style="width: 55px" class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
+									   <a href="javascript:shareFriend(6);" style="width: 55px" class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
 								   </div>
 
 							   </label>
@@ -386,10 +381,10 @@
 									   <span class="weui_icon_checked"></span>
 								   </div>
 								   <div class="weui_cell_bd weui_cell_primary">
-									   <p>整车洗16元&nbsp;<font color="green">分享朋友圈后享此价</font></p>
+									   <p>整车洗16元&nbsp;<font color="green" size="2">分享朋友圈后享此价</font></p>
 								   </div>
 								   <div class="weui_cell_ft">
-									   <a href="javascript:shareFriend();" style="width: 55px"  class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
+									   <a href="javascript:shareFriend(16);" style="width: 55px"  class="weui_btn weui_btn_mini weui_btn_primary">分享</a>
 								   </div>
 							   </label>
 
@@ -472,7 +467,7 @@
 				<!--优惠券-->
 				<!--账户余额-->
 				<tr>
-					<td class="lable" colspan="3" nowrap="nowrap">
+					<td class="lable" colspan="2" nowrap="nowrap">
 						<!--<p class="introwords clearfix" style="padding-top: 5px;padding-bottom: 5px">
 							<span></span>
 						</p>-->
@@ -493,7 +488,7 @@
 				</tr>
 				<!--账户余额-->
 					<tr>
-						<td colspan="3">
+						<td colspan="2">
 							<section class="serviceoption">
 								<p class="payment clearfix">
 									<span class="deductions">
@@ -593,6 +588,7 @@
 </div>
 	</form>
 	<script src="${res}/scripts/lib/map/gaodeMap.js?v=2" type="text/javascript"></script>
+	[#include "load.html"]
 	</body>
 <iframe src="${base}/order/mycoupon.html" id="vipCouponIframe" width="100%" height="100%" frameborder="0" scrolling="no" style="display: none"></iframe>
 <script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>
@@ -616,8 +612,9 @@
 	wx.error(function (res) {
 		alert('wx.error: '+JSON.stringify(res));
 	});
-	function shareFriend(){
-		alert("请点击右上角分享到朋友圈");
+	function shareFriend(value){
+		alert("请点击右上角分享到朋友圈,分享后可享受此价格");
+		$("#isShareFlag").val(value);
 		wx.ready(function () {
 			wx.checkJsApi({
 				jsApiList: [
@@ -626,13 +623,25 @@
 			});
 			wx.onMenuShareTimeline({
 				title: '分享后可享受首单外洗6元整车洗16元优惠',
-				link: '${base}/washcar/index.html',
+				link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf9aab63ad5f52164&redirect_uri=http://xiche.suninpay.com/cwmws/oauth/do.html&response_type=code&scope=snsapi_base&state=bsb1#wechat_redirect',
 				imgUrl: 'http://blog.dqccc.com/upload/2015/10/28/6a4eb92f-4755-4faf-aadf-ff961c430422.jpg',
 				trigger: function (res) {
 					//alert('用户点击分享到朋友圈');
 				},
 				success: function (res) {
+					var value=$("#isShareFlag").val();
 					$("#isShare").val('1');
+					if(value==6){
+						$("#projectName").val("首单外洗6元");
+						$("#x11").attr("checked","checked");
+					}
+					if(value==16){
+						$("#projectName").val("整车洗16元");
+						$("#x12").attr("checked","checked");
+					}
+					$("#sum").html(value);
+					$("#total").html(value);
+					$("#totalPrice").val(value);
 				},
 				cancel: function (res) {
 					//alert('已取消');

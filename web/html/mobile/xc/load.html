@@ -8,10 +8,21 @@
     <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
     <script src="${res}/css/load/js/fakeloader.min.js"></script>
     <script>
-      //  window.location.href="http://xiche.suninpay.com/cwmws/washcar/index.html";
+       /* window.onload=function()
+        {
+            $(".fakeloader").fakeLoader({
+                timeToHide:81200,
+                bgColor:"#2ecc71",
+                spinner:"spinner1"
+            });
+            if(document.readyState == "complete") //当页面加载状态
+            {
+                $(".fakeloader").fadeOut(2000)
+            }
+        }*/
     </script>
 </head>
-<body style="background-color: #2ecc71">
+<body>
 <div class="fakeloader"></div>
 </body>
 </html>
@@ -26,11 +37,7 @@
         });
         if(document.readyState == "complete") //当页面加载状态
         {
-            window.location.href="http://xiche.suninpay.com/cwmws/washcar/index.html";
-            setTimeout(function () {
                 $(".fakeloader").fadeOut(2000)
-            }, 10000 )
-
         }
     }
 </script>

@@ -53,10 +53,10 @@ $( document ).ready(function(e) {
 			            return false;
 			        }
 
-			        if(carColor==""||carColor==null){
+			        /*if(carColor==""||carColor==null){
 			            alert("请填写车颜色");
 			            return false;
-			        }
+			        }*/
 			        if(carType==""||carType==null){
 			            alert("请填写车型");
 			            return false;
@@ -213,7 +213,7 @@ $( document ).ready(function(e) {
     });
 
     // 选择某一地址
-    $( ".dropdownmodal h1" ).live( "touchstart" , function(){
+    $( ".dropdownmodal h1" ).on( "touchstart" , function(){
         event.preventDefault();
         if( !$( this ).hasClass( "on" ) ){
             $( this ).addClass( "on" )

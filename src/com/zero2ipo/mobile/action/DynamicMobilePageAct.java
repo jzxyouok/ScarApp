@@ -17,6 +17,7 @@ import com.zero2ipo.mobile.web.URLHelper;
 import com.zero2ipo.pay.web.CarAction;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.utils.GetAccessTokenUtil;
+import com.zero2ipo.weixin.utils.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -132,6 +133,96 @@ public class DynamicMobilePageAct {
 		return mv;
 	}
 
+	/**
+	 * 跟路径控制
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/washcar/indexPage.html", method = RequestMethod.GET)
+	public ModelAndView menuIndexPage(HttpServletRequest request,
+							  HttpServletResponse response, ModelMap model,String couponId,String carType) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		try {
+			mv.setViewName(MobilePageContants.FM_PAGE_MAIN);
+			//获取当前登录的用户id
+			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+			if(!StringUtil.isNullOrEmpty(user)){
+				//if(user.getUserId().equals("13717625140")){
+				//	mv.setViewName("mobile/xc/test");
+				//首先从缓存中获取appid
+				ServletContext application =request.getSession().getServletContext();
+				String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+				String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+				String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
+				String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+				CarAction.sweepParam(request,mv,appId,access_token);
+				//}
+				mv.addObject("user",user);
+				List<Car> list=new ArrayList<Car>();
+				Car car=null;
+				Map<String,Object> queryMap=new HashMap<String,Object>();
+				String userId= user.getUserId();
+				mv.addObject("userId",userId);
+				queryMap.put("mobile", user.getPhoneNum());
+				queryMap.put("userId", userId);
+				list=historyCarService.findAllList(queryMap);
+				String days=coreService.getValue(CodeCommon.PRE_TIME_DAYS);
+				String hours=coreService.getValue(CodeCommon.PRE_TIME_HOURS);
+				List<String> preDates=DateUtil.getLast2Hours(Integer.parseInt(days),Integer.parseInt(hours));
+				mv.addObject("preDates", preDates);
+				request.getSession().setAttribute(MobileContants.PRE_DATES_KEY,preDates);//保存录入的车辆信息到缓存中
+				if(!StringUtil.isNullOrEmpty(couponId)){
+					mv.addObject("couponId",couponId);
+					//根据洗车券id查询洗车券信息
+					Map<String,Object> map=new HashMap<String,Object>();
+					map.put("id", couponId);
+					GgwashCoupon washCoupon=washCouponService.findById(map);
+					if(!StringUtil.isNullOrEmpty(washCoupon)){
+						mv.addObject("washCoupon", washCoupon);
+						mv.addObject("couponName", washCoupon.getName());
+					}
+
+				}
+				mv.addObject("carList",list);
+				Car edite=(Car) SessionHelper.getAttribute(request, MobileContants.CAR_SESSION_KEY);
+				if(list.size()>0){
+					car=list.get(0);
+					if(!StringUtil.isNullOrEmpty(edite)&&!StringUtil.isNullOrEmpty(edite.getCarNo())){//保存刚刚录入的car信息
+						edite.setId(car.getId());
+						car=edite;
+					}
+					//car.setCarNo(user.getAccount());
+
+				}else{
+
+					if(!StringUtil.isNullOrEmpty(edite)&&!StringUtil.isNullOrEmpty(edite.getCarNo())){//保存刚刚录入的car信息
+						car=edite;
+					}else{
+						car =new Car();
+					}
+					//car.setCarNo(user.getAccount());
+				}
+				car.setMobile(user.getPhoneNum());
+				//保存车型
+				if(!StringUtil.isNullOrEmpty(carType)){
+					car.setCarType(carType);
+				}
+				mv.addObject("bo",car);
+				request.getSession().setAttribute(MobileContants.CAR_SESSION_KEY,car);//保存录入的车辆信息到缓存中
+				//发送get请求获取openId
+				HttpRequest.sendGet("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=index#wechat_redirect","");
+			}else{
+				mv.setViewName(MobilePageContants.FM_USER_LOGIN);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return mv;
+	}
 	/**
 	 * 首页
 	 * @param request
@@ -321,6 +412,14 @@ public class DynamicMobilePageAct {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		mv.setViewName(MobilePageContants.QIANDAO_PAGE);
+		return mv;
+	}
+	@RequestMapping(value = "/washcar/main.html", method = RequestMethod.GET)
+	public ModelAndView indexMain(HttpServletRequest request,
+							  HttpServletResponse response, ModelMap model,String couponId,String carType) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName(MobilePageContants.PAGE_MAIN);
 		return mv;
 	}
 	/**

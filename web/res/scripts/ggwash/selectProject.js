@@ -161,11 +161,11 @@ function weixinPay(){
         alert("车牌号填写错误");
         return false;
     }
-
+/*
     if(carColor==""||carColor==null){
         alert("请填写车颜色");
         return false;
-    }
+    }*/
     if(carType==""||carType==null){
         alert("请填写车型");
         // hideloading();
@@ -183,10 +183,13 @@ function weixinPay(){
     var money=$("#total").html();//总金额
     var projectName=$("#projectName").val();//服务项目
     var ids=getServicesProjectIds();
-    if(''==ids||null==ids){
-        alert("请选择服务项目");
-        return;
+    if('首单外洗6元'!=projectName&&'整车洗16元'!=projectName){
+        if(''==ids||null==ids){
+            alert("请选择服务项目");
+            return;
+        }
     }
+
     $("#totalPrice").val($("#total").html());
     //跳转到微信支付订单页面
     //下单换成ajax方式
@@ -226,11 +229,11 @@ function qbpay(){
         alert("车牌号填写错误");
         return false;
     }
-
+/*
     if(carColor==""||carColor==null){
         alert("请填写车颜色");
         return false;
-    }
+    }*/
     if(carType==""||carType==null){
         alert("请填写车型");
         // hideloading();
@@ -247,11 +250,14 @@ function qbpay(){
     }
     var money=$("#total").html();//总金额
     var projectName=$("#projectName").val();//服务项目
-    var ids=getServicesProjectIds();
-    if(''==ids||null==ids){
-        alert("请选择服务项目");
-        return;
+    if('首单外洗6元'!=projectName&&'整车洗16元'!=projectName){
+        var ids=getServicesProjectIds();
+        if(''==ids||null==ids){
+            alert("请选择服务项目");
+            return;
+        }
     }
+
     $("#totalPrice").val($("#total").html());
     //跳转到微信支付订单页面
     //下单换成ajax方式

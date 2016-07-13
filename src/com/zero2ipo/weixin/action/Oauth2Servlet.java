@@ -101,6 +101,10 @@ public class Oauth2Servlet {
                            CarAction.sweepParam(request,mv,appid,access_token);*/
                            model=gkkService.initGkkPage(model,openid,user);
                        }
+                       if(key.equals(UrlContants.MENU_KEY_INDEX)){
+                           page=MobilePageContants.FM_PAGE_MAIN;
+                           model=gkkService.initGkkPage(model,openid,user);
+                       }
                        if(key.equals(UrlContants.MENU_KEY_12)){//洗车订单
                            page=MobilePageContants.FM_LZH;
                            model=gkkService.initMyOrder(model,openid,page,user);
