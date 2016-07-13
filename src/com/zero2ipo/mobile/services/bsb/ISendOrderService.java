@@ -1,8 +1,8 @@
 /**
  * @(#)IuserManage.java	10:10 07/08/2013
- * 
+ *
  * Copyright (c) 2013 S9,Inc.All rights reserved.
- * Created by 2013-07-08 
+ * Created by 2013-07-08
  */
 package com.zero2ipo.mobile.services.bsb;
 
@@ -23,6 +23,7 @@ public interface ISendOrderService {
 
 	public List<SendOrder> findSendOrderInfoList(Map<String, Object> query);
 	public boolean updSendOrder(SendOrder sendOrder);
+	public boolean startWashCar(SendOrder sendOrder);
 
 	public SendOrder findSendOrderByOrderId(String id);
 	public void addSendOrder(SendOrder sendOrder);

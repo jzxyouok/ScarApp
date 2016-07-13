@@ -2,6 +2,7 @@ package com.zero2ipo.mobile.dao.bsb.impl;
 
 import com.zero2ipo.common.entity.Order;
 import com.zero2ipo.common.entity.SendOrder;
+import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.mobile.dao.base.IbatisBaseDao;
 import com.zero2ipo.mobile.dao.bsb.ISendOrderDao;
 import org.springframework.stereotype.Component;
@@ -31,10 +32,30 @@ public class SendOrderDaoImpl extends IbatisBaseDao implements ISendOrderDao{
 		return list;
 	}
 	/**
-	 * 洗车工修改任务信息
+	 * 完成洗车
 	 */
 	@Override
 	public boolean updSendOrder(SendOrder sendOrder) {
+		boolean flag=false;
+		try {
+			this.update(UPDATE_SEND_ORDER, sendOrder);
+			//修改任务成功之后，修改订单的派单状态
+			Order order=new Order();
+			order.setSendOrderStatus(sendOrder.getStatus());
+			order.setId(Integer.parseInt(sendOrder.getOrderId()));
+			order.setOrderStatus(MobileContants.status_1);//洗车完毕后,修改订单的支付状态为已支付
+			this.update(UPDATE_ORDER, order);
+			flag=true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return flag;
+	}
+	/**
+	 * 开始洗车
+	 */
+	@Override
+	public boolean startWashCar(SendOrder sendOrder) {
 		boolean flag=false;
 		try {
 			this.update(UPDATE_SEND_ORDER, sendOrder);
@@ -49,7 +70,6 @@ public class SendOrderDaoImpl extends IbatisBaseDao implements ISendOrderDao{
 		}
 		return flag;
 	}
-
 	@Override
 	public SendOrder findSendOrderByOrderId(String id) {
 		SendOrder sendOrder=null;

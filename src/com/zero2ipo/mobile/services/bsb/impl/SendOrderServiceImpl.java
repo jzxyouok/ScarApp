@@ -17,9 +17,12 @@ public class SendOrderServiceImpl implements ISendOrderService{
 	@Autowired
 	@Qualifier("sendOrderDao")
 	private ISendOrderDao sendOrderDao;
-	
+
 	public boolean updSendOrder(SendOrder sendOrder){
 		return sendOrderDao.updSendOrder(sendOrder);
+	}
+	public boolean startWashCar(SendOrder sendOrder){
+		return sendOrderDao.startWashCar(sendOrder);
 	}
 
 	@Override
