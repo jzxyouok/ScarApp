@@ -1,7 +1,7 @@
 #wrapper {
-    position:absolute; 
+    position:absolute;
 	z-index:1;
-    top: 40px; 
+    top: 0px;
 	bottom: 0;
     overflow:auto;
 }

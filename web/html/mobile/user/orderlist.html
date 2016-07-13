@@ -73,13 +73,34 @@
 		        	<div class="listinfo">
 			        	<div class="userinfo p_r">
 				        	<p>
-					        	<span>订单号:${order.orderId[0..10]}</span>
+					        	<span >订单号:${order.orderId[0..10]}</span>
 				        	</p>
 				        	<p>
-					        	<span>车牌号：${order.carNum!''}</span>
+					        	<span >车牌号:${order.carNum!''}</span>
 				        	</p>
 							<p>
 								<span>预约时间:${order.washTime!''}</span>
+							</p>
+							<p>
+								<span>服务项目:<font color="#228b22">${order.washType!''}</font>
+
+								</span>
+							</p>
+							<p>
+								<span>付款类型:
+									[#if order.payType=='0']
+										<font color="#ff0000">洗车券支付</font>
+									[/#if]
+									[#if order.payType=='1']
+										<font color="#ff0000">微信支付</font>
+									[/#if]
+									[#if order.payType=='2']
+										<font color="#ff0000">钱包抵扣</font>
+									[/#if]
+									[#if order.payType=='3']
+										<font color="#ff0000">现金支付</font>
+									[/#if]
+								</span>
 							</p>
 	                                [#if order.status=='-1']
 	                               	 	<span class="orderstate color_orange" >未支付</span>
@@ -123,7 +144,7 @@
        <article class="tooltip" style="display: none;">
             <div class="mask"></div>
             <div class="tooltipcont">
-                <img src="../../res/images/exclamation.png">
+             <!--   <img src="../../res/images/exclamation.png">-->
                 <p class="tooltipwords"></p>
                 <p class="tooltipoper clearfix">
                     <span class="btn_rectangle btn_orange f_r" id="confirm">确定</span>

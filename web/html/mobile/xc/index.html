@@ -133,7 +133,8 @@
 		  	function coupon_buy(){
 		  		window.location.href="${base}/pay/buycouponPage.html";
 		  	}
-		   function save_order(){
+			//现金支付
+		   function money_pay(){
 		  		    //var carSeats=$("#carSeats").is(":checked");
 			        var carType=$("#carType").val();
 			        var carColor=$("#carColor").val();
@@ -180,21 +181,84 @@
 			      	alert("请选择预约时间");
 			      	return false;
 			      }
-			      //获取 优惠券couponId
-			      var couponId=$("#couponId").val();
-			      if(couponId==""||couponId==null){
-			      	alert("请选择洗车券");
-			      	return false;
-			      }
-			      $("#sid").val(couponId);
-			      var qbdk=$("#qbdk").html();
-			   	  $("#qianbao").val(qbdk);
 			       //下单换成ajax方式
-			       var url=$("#myform").attr('action');
-			       var data=$('#myform').serialize();
-			       ajax(url,data);
-		  	      //$("#myform").submit();
+				   var projectName=$("#projectName").val();//服务项目
+				   var ids=getServicesProjectIds();
+				   if('首单外洗6元'!=projectName&&'整车洗16元'!=projectName){
+					   if(''==ids||null==ids){
+						   alert("请选择服务项目");
+						   return;
+					   }
+				   }
+			   		$("#totalPrice").val($("#total").html());
+			       var url="${base}/washcar/moneyPay.html";
+				   $('#myform').attr('action',url);
+			       //var data=$('#myform').serialize();
+			       //ajax(url,data);
+		  	      $("#myform").submit();
 		  	}
+			function save_order(){
+				//var carSeats=$("#carSeats").is(":checked");
+				var carType=$("#carType").val();
+				var carColor=$("#carColor").val();
+				var carNo=$('#carNo').val();
+				var washAddr=$('#washAddr').val();
+				var mobile=$('#mobile').val();
+				var name=$("#name").val();
+				if(mobile==""||mobile==null){
+					alert("请填写手机号码");
+					return false;
+				}
+				if(name==""||name==null){
+					alert("请填写称呼");
+					return false;
+				}else {
+					if (!/^[\u4e00-\u9fa5]+$/gi.test(name.trim())) {
+						alert("只能输入中文");
+						return false;
+					}
+				}
+				if(carNo==""||carNo==null){
+					alert("请填写车牌号");
+					return false;
+				}else if(carNo.length!=7){
+					alert("车牌号填写错误");
+					return false;
+				}
+
+				/*  if(carColor==""||carColor==null){
+				 alert("请填写车颜色");
+				 return false;
+				 }*/
+				if(carType==""||carType==null){
+					alert("请填写车型");
+					// hideloading();
+					return false;
+				}
+				if(washAddr==""||washAddr==null||"定位中，请稍后......"==washAddr){
+					alert("请填写洗车地点");
+					return false;
+				}
+				var preTime=$("#preTime").val();
+				if(preTime==""||preTime==null){
+					alert("请选择预约时间");
+					return false;
+				}
+				//获取 优惠券couponId
+				var couponId=$("#couponId").val();
+				if(couponId==""||couponId==null){
+					alert("请选择洗车券");
+					return false;
+				}
+				$("#sid").val(couponId);
+				var qbdk=$("#qbdk").html();
+				$("#qianbao").val(qbdk);
+				//下单换成ajax方式
+				var url=$("#myform").attr('action');
+				var data=$('#myform').serialize();
+				ajax(url,data);
+				//$("#myform").submit();
+			}
 			//是否隐藏基本信息和其他 checkbox
 			function isHideCheckBox(){
 				var name="${bo.name!''}";
@@ -259,7 +323,7 @@
 						车牌
 					</td>
 					<td colspan='2'>
-						<input class='input-text'  id='carNo' type='text' name="carNo" value="${(bo.carNo)!'鲁H'}"
+						<input class='input-text'  id='carNo' type='text' name="carNo" value="${(bo.carNo)!'湘C'}"
 							 placeholder='请输入车牌号' />
 						<input id='carid' type='hidden' />
 					</td>
@@ -400,7 +464,6 @@
 							   <p class="singleoption clearfix">
 								   <img class="radiooper i_b v_m" id="${project_index+1}" fname="${project.name!''}" ids="${project_index+1}" value="${project.carPrice!''}"   src="${res}/css/xc/img/radio_unsel.png"/>
 								   <span>${project.name!''}</span>
-
 								   <span style="text-decoration:line-through;padding-right:0px;padding-left:10px;" class="i_b v_m f_r">${project.jeepPrice!''}￥</span>
 								  	[#if project.washCount>0]
 								   				     <!--如果会员洗车的次数大于等于后台设定的优惠次数-->
@@ -433,7 +496,7 @@
 							<img src="${res}/images/ggwash/property_index_coupon.png" style="width:42px;height:30px"/>
 							洗车券
 						</td>
-						<td colspan='2' >
+						<td  >
 						        <div class="oneline appointmenttime">
 						            <p class="clearfix bb_none">
 										<span class="f_r brandsel timesel p_r">
@@ -504,20 +567,29 @@
 						</td>
 					</tr>
 					<tr id="wxpayTr">
-						<td style="width: 10%;">
+						<td >
 							<span class="sum">共计: <font class="color_orange"><span id="total">0</span>￥</font></span>
 							<input type="hidden" id="totalPrice" name="totalPrice">
 							<input type="hidden" id="projectName" name="projectName">
+
 						</td>
-						<td colspan='' style="border: 0;">
-							<input id='o' type='button' style="display: block;width: 90px;margin-right: 125px;float:left;background-color:#04BE02;color: white"
-								class='ui-btn green' value='微信支付'
-								onclick="weixinPay()" />
-							<input id='order' type='button' style="display: none;width:85px;margin-left: 75px"
+						<td>
+							<div class="button_sp_area">
+								<a href="javascript:void(0)" onclick="weixinPay()"  class="weui_btn weui_btn_mini weui_btn_primary">微信支付</a>
+								<a href="javascript:void(0)" onclick="money_pay()" class="weui_btn weui_btn_mini weui_btn_default">现金支付</a>
+							</div>
+
+							<!--<input  type='button' style="display: block;width: 90px;margin-right: 125px;float:left;background-color:#04BE02;color: white"
+									class='ui-btn green' value='微信支付'
+									onclick="weixinPay()" />
+
+							<input id='moneyBtn' type='button' style="display: block;width: 90px;margin-right: 15px;float:right;background-color:#04BE02;color: white"
+								   class='ui-btn green' value='现金支付'
+								   onclick="money_pay()"/>
+							<input id='order' type='button' style="display: none;width:85px;margin-left: 125px"
 								   class='ui-btn green' value='洗车券下单'
-								   onclick="save_order()"/>
+								   onclick="save_order()"/>-->
 						</td>
-						<td style="width: 15%"></td>
 					</tr>
 					<tr id="qbpayTr" style="display: none;">
 						<td style="width: 10%;">

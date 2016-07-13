@@ -528,11 +528,39 @@ public class CarAction {
 		return mv;
 	}
 
+	/**
+	 * 微信支付--订单详情页面
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param orderId
+     * @return
+     */
 	@RequestMapping(value = "/order/wxpay.html", method = RequestMethod.GET)
 	public ModelAndView wxpayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
 		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+		Map<String,Object> queryMap=new HashMap<String,Object>();
+		queryMap.put("id", orderId);
+		mv.addObject("orderId", orderId);
+		Order order=orderService.findById(queryMap);
+		mv.addObject("order",order);
+		return mv;
+	}
+	/**
+	 * 现金支付--订单详情页面
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(value = "/washcar/money.html", method = RequestMethod.GET)
+	public ModelAndView moneyPayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
+		ModelAndView mv=new ModelAndView();
+		FmUtils.FmData(request, model);
+		mv.setViewName(MobilePageContants.PAY_BY_MONEY_PAGE);
 		Map<String,Object> queryMap=new HashMap<String,Object>();
 		queryMap.put("id", orderId);
 		mv.addObject("orderId", orderId);
@@ -668,6 +696,107 @@ public class CarAction {
 			}
 		}
 		String url="redirect:/order/wxpay.html?orderId="+id;
+		return url;
+
+	}
+	/**
+	 * 首页下单Ajax 现金支付
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/washcar/moneyPay.html", method = RequestMethod.POST)
+	public String moneyPay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String lat,String lng,String totalPrice,String projectName){
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		boolean flag=false;
+		//FmUtils.FmData(request, model);
+		String orderId="";
+		int id=0;
+		int carId=-1;
+		String jsParam="";
+		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+		if(!StringUtil.isNullOrEmpty(user))
+		{
+
+			if (!StringUtil.isNullOrEmpty(car)){
+				car.setUserCarId(user.getUserId());
+				//首页判断此车辆是否存在
+				Map<String,Object> queryMap=new HashMap<String,Object>();
+				queryMap.put("mobile",user.getPhoneNum());
+				Car isExsit=null;
+				List<Car> historyCar=historyCarService.findAllList(queryMap);
+				if(historyCar.size()>0){
+					isExsit=historyCar.get(0);
+				}
+				if(StringUtil.isNullOrEmpty(isExsit)){
+					carId= historyCarService.add(car);//新增
+					car.setId(carId);
+					isExsit=car;
+					if(carId>0){
+						flag=true;
+					}
+				}else{//更新
+					queryMap.put("userCardId", user.getUserId());
+					isExsit.setWashAddr(car.getWashAddr());
+					isExsit.setName(car.getName());
+					isExsit.setWashInfo(car.getWashInfo());
+					isExsit.setMobile(car.getMobile());
+					isExsit.setCarColor(car.getCarColor());
+					isExsit.setCarSeats(car.getCarSeats());
+					isExsit.setCarType(car.getCarType());
+					isExsit.setCarNo(car.getCarNo());
+					isExsit.setPreTime(car.getPreTime());
+					flag=historyCarService.update(isExsit);
+					carId=isExsit.getId();
+				}
+				/**移除录入的车辆信息保存的session**/
+				SessionHelper.removeAttribute(request, MobileContants.CAR_SESSION_KEY);
+             	/*生成订单*/
+				//生成订单
+				Order order=new Order();
+				//order.setCarId(isExsit.getId());
+				String orderNo=DateUtil.getDateOrderNo();
+				order.setOrderId(orderNo);
+				String orderTime=DateUtil.getCurrentDateStr();
+				order.setCreateTime(orderTime);
+				order.setWashTime(car.getPreTime());
+				order.setCarNum(car.getCarNo());
+				order.setCarColor(car.getCarColor());
+				order.setAddress(car.getWashAddr());
+				order.setMobile(user.getPhoneNum());
+				order.setUserId(user.getUserId());
+				order.setUserName(car.getName());
+				order.setAddress(car.getWashAddr());
+				order.setCarType(car.getCarType());
+				order.setDiscription(car.getWashInfo());
+				order.setCarId(carId + "");
+				order.setPayType(MobileContants.status_3);//现金支付
+				order.setOrderStatus(MobileContants.status_fu_1);//现金支付订单状态默认未支付
+				order.setLon(lng);
+				order.setLat(lat);
+				float total_price=0;
+				if(!StringUtil.isNullOrEmpty(totalPrice)){
+					total_price=Float.parseFloat(totalPrice);
+				}
+				order.setPrice(total_price);
+				order.setWashType(projectName);
+				order.setSendOrderStatus(MobileContants.status_0);
+				order.setUserId(user.getUserId());
+				orderId=OrderUtil.GetOrderNumber("");
+				//保存微信jsParam
+				//jsParam=getWXJsParamForNative(request,total_price);
+				//order.setJsParam(jsParam);
+				order.setOrderId(orderId);
+				id=orderService.add(order);
+				//下单完成后保存订单主键到缓存中，修改订单状态的时候要用
+				order.setId(id);
+				ServletContext application =request.getSession().getServletContext();
+				application.setAttribute(MobileContants.CURRENT_ORDER_KEY,order);
+				System.out.print("保存缓存中的orderid==========================="+order.getId());
+			}
+		}
+		String url="redirect:/washcar/money.html?orderId="+id;
 		return url;
 
 	}

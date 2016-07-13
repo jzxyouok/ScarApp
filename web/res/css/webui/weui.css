@@ -190,7 +190,7 @@ a {
 .weui_btn.weui_btn_mini {
     height: 30px;
     display: inline-block;
-    width:25%;
+    width:45%;
 }
 button.weui_btn,
 input.weui_btn {
@@ -272,8 +272,8 @@ input.weui_btn_mini {
     display: inline-block;
 }
 .weui_btn_default {
-    background-color: #F7F7F7;
-    color: #454545;
+    background-color: #ff0000;
+    color: #ffffff;
 }
 .weui_btn_default:not(.weui_btn_disabled):visited {
     color: #454545;
