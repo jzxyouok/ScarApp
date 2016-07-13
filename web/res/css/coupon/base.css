@@ -60,7 +60,8 @@
 }
 
 
-.f-yhbox input{ width: 100%; border: 1px solid #d9d7d6; line-height: 23px; box-sizing:border-box; border-radius: 5px;}
+.f-yhbox input{ width: 100%; border: 1px solid #d9d7d6;
+	position: inherit; line-height: 23px; box-sizing:border-box; border-radius: 5px;}
 .mb10 {
 	margin-bottom: 10px
 }

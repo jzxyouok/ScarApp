@@ -12,18 +12,25 @@
 		<link rel="stylesheet" href="${res}/css/coupon/youhuiquan.css" >
 		<link rel="stylesheet" href="${res}/css/coupon/youhuiquan2.css" >
 		<link rel="stylesheet" href="${res}/css/coupon/youhuiquan3.css" >
-		<link rel="stylesheet" href="${res}/css/coupon/base.css" >
+		<link rel="stylesheet" href="${res}/css/coupon/base.css?v=2" >
 		<link rel="stylesheet" href="${res}/css/book/app.css">
 		<link rel="stylesheet" href="${res}/css/themes/default/jquery.alerts.css">
 		<script type="text/javascript" src="${res}/scripts/xc/jquery.min.js"></script>
 		<script src="${res}/scripts/lib/jquery/jquery.alerts.js" type="text/javascript"></script>
 		<script src="${res}/scripts/xc/dialog.js" type="text/javascript"></script>
 		<script src="${res}/scripts/xc/youhuiquan.js" type="text/javascript"></script>
+		<script>
+			$( document ).ready(function(e) {
+				$("#couponCode").removeAttr('style');
+				$("#couponCode").css("position","inherit");
+				$("#couponCode").width(170);
+			})
+		</script>
 	<body>
 		<div class="container ">
 			<div class="p15" style="background:#fff;">
         <div class="f-yhbox mb10 clearfix">
-            <input type="text" placeholder="请输入兑换码" style="width:170px;" class="fl" name="couponCode" id="couponCode">
+            <input type="text" placeholder="请输入兑换码" style="width:170px;position: inherit"  name="couponCode" id="couponCode">
             <button class="u-dlbtn fr"  onclick="getCode()">兑换</button>
         </div>
         <p class="x-yhf"></p>
@@ -40,7 +47,7 @@
 							</div>
 						</div>
 						<ul class="promote-card-list">
-							[@my_vip_couponlist userId="${_user_key.userId}" status="${status}"]
+							[@my_vip_couponlist userId="${(_user_key.userId)!''}" status="${status}"]
 								[#if vipCouponList?? &&vipCouponList?size>0]
 									[#list vipCouponList as coupon]
 									[#if coupon.status=='2']
@@ -103,5 +110,5 @@
 			</div>
 		</div>
 	</body>
-
+	[#include "../xc/load.html"]
 </html>
