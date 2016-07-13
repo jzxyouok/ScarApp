@@ -221,10 +221,8 @@ select
 			UPDATE
 				orders
 			SET
-			finish_time=now()
-			<isNotEmpty prepend="," property="orderStatus">
-				order_status=#orderStatus#
-			</isNotEmpty>
+				finish_time=now(),
+				order_status=1
 			<isNotEmpty prepend="," property="sendOrderStatus">
 					SEND_ORDER_STATUS=#sendOrderStatus#
 			</isNotEmpty>
