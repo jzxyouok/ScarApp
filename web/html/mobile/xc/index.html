@@ -176,11 +176,11 @@
 			            alert("请填写洗车地点");
 			            return false;
 			        }
-			      var preTime=$("#preTime").val();
-			      if(preTime==""||preTime==null){
-			      	alert("请选择预约时间");
-			      	return false;
-			      }
+			   /**var preTime=$("#preTime").val();
+				if(preTime==""||preTime==null){
+        alert("请选择预约时间");
+        return false;
+    }**/
 			       //下单换成ajax方式
 				   var projectName=$("#projectName").val();//服务项目
 				   var ids=getServicesProjectIds();
@@ -383,7 +383,7 @@
 					</td>
 
 					</tr>
-				    <tr id="other2">
+				<!--<tr id="other2">
 						<td class="lable" nowrap="nowrap">
 						<img src="${res}/images/ggwash/123.png" />
 							时间
@@ -402,7 +402,7 @@
 						    </article>
 						</td>
 					</tr>
-
+-->
 					<tr id="other1">
 						<td class="lable">
 							<img src="${res}/images/ggwash/456.png" width="20px" height="20px"/>
@@ -410,7 +410,7 @@
 						</td>
 						<td colspan='2'>
 							<input id='washInfo' name="washInfo" style="width:90%;border: 1px" class="input-text"
-								type='text'  placeholder='请填写车辆详细地址' value="${bo.washInfo!''}" /></input>
+								type='text'  placeholder='如有特殊需求请填写' value="${bo.washInfo!''}" /></input>
 						</td>
 					</tr>
 				   <tr>
@@ -443,7 +443,7 @@
 							   </label>
 							   <label class="weui_cell weui_check_label" for="x12">
 								   <div class="weui_cell_ft">
-									   <input type="radio" name="radio1" class="weui_check" id="x12" data-price="16" data-name="首单整车洗16元">
+									   <input type="radio" name="radio1" class="weui_check" id="x12" data-price="16" data-name="整车洗16元">
 									   <span class="weui_icon_checked"></span>
 								   </div>
 								   <div class="weui_cell_bd weui_cell_primary">
@@ -725,6 +725,7 @@
 						$("#x11").attr("checked","checked");
 					}
 					if(value==16){
+						//alert("选中");
 						$("#projectName").val("整车洗16元");
 						$("#x12").attr("checked","checked");
 					}

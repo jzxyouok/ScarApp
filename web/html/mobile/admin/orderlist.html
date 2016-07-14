@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>订单列表</title>
   <link href="${res}/css/xc/main.css" rel="stylesheet" />
-<link href="${res}/css/xc/orderlist.css" rel="stylesheet">
+<link href="${res}/css/xc/orderlist.css?v=1" rel="stylesheet">
 <link href="${res}/css/xc/myorder.css" rel="stylesheet">
 <link href="${res}/css/xc/list.css" rel="stylesheet">
 <link href="${res}/css/xc/admin.css" rel="stylesheet">
@@ -43,7 +43,7 @@
 
 				        	<div style="font-size:26px">手机：<a href="tel:${sendOrder.mobile!''}" style="">${sendOrder.mobile!''}</a></div>
 				        	<p>
-					        	<span>车牌号：${sendOrder.carNo!''} </span>
+					        	<span>车牌号：${sendOrder.carNo!''} </span><br>
 					        	<span>预约时间：${sendOrder.preTime!''} </span>
 					        	<span class="amount">派单时间：<font>${sendOrder.operatorDate?substring(0,16)}</font></span>
 				        	</p>

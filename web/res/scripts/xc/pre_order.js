@@ -70,11 +70,11 @@ $( document ).ready(function(e) {
                         alert("请选择服务项目");
                         return false;
                     }
-			      var preTime=$("#preTime").val();
-			      if(preTime==""||preTime==null){
-			      	alert("请选择预约时间");
-			      	return false;
-			      }
+        /**var preTime=$("#preTime").val();
+         if(preTime==""||preTime==null){
+        alert("请选择预约时间");
+        return false;
+    }**/
                // var url="/order/mycoupon.html";
                // url=timestamp(url);
                // url=url.replace(" ","%20").replace(":","%3A");
