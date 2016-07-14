@@ -53,7 +53,7 @@ function getCode() {
 function useCoupon(money,name,vipCouponId){
     $("#coupon_price",window.parent.document).html(money);
     $("#vipCouponName",window.parent.document).html(name);
-    $("#vipCouponId",window.parent.document).html(vipCouponId);
+    $("#vipCouponId",window.parent.document).val(vipCouponId);
     //隐藏此iframe
     $("#vipCouponIframe",window.parent.document).hide();
     $("#myform",window.parent.document).show();

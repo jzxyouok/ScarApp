@@ -929,7 +929,7 @@ public class CarAction {
 	 * @return
 	 */
 	@RequestMapping(value = "/order/yhqPay.html", method = RequestMethod.POST)
-	public String yhqPay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String lat,String lng,String totalPrice,String projectName){
+	public String yhqPay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String vipCouponId,String lat,String lng,String totalPrice,String projectName){
 		Map<String,Object> resultMap=new HashMap<String,Object>();
 		boolean flag=false;
 		//FmUtils.FmData(request, model);
@@ -1024,10 +1024,9 @@ public class CarAction {
 				orderService.updateStatus(o);
 			}
 			//减少优惠券
-			String vipcouponId=order.getVipCouponId();
-			if(!StringUtil.isNullOrEmpty(vipcouponId)&&!"null".equals(vipcouponId)){
+			if(!StringUtil.isNullOrEmpty(vipCouponId)&&!"null".equals(vipCouponId)){
 				//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
-				long couponId=Long.parseLong(vipcouponId);
+				long couponId=Long.parseLong(vipCouponId);
 				VipCoupon vipCoupon=new VipCoupon();
 				vipCoupon.setId(couponId);
 				vipCoupon.setStatus(MobileContants.status_1);
