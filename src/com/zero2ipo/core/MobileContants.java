@@ -50,6 +50,7 @@ public class MobileContants {
 	public static final String status_0="0";//未排满
 	public static final String status_2="2";//未排满
 	public static final String status_3="3";//现金支付
+	public static final String status_4="4";//优惠券抵扣
 	public static final String status_fu_1="-1";
 	public static final String ORDER_PAY_STATUS_DEFAULT="1";//订单默认支付状态
 	public static final String SEND_ORDER_STATUS_1="1";//已派单状态

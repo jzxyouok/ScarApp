@@ -921,7 +921,127 @@ public class CarAction {
 		return url;
 
 	}
+	/**
+	 * 当优惠券充足的时候，直接使用优惠券抵扣，不走微信支付
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/order/yhqPay.html", method = RequestMethod.POST)
+	public String yhqPay(HttpServletRequest request, HttpServletResponse response, ModelMap model, Car car,String lat,String lng,String totalPrice,String projectName){
+		Map<String,Object> resultMap=new HashMap<String,Object>();
+		boolean flag=false;
+		//FmUtils.FmData(request, model);
+		String orderId="";
+		int id=0;
+		int carId=-1;
+		String jsParam="";
+		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+		if (!StringUtil.isNullOrEmpty(car)){
+			car.setUserCarId(user.getUserId());
+			//首页判断此车辆是否存在
+			Map<String,Object> queryMap=new HashMap<String,Object>();
+			queryMap.put("mobile",user.getPhoneNum());
+			Car isExsit=null;
+			List<Car> historyCar=historyCarService.findAllList(queryMap);
+			if(historyCar.size()>0){
+				isExsit=historyCar.get(0);
+			}
+			if(StringUtil.isNullOrEmpty(isExsit)){
+				carId= historyCarService.add(car);//新增
+				car.setId(carId);
+				isExsit=car;
+				if(carId>0){
+					flag=true;
+				}
+			}else{//更新
+				queryMap.put("userCardId", user.getUserId());
+				isExsit.setWashAddr(car.getWashAddr());
+				isExsit.setName(car.getName());
+				isExsit.setWashInfo(car.getWashInfo());
+				isExsit.setMobile(car.getMobile());
+				isExsit.setCarColor(car.getCarColor());
+				isExsit.setCarSeats(car.getCarSeats());
+				isExsit.setCarType(car.getCarType());
+				isExsit.setCarNo(car.getCarNo());
+				isExsit.setPreTime(car.getPreTime());
+				flag=historyCarService.update(isExsit);
+				carId=isExsit.getId();
+			}
+			//**移除录入的车辆信息保存的session**//
+			SessionHelper.removeAttribute(request, MobileContants.CAR_SESSION_KEY);
+			//*生成订单*//
+			Order order=new Order();
+			String orderNo=DateUtil.getDateOrderNo();
+			order.setOrderId(orderNo);
+			String orderTime=DateUtil.getCurrentDateStr();
+			order.setCreateTime(orderTime);
+			order.setWashTime(car.getPreTime());
+			order.setCarNum(car.getCarNo());
+			order.setCarColor(car.getCarColor());
+			order.setAddress(car.getWashAddr());
+			order.setMobile(user.getPhoneNum());
+			order.setUserId(user.getUserId());
+			order.setUserName(car.getName());
+			order.setAddress(car.getWashAddr());
+			order.setCarType(car.getCarType());
+			order.setDiscription(car.getWashInfo());
+			order.setCarId(carId + "");
+			order.setPayType(MobileContants.status_4);//优惠券抵扣
+			order.setOrderStatus(MobileContants.status_1);//已付款
+			order.setLon(lng);
+			order.setLat(lat);
+			float total_price=0;
+			if(!StringUtil.isNullOrEmpty(totalPrice)){
+				total_price=Float.parseFloat(totalPrice);
+			}
+			order.setPrice(total_price);
+			order.setWashType(projectName);
+			order.setSendOrderStatus(MobileContants.status_0);
+			order.setUserId(user.getUserId());
+			orderId=OrderUtil.GetOrderNumber("");
+			order.setOrderId(orderId);
+			id=orderService.add(order);
+			//下单完成后保存订单主键到缓存中，修改订单状态的时候要用
+			order.setId(id);
+			//保存订单完毕后，减去钱包余额
+			//user.setAccount(user.getAccount()-total_price);
+			//userServices.reduceQianBao(user);
+			//同时更新缓存
+			SessionHelper.removeAttribute(request,MobileContants.USER_SESSION_KEY);
+			SessionHelper.setAttribute(request,MobileContants.USER_SESSION_KEY,user);
+			request.getSession().removeAttribute(MobileContants.USER_APPLICATION_SESSION_KEY);
+			request.getSession().setAttribute(MobileContants.USER_APPLICATION_SESSION_KEY,user);
+			//接下来是自动派单
+			ServletContext application =request.getSession().getServletContext();
+			String autoPaiDan=isAutoPaiDanMethod(request, application, order);
+			if(CodeCommon.AUTO_PAIDAN_FLAG.equals(autoPaiDan)){
+				//判断完毕，更新订单派单状态
+				Order o=new Order();
+				o.setId(id);
+				o.setSendOrderStatus(MobileContants.status_1);
+				orderService.updateStatus(o);
+			}
+			//减少优惠券
+			String vipcouponId=order.getVipCouponId();
+			if(!StringUtil.isNullOrEmpty(vipcouponId)&&!"null".equals(vipcouponId)){
+				//下单的时候使用了优惠券抵扣，所以要把此优惠券状态更改为已使用
+				long couponId=Long.parseLong(vipcouponId);
+				VipCoupon vipCoupon=new VipCoupon();
+				vipCoupon.setId(couponId);
+				vipCoupon.setStatus(MobileContants.status_1);
+				vipCoupon.setUserId(user.getUserId());
+				vipCouponService.update(vipCoupon);
+				//更新完毕之后，从缓存中移除此优惠券
+				application.removeAttribute(MobileContants.VIP_COUPON_ID_KEY);
+			}
+		}
+		//优惠券抵扣后跳转到订单详情页面
+		String url="redirect:/order/wxpay.html?orderId="+id;
+		return url;
 
+	}
 	/**
 	 * 微信支付回调方法统一走这里，上面的方式总是出现bug,客户付款成功之后，订单状态不改变
 	 * @param request

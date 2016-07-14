@@ -58,4 +58,5 @@ function useCoupon(money,name,vipCouponId){
     $("#vipCouponIframe",window.parent.document).hide();
     $("#myform",window.parent.document).show();
     //显示主页
+    window.parent.getTotalPrice();
 }

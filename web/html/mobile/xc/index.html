@@ -184,7 +184,9 @@
 			       //下单换成ajax方式
 				   var projectName=$("#projectName").val();//服务项目
 				   var ids=getServicesProjectIds();
-				   if('首单外洗6元'!=projectName&&'整车洗16元'!=projectName){
+				   if('首单外洗6元'==projectName ||  '整车洗16元'==projectName){
+
+				   }else{
 					   if(''==ids||null==ids){
 						   alert("请选择服务项目");
 						   return;
@@ -609,6 +611,21 @@
 
 						</td>
 					</tr>
+				<tr id="youhuiquanTr" style="display: none;">
+					<td style="width: 10%;">
+							<span class="sum">共计: <font class="color_orange">
+								<span id="sum">0</span>￥</font>
+							</span>
+					</td>
+					<td colspan='' style="border: 0;">
+						<input  type='button' style="display: block;width: 90px;margin-right: 125px;float:left;background-color:#04BE02;color: white"
+							   class='ui-btn green' value='提交订单'
+							   onclick="yhqPay()" />
+					</td>
+					<td>
+
+					</td>
+				</tr>
 					<tr style="height: 50px;">
 						<td colspan='3'>&nbsp;</td>
 					</tr>
