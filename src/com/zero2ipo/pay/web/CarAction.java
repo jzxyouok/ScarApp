@@ -885,6 +885,7 @@ public class CarAction {
 			//下单完成后保存订单主键到缓存中，修改订单状态的时候要用
 			order.setId(id);
 			//保存订单完毕后，减去钱包余额
+			float yue=user.getAccount()-total_price;
 			user.setAccount(user.getAccount()-total_price);
 			userServices.reduceQianBao(user);
 			//同时更新缓存

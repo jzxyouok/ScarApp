@@ -326,11 +326,11 @@ function yhqPay(){
         alert("请填写洗车地点");
         return false;
     }
-    var preTime=$("#preTime").val();
+    /*var preTime=$("#preTime").val();
     if(preTime==""||preTime==null){
         alert("请选择预约时间");
         return false;
-    }
+    }*/
     var money=$("#total").html();//总金额
     var projectName=$("#projectName").val();//服务项目
     if('首单外洗6元'==projectName||'整车洗16元'==projectName){

@@ -130,11 +130,11 @@ $( document ).ready(function(e) {
             // hideloading();
             return false;
         }
-        var preTime=$("#preTime").val();
+       /* var preTime=$("#preTime").val();
         if(preTime==""||preTime==null){
             alert("请选择预约时间");
             return false;
-        }
+        }*/
         var url=$root+"mycoupon.html";
         // url=timestamp(url);
         //url=url.replace(" ","%20").replace(":","%3A");
