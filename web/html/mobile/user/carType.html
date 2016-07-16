@@ -16,8 +16,12 @@
             $(".category-item").bind('click',function(){
                 var carType=$(this).attr('data-name');
                 //把此carType赋值到页面
-                var url="${base}/washcar/index.html?carType="+carType;
-                window.location.href=url;
+               // var url="${base}/washcar/index.html?carType="+carType;
+               // window.location.href=url;
+                $("#carType",window.parent.document).val(carType);
+
+                $("#carTypeIframe",window.parent.document).hide();
+                $("#myform",window.parent.document).show();
             })
         })
     </script>

@@ -28,6 +28,7 @@ function getMyCurrentLocation(){
 function onComplete(data) {
 	lng=data.position.getLng();
 	lat=data.position.getLat();
+	queryAreaLogin(lng,lat);
 	$("#lng").val(lng);
 	$("#lat").val(lat);
 	var geocoder=null;
@@ -107,8 +108,10 @@ function queryAreaLogin(lng,lat){
 				$('#order').removeClass("gray"); //移除disabled属性
 				$('#order').addClass("green"); //移除disabled属性
 			}else{
-				if(!confirm("您的位置不在我们的服务范围内，您的订单可能会被延迟处理，是否继续下单？")){
+				if(!confirm("您的位置不在我们的服务范围内，暂时不受理您的订单，请不要下单")){
 					WeixinJSBridge.call('closeWindow');
+				}else{
+					//WeixinJSBridge.call('closeWindow');
 				}
 				$("#order").unbind("onclick");
 				$('#order').attr('disabled',"true");//添加disabled属性
