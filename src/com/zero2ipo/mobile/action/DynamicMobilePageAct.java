@@ -17,7 +17,6 @@ import com.zero2ipo.mobile.web.URLHelper;
 import com.zero2ipo.pay.web.CarAction;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.utils.GetAccessTokenUtil;
-import com.zero2ipo.weixin.utils.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -132,7 +131,6 @@ public class DynamicMobilePageAct {
 		}
 		return mv;
 	}
-
 	/**
 	 * 跟路径控制
 	 * @param request
@@ -142,20 +140,34 @@ public class DynamicMobilePageAct {
 	 */
 	@RequestMapping(value = "/washcar/indexPage.html", method = RequestMethod.GET)
 	public ModelAndView menuIndexPage(HttpServletRequest request,
+									  HttpServletResponse response, ModelMap model,String couponId,String carType) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv = new ModelAndView();
+		ServletContext application =request.getSession().getServletContext();
+		String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+		String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+		String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
+		String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+		CarAction.sweepParam(request,mv,appId,access_token);
+		String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=bsb1#wechat_redirect";
+		mv.setViewName("redirect:"+url);
+		return mv;
+	}
+		/**
+         * 跟路径控制
+         * @param request
+         * @param response
+         * @param model
+         * @return
+         */
+	@RequestMapping(value = "/washcar/indexOfLogin.html", method = RequestMethod.GET)
+	public ModelAndView indexOfLogin(HttpServletRequest request,
 							  HttpServletResponse response, ModelMap model,String couponId,String carType) {
 		FmUtils.FmData(request, model);
 		ModelAndView mv=new ModelAndView();
 		try {
 			mv.setViewName(MobilePageContants.FM_PAGE_MAIN);
 			//首先从缓存中获取appid
-			ServletContext application =request.getSession().getServletContext();
-			String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
-			String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
-			String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
-			String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
-			CarAction.sweepParam(request,mv,appId,access_token);
-			String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=index#wechat_redirect";
-			mv.setViewName("redirect:"+url);
 			//HttpRequest.sendGet(url,"");
 			//获取当前登录的用户id
 			Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
@@ -219,7 +231,16 @@ public class DynamicMobilePageAct {
 				//发送get请求获取openId
 				//HttpRequest.sendGet("https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=index#wechat_redirect","");
 			}else{
+				ServletContext application =request.getSession().getServletContext();
+				String appId=application.getAttribute(MobileContants.APPID_KEY)+"";
+				String appSecret=application.getAttribute(MobileContants.APPSCRET_KEY)+"";
+				String domain=application.getAttribute(MobileContants.DOMAIN_KEY)+"";
+				String access_token = GetAccessTokenUtil.getAccess_token2(appId,appSecret);
+				CarAction.sweepParam(request,mv,appId,access_token);
+				String url="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+domain+"/oauth/do.html&response_type=code&scope=snsapi_base&state=bsb1#wechat_redirect";
+				mv.setViewName("redirect:"+url);
 				//mv.setViewName(MobilePageContants.FM_USER_LOGIN);
+
 			}
 
 		} catch (Exception e) {

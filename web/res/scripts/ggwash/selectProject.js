@@ -157,7 +157,7 @@ function weixinPay(){
         alert("请填写手机号码");
         return false;
     }
-    if(name==""||name==null){
+    /**if(name==""||name==null){
         alert("请填写称呼");
         return false;
     }{
@@ -165,7 +165,7 @@ function weixinPay(){
             alert("称呼只能输入中文");
             return false;
         }
-    }
+    }**/
     if(carNo==""||carNo==null){
         alert("请填写车牌号");
         return false;
@@ -227,7 +227,7 @@ function qbpay(){
         alert("请填写手机号码");
         return false;
     }
-    if(name==""||name==null){
+    /**if(name==""||name==null){
         alert("请填写称呼");
         return false;
     }{
@@ -235,7 +235,7 @@ function qbpay(){
             alert("称呼只能输入中文");
             return false;
         }
-    }
+    }**/
     if(carNo==""||carNo==null){
         alert("请填写车牌号");
         return false;
@@ -296,7 +296,7 @@ function yhqPay(){
         alert("请填写手机号码");
         return false;
     }
-    if(name==""||name==null){
+    /**if(name==""||name==null){
         alert("请填写称呼");
         return false;
     }{
@@ -304,7 +304,7 @@ function yhqPay(){
             alert("称呼只能输入中文");
             return false;
         }
-    }
+    }**/
     if(carNo==""||carNo==null){
         alert("请填写车牌号");
         return false;

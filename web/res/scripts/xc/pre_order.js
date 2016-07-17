@@ -41,10 +41,10 @@ $( document ).ready(function(e) {
 			            alert("请填写手机号码");
 			            return false;
 			        }
-			           if(name==""||name==null){
+			          /** if(name==""||name==null){
 			            alert("请填写称呼");
 			            return false;
-			        }
+			        }**/
 			        if(carNo==""||carNo==null){
 			            alert("请填写车牌号");
 			            return false;
@@ -100,11 +100,11 @@ $( document ).ready(function(e) {
             // hideloading();
             return false;
         }
-        if(name==""||name==null){
+        /**if(name==""||name==null){
             alert("请填写称呼");
             // hideloading();
             return false;
-        }
+        }**/
         if(carNo==""||carNo==null){
             alert("请填写车牌号");
             // hideloading();
