@@ -212,11 +212,12 @@ public class SendOrderAction {
 							//发送短信通知
 							if (!StringUtil.isNullOrEmpty(order)) {
 								String domain=coreService.getValue(CodeCommon.DOMAIN);
-								String url=domain+"/renwu/order"+orderId+"/f4"+".html";
+								//String url=domain+"/renwu/order"+orderId+"/f4"+".html";
+								String url=domain+"/f/order"+orderId+".html";
 								SendMessageVCode(request, order.getMobile(), url, completeWashCarMessageKey);
 							}
 						}
-						if (CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)) {
+						if (sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_WEIXIN)) {
 							Map<String, Object> m=new HashMap<String, Object>();
 							String templateMessageId="";
 							String appid="";

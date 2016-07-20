@@ -131,24 +131,26 @@ public class CarAction {
 			queryMap.put("userId",userId);
 			queryMap.put("status",MobileContants.status_1);//限制是成功的订单
 			int count=orderService.findIsOrNotFirstOrder(queryMap);
+			System.out.println("洗车次数======================"+count);
 			if(count<=1){
 				mv.setViewName(MobilePageContants.DA_ZHUAN_PAN_PAGE);
 			}else{
 				mv.setViewName(MobilePageContants.MY_ORDER_PAGE);
+				//首先从缓存中获取order
+				ServletContext application =request.getSession().getServletContext();
+				Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
+				if(StringUtil.isNullOrEmpty(order)){
+					//如过缓存中不存在再去查询数据库
+					Map<String,Object> map=new HashMap<String, Object>();
+					map.put("id",id);
+					order=orderService.findById(map);
+				}
+				mv.addObject("order",order);
 			}
 		}else{
 			mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 		}
-		//首先从缓存中获取order
-		ServletContext application =request.getSession().getServletContext();
-		Order order= (Order) application.getAttribute(MobileContants.CURRENT_ORDER_KEY);
-		if(StringUtil.isNullOrEmpty(order)){
-			//如过缓存中不存在再去查询数据库
-			Map<String,Object> map=new HashMap<String, Object>();
-			map.put("id",id);
-			order=orderService.findById(map);
-		}
-		mv.addObject("order",order);
+
 		return mv;
 	}
 	@RequestMapping(value = "/car", method = RequestMethod.GET)
@@ -540,8 +542,9 @@ public class CarAction {
 			//判断下单次数
 			queryMap.put("status",MobileContants.status_1);//限制是成功的订单
 			int count=orderService.findIsOrNotFirstOrder(queryMap);
+			System.out.println("WACH COUNT========================================"+count);
 			if(count<=1){
-				mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+				mv.setViewName(MobilePageContants.DA_ZHUAN_PAN_PAGE);
 			}else{
 				mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
 				Map<String,Object> query=new HashMap<String,Object>();
@@ -550,7 +553,6 @@ public class CarAction {
 				Order order=orderService.findById(query);
 				mv.addObject("order",order);
 			}
-
 
 		}
 
@@ -947,7 +949,7 @@ public class CarAction {
 			}
 			}
 		//钱包余额抵扣后跳转到订单详情页面
-		String url="redirect:/order/wxpay.html?orderId="+id;
+		String url="redirect:/order/qbpay.html?orderId="+id;
 		return url;
 
 	}
