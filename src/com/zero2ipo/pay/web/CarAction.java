@@ -129,6 +129,7 @@ public class CarAction {
 			String userId=user.getUserId();
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("userId",userId);
+			queryMap.put("status",MobileContants.status_1);//限制是成功的订单
 			int count=orderService.findIsOrNotFirstOrder(queryMap);
 			if(count<=1){
 				mv.setViewName(MobilePageContants.DA_ZHUAN_PAN_PAGE);
@@ -531,12 +532,13 @@ public class CarAction {
 	public ModelAndView qbpayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
-		//判断下单次数
 		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
 		if(!StringUtil.isNullOrEmpty(user))
 		{
 			Map<String,Object> queryMap=new HashMap<String, Object>();
 			queryMap.put("userId",user.getUserId());
+			//判断下单次数
+			queryMap.put("status",MobileContants.status_1);//限制是成功的订单
 			int count=orderService.findIsOrNotFirstOrder(queryMap);
 			if(count<=1){
 				mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);

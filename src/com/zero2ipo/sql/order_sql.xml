@@ -156,7 +156,9 @@ select
 		<isNotEmpty prepend="AND" property="userId">
 			user_id=#userId#
 		</isNotEmpty>
-
+		<isNotEmpty prepend="AND" property="status">
+			order_status=#status#
+		</isNotEmpty>
 	</dynamic>
 </select>
 <!--新增-->
