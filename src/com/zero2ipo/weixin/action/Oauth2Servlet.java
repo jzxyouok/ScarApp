@@ -118,11 +118,12 @@ public class Oauth2Servlet {
                            page=MobilePageContants.MY_MONEY_PAGE;
                            //model=gkkService.initMyOrder(model,openid,page,user);
                        }
-                       if(key.equals(UrlContants.MENU_KEY_32)){//大转盘
-                           page= PluginsContants.DA_ZHUAN_PAN_PAGE;
-                           //model=gkkService.initMyOrder(model,openid,page,user);
-                       }
+
                    }
+            }
+            if(key.equals(UrlContants.MENU_KEY_32)){//大转盘
+                page= PluginsContants.DA_ZHUAN_PAN_PAGE;
+                //model=gkkService.initMyOrder(model,openid,page,user);
             }
             if(key.equals(UrlContants.MENU_KEY_21)){//洗车工登陆
                 //page=MobilePageContants.ADMIN_LOGIN_PAGE;

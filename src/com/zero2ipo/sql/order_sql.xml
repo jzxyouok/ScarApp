@@ -80,10 +80,16 @@ order by
 			count(0)
 		FROM
 		 	orders
-		where
-			user_id=#userId#
-		and
-			order_status='1'
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="AND" property="userId">
+				user_id=#userId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="openId">
+				user_id=(
+				SELECT user_id FROM users WHERE open_id=#openId# limit 0,1
+				)
+			</isNotEmpty>
+		</dynamic>
 	</select>
 <select id='findById' resultMap='orderMap'>
 select
@@ -147,6 +153,10 @@ select
 		<isNotEmpty prepend="AND" property="carNo">
 			car_num=#carNo#
 		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="userId">
+			user_id=#userId#
+		</isNotEmpty>
+
 	</dynamic>
 </select>
 <!--新增-->

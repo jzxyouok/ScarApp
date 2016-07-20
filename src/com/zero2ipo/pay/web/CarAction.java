@@ -1,5 +1,8 @@
 package com.zero2ipo.pay.web;
 
+import com.zero2ipo.SDK.config.AppConfig;
+import com.zero2ipo.SDK.lib.MESSAGEXsend;
+import com.zero2ipo.SDK.utils.ConfigLoader;
 import com.zero2ipo.car.vipcoupon.bizc.IVipCouponService;
 import com.zero2ipo.car.vipcoupon.bo.VipCoupon;
 import com.zero2ipo.common.entity.*;
@@ -122,7 +125,16 @@ public class CarAction {
 		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
 		ModelAndView mv=new ModelAndView();
 		if(!StringUtil.isNullOrEmpty(user)){
-			mv.setViewName(MobilePageContants.MY_ORDER_PAGE);
+			//判断此用户的下单次数,如果是首次下单，那么跳转到大转盘抽奖页面，否则跳转到订单详情页面
+			String userId=user.getUserId();
+			Map<String,Object> queryMap=new HashMap<String, Object>();
+			queryMap.put("userId",userId);
+			int count=orderService.findIsOrNotFirstOrder(queryMap);
+			if(count<=1){
+				mv.setViewName(MobilePageContants.DA_ZHUAN_PAN_PAGE);
+			}else{
+				mv.setViewName(MobilePageContants.MY_ORDER_PAGE);
+			}
 		}else{
 			mv.setViewName(MobilePageContants.FM_USER_LOGIN);
 		}
@@ -519,12 +531,27 @@ public class CarAction {
 	public ModelAndView qbpayPage(HttpServletRequest request, HttpServletResponse response, ModelMap model,String orderId) {
 		ModelAndView mv=new ModelAndView();
 		FmUtils.FmData(request, model);
-		mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
-		Map<String,Object> queryMap=new HashMap<String,Object>();
-		queryMap.put("id", orderId);
-		mv.addObject("orderId", orderId);
-		Order order=orderService.findById(queryMap);
-		mv.addObject("order",order);
+		//判断下单次数
+		Users user=(Users) SessionHelper.getAttribute(request, MobileContants.USER_SESSION_KEY);
+		if(!StringUtil.isNullOrEmpty(user))
+		{
+			Map<String,Object> queryMap=new HashMap<String, Object>();
+			queryMap.put("userId",user.getUserId());
+			int count=orderService.findIsOrNotFirstOrder(queryMap);
+			if(count<=1){
+				mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+			}else{
+				mv.setViewName(MobilePageContants.PAY_BY_WEIXIN_PAGE);
+				Map<String,Object> query=new HashMap<String,Object>();
+				query.put("id", orderId);
+				mv.addObject("orderId", orderId);
+				Order order=orderService.findById(query);
+				mv.addObject("order",order);
+			}
+
+
+		}
+
 		return mv;
 	}
 
@@ -1255,10 +1282,14 @@ public class CarAction {
 			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
 			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
 				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
-				if(CodeCommon.SEND_MESSAGE_DUANXIN.equals(sendMessageFlag)){
+				if(sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_DUANXIN)){
 					//发送短信通知
+					if(!StringUtil.isNullOrEmpty(order)){
+						String sendDuanXinToAdmin=coreService.getValue(CodeCommon.SEND_DUANXIN_TO_ADMIN);
+						SendMessageVCode(request,order.getMobile(),"您有一条新的派单通知，车主手机号码:"+order.getMobile()+" 车牌号:"+order.getCarNum()+" 洗车类型:"+order.getCarType(),sendDuanXinToAdmin);
+					}
 				}
-				if(CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)){
+				if(sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_WEIXIN)){
 					//发送微信通知
 					String openId=bo.getIp();//获取洗车工绑定的微信openid
 					String templateMessageId=application.getAttribute(MobileContants.PAIDAN_TEMPLATE_KEY)+"";
@@ -1382,7 +1413,29 @@ public class CarAction {
 					returnCode= coreService.send_template_message(appId + "", appsecret + "", openId, wxTemplate);
 				}
 			}
+			if(sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_DUANXIN)) {
+				String sendDuanXinToAdmin=coreService.getValue(CodeCommon.SEND_DUANXIN_TO_ADMIN);
+				SendMessageVCode(request2,order.getMobile(),"手机号:"+order.getMobile()+"车牌号:"+order.getCarNum()+",洗车类型:"+order.getCarType(),sendDuanXinToAdmin);
+			}
 		}
+	}
+		/**
+		 * 发送短信方法更改
+		 * @param request
+		 * @param telephone
+		 */
+	public void SendMessageVCode(HttpServletRequest request, String telephone,String content,String projectId) {
+		AppConfig config = ConfigLoader.load(ConfigLoader.ConfigType.Message);
+		String messageAppId=coreService.getValue(CodeCommon.MESSAGE_APPID);
+		String messageAppKey=coreService.getValue(CodeCommon.MESSAGE_APPKEY);
+		config.setAppId(messageAppId);
+		config.setAppKey(messageAppKey);
+		MESSAGEXsend submail = new MESSAGEXsend(config);
+		submail.addTo(telephone);
+		//String projectId=coreService.getValue(CodeCommon.MESSAGEKEY);
+		submail.setProject(projectId);
+		submail.addVar("var1", content);
+		submail.xsend();
 	}
 	/**
 	 * description: 解析微信通知xml
@@ -1392,7 +1445,6 @@ public class CarAction {
 	 * @author ex_yangxiaoyi
 	 * @see
 	 */
-	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	private static Map parseXmlToList2(String xml) {
 		Map retMap = new HashMap();
 		try {

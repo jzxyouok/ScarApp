@@ -41,6 +41,9 @@ public class CodeCommon {
 	public static final String AUTO_PAIDAN_FLAG="1";//自动派单标志
 	public static final String IS_SENDMESSAGE_TO_ADMIN="IS_SENDMESSAGE_TO_ADMIN";//是否开启给洗车工发送派单短信通知
 	public static final String SEND_MESSAGE_FLAG="SEND_MESSAGE_FLAG";//发送短信通知的类型
+	public static final String START_WASHCAR_DUANXIN_MESSAGE="START_WASHCAR_DUANXIN_MESSAGE";//洗车开始发送短信通知
+	public static final String COMPLETE_WASHCAR_DUANXIN_MESSAGE="COMPLETE_WASHCAR_DUANXIN_MESSAGE";//洗车结束发送短信通知
+	public static final String SEND_DUANXIN_TO_ADMIN="SEND_DUANXIN_TO_ADMIN";//给洗车工发送短信通知
 	public static final String SEND_MESSAGE_DUANXIN="duanxin";//发送短信
 	public static final String SEND_MESSAGE_WEIXIN="weixin";//发送微信
 

@@ -10,174 +10,42 @@
 <script type="text/javascript" src="${base}/html/plugins/dazhuanpan/js/jquery-2.1.1.min.js"></script>
 <script>
 	var classid = 6;//最终中奖奖品位置1-6
-	//从一个给定的数组arr中,随机返回num个不重复项
-	function getArrayItems(arr, num) {
-		//新建一个数组,将传入的数组复制过来,用于运算,而不要直接操作传入的数组;
-		var temp_array = new Array();
-		for (var index in arr) {
-			temp_array.push(arr[index]);
-		}
-		//取出的数值项,保存在此数组
-		var return_array = new Array();
-		for (var i = 0; i<num; i++) {
-			//判断如果数组还有可以取出的元素,以防下标越界
-			if (temp_array.length>0) {
-				//在数组中产生一个随机索引
-				var arrIndex = Math.floor(Math.random()*temp_array.length);
-				//将此随机索引的对应的数组元素值复制出来
-				return_array[i] = temp_array[arrIndex];
-				//然后删掉此索引的数组元素,这时候temp_array变为新的数组
-				temp_array.splice(arrIndex, 1);
-			} else {
-				//数组中数据项取完后,退出循环,比如数组本来只有10项,但要求取出20项.
-				break;
-			}
-		}
-		return return_array;
-	}
-	//测试
-	var ArrList=new Array (100);
-	for(var i=1;i<=100;i++){
-		ArrList[i]=i;
-	}
 	function RandomChouJiang(){
-		var num=Math.ceil(Math.random()*100);//随机抽取1-100数
+		var num=Math.ceil(Math.random()*1000);//随机抽取1-100数
 		//alert("你抽的号码为==="+num);
-		if(num<=100&&num>95){
+		if(num<=1000&&num>999){
 			classid=3;
 			$("#jp").html("一次整车打蜡");
 			$("#content").val("一次整车打蜡");
 			$("#money").val("88");
 			$("#jpType").val(1);//代表优惠券
 		}
-		if(num<=95&&num>85){
+		if(num<=999&&num>990){
 			classid=4;
 			$("#jp").html("一次整车洗");
 			$("#content").val("一次整车洗");
 			$("#money").val("30");
 			$("#jpType").val(1);//代表优惠券
 		}
-		if(num<=85&&num>45){
-			classid=5;
-			flg=false;
-			$("#jp").html("20元代金券");
-			$("#content").val("20元代金券");
-			$("#money").val("20");
-			$("#jpType").val(0);//代表钱包
-		}
-		if(num<=45&&num>0){
+		if(num<=990&&num>400){
+			classid=6;
 			$("#jp").html("10元代金券");
 			$("#content").val("10元代金券");
 			$("#money").val("10");
 			$("#jpType").val(0);//代表优惠券
 		}
-
-	}
-	function getZhongJiang(){
-		//var arrayOne = getArrayItems(ArrList, 2);
-		//var arraySox=getArrayItems(ArrList,37);
-		//假设1等奖中奖号码为1 2等奖中奖号码为2 三等奖中奖号码为3，4等级中奖号码为4 5等奖中奖号码为5 6等奖中奖号码为6
-		var one = 1;
-		var two = 2;
-		var three = 3;
-		var four = 4;
-		var five = 5;
-		var six = 6;
-		var flg=true;
-		/*for (var i = 0; i < arrayOne.length; i++) {
-			if (arrayOne[i] == one) {
-				classid = 1;
-				flg=false;
-			}
-		}
-		alert("1等奖抽取："+arrayOne);*/
-		//如果没有中1等奖，再抽二等奖
-		/*if(flg){
-			var arrayTwo = getArrayItems(ArrList, 5-2);
-			//抽完之后，把1等奖抽的数字也放进来
-			for(var i=0;i<arrayOne.length;i++){
-				arrayTwo.push(arrayOne[i]);
-			}
-			for (var i = 0; i < arrayTwo.length; i++){
-				if (arrayTwo[i] == two) {
-					classid = 2;
-					flg=false;
-				}
-			}
-		}
-		alert("二等奖抽取:"+arrayTwo);*/
-		//还没中，再抽三等奖
-		if(flg){
-			var arrayThree = getArrayItems(ArrList,5);//中奖概率5%，随机抽取5个数
-			//同时把二等奖抽出来的数字，也放到这里来
-			/*for(var i=0;i<arrayTwo.length;i++){
-					arrayThree.push(arrayTwo[i])
-				}*/
-
-		for (var i = 0; i < arrayThree.length; i++)
-			{
-				if(arrayThree[i]==three){
-					classid=3;
-					flg=false;
-					$("#jp").html("一次整车打蜡");
-					$("#content").val("一次整车打蜡");
-					$("#money").val("88");
-					$("#jpType").val(1);//代表优惠券
-				}
-			}
-		}
-//如果三等奖没中，再抽四等奖
-		if(flg){
-			var arrayFour = getArrayItems(ArrList, 10-arrayThree.length);//中奖概率为10%，随机抽取10个
-			for(var i=0;i<arrayThree.length;i++){
-				arrayFour.push(arrayThree[i]);
-			}
-			for (var i = 0; i < arrayFour.length; i++)
-			{
-				if(arrayFour[i]==four){
-					classid=4;
-					flg=false;
-					$("#jp").html("一次整车洗");
-					$("#content").val("一次整车洗");
-					$("#money").val("30");
-					$("#jpType").val(1);//代表优惠券
-
-				}
-			}
-		}
-		//alert("4等奖抽取:"+arrayFour);
-
-		//如果四等奖不中，再抽五等奖
-if(flg){
-	var arrayThree = getArrayItems(ArrList, 0);//中奖概率为8%，随机抽取8个
-
-	var arrayFive = getArrayItems(ArrList, 40-arrayThree.length);//中奖概率是30%
-	for(var i=0;i<arrayThree.length;i++){
-		arrayFive.push(arrayThree[i]);
-	}
-	for (var i = 0; i < arrayFive.length; i++)
-	{
-		if(arrayFive[i]==five){
+		if(num<=400&&num>0){
 			classid=5;
 			flg=false;
 			$("#jp").html("20元代金券");
 			$("#content").val("20元代金券");
 			$("#money").val("20");
 			$("#jpType").val(0);//代表钱包
+
 		}
+
 	}
 
-}
-if(flg){
-	$("#jp").html("10元代金券");
-	$("#content").val("10元代金券");
-	$("#money").val("10");
-	$("#jpType").val(0);//代表优惠券
-
-
-}
-$("#content").val($("#jp").html());
-	}
 function choujiangStart(){
 	//getZhongJiang();
 	RandomChouJiang();
@@ -198,9 +66,6 @@ function choujiangStart(){
 }
 var isDisableBtn=true;
 $(document).ready(function(e) {
-
-	//getZhongJiang();
-
 	$(".lotCenter").click(function(){
 		var Pnum=$(".prize").length;
 		//判断是否抽过奖
@@ -217,7 +82,7 @@ $(document).ready(function(e) {
 				success:function(r){
 					if(r.result==0){
 						$("#msgupdata").hide();
-						$("#info").html("您还没注册,请先注册后再抽奖");
+						$("#info").html("您还没下过单,下单1次后才可以抽奖");
 						$("#msgend").fadeIn(300);
 						isDisableBtn=true;
 					}else if(r.result==2){
@@ -237,7 +102,6 @@ $(document).ready(function(e) {
 
 	});
 	var Pnum=$(".prize").length;
-
 	var deg=360/Pnum;
 	for(var i=1;i<=Pnum;i++){
 		var numdeg=deg*i-deg;

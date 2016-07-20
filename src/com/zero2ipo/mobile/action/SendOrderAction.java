@@ -1,16 +1,17 @@
 package com.zero2ipo.mobile.action;
 
+import com.zero2ipo.SDK.config.AppConfig;
+import com.zero2ipo.SDK.lib.MESSAGEXsend;
+import com.zero2ipo.SDK.utils.ConfigLoader;
 import com.zero2ipo.common.domain.Upload;
 import com.zero2ipo.common.entity.*;
 import com.zero2ipo.common.entity.app.Users;
-import com.zero2ipo.core.MobileContants;
 import com.zero2ipo.framework.util.DateUtil;
 import com.zero2ipo.framework.util.StringUtil;
 import com.zero2ipo.mobile.services.bsb.IOrderService;
 import com.zero2ipo.mobile.services.bsb.ISendOrderService;
 import com.zero2ipo.mobile.services.config.IConfManage;
 import com.zero2ipo.mobile.services.user.IUserServices;
-import com.zero2ipo.mobile.web.SessionHelper;
 import com.zero2ipo.weixin.services.message.ICoreService;
 import com.zero2ipo.weixin.templateMessage.TemplateData;
 import com.zero2ipo.weixin.templateMessage.WxTemplate;
@@ -59,18 +60,14 @@ public class SendOrderAction {
 	 */
 	@RequestMapping(value = "/updateSendOrder.html", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> registerStep2POST(HttpServletRequest request,
+	public Map<String, Object> completeWashCar(HttpServletRequest request,
 									HttpServletResponse response, ModelMap model, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
-		//FmUtils.FmData(request, model);
 		String orderId=sendOrder.getOrderId();
-		//ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
-		boolean flag=registerStep2(request,response,model,sendOrder);
+		boolean flag=completeWashCar(request,response,model,sendOrder);
 		if(flag){
 			resultMap.put("orderId", orderId);
 			resultMap.put("success",true);
-			//redirectAttributes.addFlashAttribute("success",true);
-			//redirectAttributes.addFlashAttribute("orderId",orderId);
 		}
 		//String url="renwu/order"+orderId+"/f4"+".html";
 		//return "redirect:/"+url;
@@ -83,64 +80,94 @@ public class SendOrderAction {
 	@ResponseBody
 	public Map<String, Object>  updateSendOrderStatus(HttpServletRequest request,
 										HttpServletResponse response, ModelMap model, SendOrder sendOrder,RedirectAttributes redirectAttributes ) {
-		//FmUtils.FmData(request, model);
 		String orderId=sendOrder.getOrderId();
-		//ModelAndView mv=new ModelAndView("redirect:/renwu/order"+orderId+".html");
 		Map<String, Object> resultMap=new HashMap<String, Object>();
 		boolean flag=startWashCar(request, response, model, sendOrder);
 		if(flag){
 			resultMap.put("orderId", orderId);
 			resultMap.put("success",true);
-			//redirectAttributes.addFlashAttribute("success",true);
-			//redirectAttributes.addFlashAttribute("orderId",orderId);
 			//根据订单id查询订单信息
 			Map<String,Object> orderMap=new HashMap<String, Object>();
 			orderMap.put("id",orderId);
 			Order order=orderService.findById(orderMap);
-			String keyword1="";
-			String keyword2="";
-			String keyword3="";
-			String keyword4="";
-			if(!StringUtil.isNullOrEmpty(order)){
-				keyword1=order.getOutTradeNo();
-				keyword2=order.getWashTime();
-				keyword3=order.getWashType();
-			}
-			//根据订单id查询洗车工信息姓名和手机号码
-			Map<String, Object> queryMap=new HashMap<String, Object>();
-			queryMap.put("orderId",orderId);
-			AdminBo adminBo=userServices.findAdminLoginMessage(queryMap);
-			String name="";
-			String mobile="";
-			if(!StringUtil.isNullOrEmpty(adminBo)){
-				name=adminBo.getUserName();
-
-				mobile=adminBo.getMobile();
-				keyword4=name+" "+mobile;
-				//发送洗车开始通知
-				ConfValue confValue;
-				//是否test模板消息
-				String openId=getValue(CodeCommon.TEST_TEMPLATE_MESSAGE);
-				if(StringUtil.isNullOrEmpty(openId)||"null".equals(openId)){
-					Users userEntity=userServices.findUserByMap(orderMap);
-					if(!StringUtil.isNullOrEmpty(userEntity)){
-						openId=userEntity.getOpenId();
+			String domain=getValue(CodeCommon.DOMAIN);
+			String url=domain+"/f/order"+orderId+".html";
+			//发送短信通知
+			String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+			if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)){//开启给管理发送派单短信通知
+				String sendMessageFlag=coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+				String startWashCarMessageKey=coreService.getValue(CodeCommon.START_WASHCAR_DUANXIN_MESSAGE);
+				if(sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_DUANXIN)){
+					//发送短信通知
+					if(!StringUtil.isNullOrEmpty(order)){
+						String content=url;
+						SendMessageVCode(request,order.getMobile(),content,startWashCarMessageKey);
 					}
 				}
-				String domain=getValue(CodeCommon.DOMAIN);
-				String url=domain+"/f/order"+orderId+".html";
-				String templateMessageId=getValue(CodeCommon.WASH_CAR_START_MESSAGE);
-				WxTemplate wxTemplate=getStartWxTemplate(openId, templateMessageId, url, keyword1, keyword2,keyword3,keyword4);
-				String appid=getValue(CodeCommon.APPID);
-				String appscret=getValue(CodeCommon.APPSECRET);
-				coreService.send_template_message(appid,appscret,openId,wxTemplate);
+				if(sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_WEIXIN)) {
+					String keyword1 = "";
+					String keyword2 = "";
+					String keyword3 = "";
+					String keyword4 = "";
+					if (!StringUtil.isNullOrEmpty(order)) {
+						keyword1 = order.getOutTradeNo();
+						keyword2 = order.getWashTime();
+						keyword3 = order.getWashType();
+					}
+					//根据订单id查询洗车工信息姓名和手机号码
+					Map<String, Object> queryMap = new HashMap<String, Object>();
+					queryMap.put("orderId", orderId);
+					AdminBo adminBo = userServices.findAdminLoginMessage(queryMap);
+					String name = "";
+					String mobile = "";
+					if (!StringUtil.isNullOrEmpty(adminBo)) {
+						name = adminBo.getUserName();
+						mobile = adminBo.getMobile();
+						keyword4 = name + " " + mobile;
+						//发送洗车开始通知
+						ConfValue confValue;
+						//是否test模板消息
+						String openId = getValue(CodeCommon.TEST_TEMPLATE_MESSAGE);
+						if (StringUtil.isNullOrEmpty(openId) || "null".equals(openId)) {
+							Users userEntity = userServices.findUserByMap(orderMap);
+							if (!StringUtil.isNullOrEmpty(userEntity)) {
+								openId = userEntity.getOpenId();
+							}
+						}
+
+						String templateMessageId = getValue(CodeCommon.WASH_CAR_START_MESSAGE);
+						WxTemplate wxTemplate = getStartWxTemplate(openId, templateMessageId, url, keyword1, keyword2, keyword3, keyword4);
+						String appid = getValue(CodeCommon.APPID);
+						String appscret = getValue(CodeCommon.APPSECRET);
+						coreService.send_template_message(appid, appscret, openId, wxTemplate);
+					}
+
+				}
+
 			}
 		}
 		//String url="renwu/order"+orderId+"/f3"+".html";
 		//return "redirect:/"+url;
 		return resultMap;
 	}
-
+/**
+ * 发送短信方法更改
+ * @param request
+ * @param telephone
+ */
+	public void SendMessageVCode(HttpServletRequest request, String telephone,String content,String projectId) {
+		AppConfig config = ConfigLoader.load(ConfigLoader.ConfigType.Message);
+		String messageAppId=coreService.getValue(CodeCommon.MESSAGE_APPID);
+		String messageAppKey=coreService.getValue(CodeCommon.MESSAGE_APPKEY);
+		config.setAppId(messageAppId);
+		config.setAppKey(messageAppKey);
+		MESSAGEXsend submail = new MESSAGEXsend(config);
+		submail.addTo(telephone);
+		//String projectId=coreService.getValue(CodeCommon.MESSAGEKEY);
+		submail.setProject(projectId);
+		submail.addVar("var1", content);
+		submail.xsend();
+	}
 	/**
 	 * 根据key获取value
 	 * @param key
@@ -162,94 +189,66 @@ public class SendOrderAction {
 	 * @param model
 	 * @return
 	 */
-	public boolean registerStep2(HttpServletRequest request,
+	public boolean completeWashCar(HttpServletRequest request,
 								 HttpServletResponse response, ModelMap model,SendOrder sendOrder) {
 
-		String userCardUrl = "";
-		String idCardUrl = "";
 		String orderId=sendOrder.getOrderId();
-
 		try {
-			//首先根据orderId查询派单任务
-/*
-			String uploadDirectory = upload.getUploadFileDirectory();
-			if(userCardFile != null && !"".equals(userCardFile)&&userCardFile.split("upload").length==1)
-			{
-				String userCardPath = uploadDirectory + userCardFile;
-				upload.requestDomainUpload(request, userCardPath);
-				userCardUrl = upload.getStringValue("url");
-				upload.removeLocationUploadFile(userCardPath);
-			}else {
-				userCardUrl=userCardFile;
-			}
-			if(idCardFile != null && !"".equals(idCardFile)&&idCardFile.split("upload").length==1)
-			{
-				String idCardPath = uploadDirectory + idCardFile;
-				//上传名片与身份证图片给远程服务器
-				upload.requestDomainUpload(request, idCardPath);
-				idCardUrl = upload.getStringValue("url");
-				//上传后，删除本地存储文件
-				upload.removeLocationUploadFile(idCardPath);
-			}else {
-				idCardUrl=idCardFile;
-			}*/
-
-
-			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
-			//if(o != null )
-			//{
-				//UserEntity user = (UserEntity)o;
-				//user.setUserRegisterStep(3);
-				/*SendOrder  sendOrder=new SendOrder();*/
-				/*if(userCardUrl != null && !"".equals(userCardUrl))
-				{
-					sendOrder.setBeforePhoto(userCardUrl);
-				}
-				if(idCardUrl != null && !"".equals(idCardUrl))
-				{
-					sendOrder.setAfterPhoto(idCardUrl);
-				}*/
 				if(!StringUtil.isNullOrEmpty(sendOrder)){
-					//sendOrder.setOrderId(orderId);
-					//update sender status
 					sendOrder.setStatus("4");
-					//sendOrder.setContent(content);
 				}
-
 				boolean u = sendOrderService.updSendOrder(sendOrder);
 				if(u)
 				{
-					//SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, u);
-					Map<String, Object> m=new HashMap<String, Object>();
-					String templateMessageId="";
-					String appid="";
-					String appscret="";
-					m.put("confKey", CodeCommon.WASH_CAR_COMPLETE_MESSAGE);
-					ConfValue confValue=confManage.findConfValueByMap(m);
-					templateMessageId=confValue.getConfValue();
-					m.put("confKey", CodeCommon.APPID);
-					confValue=confManage.findConfValueByMap(m);
-					appid=confValue.getConfValue();
-					m.put("confKey", CodeCommon.APPSECRET);
-					confValue=confManage.findConfValueByMap(m);
-					appscret=confValue.getConfValue();
-					if(!StringUtil.isNullOrEmpty(confValue)){
-						String openId="";
-						Map<String, Object> queryMap=new HashMap<String, Object>();
-						queryMap.put("id", orderId);
-						Users userEntity=userServices.findUserByMap(queryMap);
-						if(!StringUtil.isNullOrEmpty(userEntity)){
-							openId=userEntity.getOpenId();
+					//发送短信通知
+					String isSendMessage=coreService.getValue(CodeCommon.IS_SENDMESSAGE_TO_ADMIN);
+					if(CodeCommon.IS_SENDMESSAGE_TO_ADMIN_FLAG.equals(isSendMessage)) {//开启给管理发送派单短信通知
+						String sendMessageFlag = coreService.getValue(CodeCommon.SEND_MESSAGE_FLAG);
+						String completeWashCarMessageKey = coreService.getValue(CodeCommon.COMPLETE_WASHCAR_DUANXIN_MESSAGE);
+						if (sendMessageFlag.contains(CodeCommon.SEND_MESSAGE_DUANXIN)) {
+							Map<String,Object> orderMap=new HashMap<String, Object>();
+							orderMap.put("id",orderId);
+							Order order=orderService.findById(orderMap);
+							//发送短信通知
+							if (!StringUtil.isNullOrEmpty(order)) {
+								String domain=coreService.getValue(CodeCommon.DOMAIN);
+								String url=domain+"/renwu/order"+orderId+"/f4"+".html";
+								SendMessageVCode(request, order.getMobile(), url, completeWashCarMessageKey);
+							}
 						}
-						SendTemplateMessage(orderId, m, templateMessageId,
-								appid, appscret, openId);
+						if (CodeCommon.SEND_MESSAGE_WEIXIN.equals(sendMessageFlag)) {
+							Map<String, Object> m=new HashMap<String, Object>();
+							String templateMessageId="";
+							String appid="";
+							String appscret="";
+							m.put("confKey", CodeCommon.WASH_CAR_COMPLETE_MESSAGE);
+							ConfValue confValue=confManage.findConfValueByMap(m);
+							templateMessageId=confValue.getConfValue();
+							m.put("confKey", CodeCommon.APPID);
+							confValue=confManage.findConfValueByMap(m);
+							appid=confValue.getConfValue();
+							m.put("confKey", CodeCommon.APPSECRET);
+							confValue=confManage.findConfValueByMap(m);
+							appscret=confValue.getConfValue();
+							if(!StringUtil.isNullOrEmpty(confValue)){
+								String openId="";
+								Map<String, Object> queryMap=new HashMap<String, Object>();
+								queryMap.put("id", orderId);
+								Users userEntity=userServices.findUserByMap(queryMap);
+								if(!StringUtil.isNullOrEmpty(userEntity)){
+									openId=userEntity.getOpenId();
+								}
+								SendTemplateMessage(orderId, m, templateMessageId,
+										appid, appscret, openId);
 
+							}
+
+						}
 					}
+
 
 					return u;
 				}
-			//}
-
 		}  catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -266,92 +265,12 @@ public class SendOrderAction {
 	 */
 	public boolean startWashCar(HttpServletRequest request,
 								 HttpServletResponse response, ModelMap model, SendOrder sendOrder) {
-
-		String userCardUrl = "";
-		String idCardUrl = "";
 		boolean flg=false;
-
 		try {
-			/*//首先根据orderId查询派单任务
-
-			String uploadDirectory = upload.getUploadFileDirectory();
-			if(userCardFile != null && !"".equals(userCardFile)&&userCardFile.split("upload").length==1)
-			{
-				String userCardPath = uploadDirectory + userCardFile;
-				upload.requestDomainUpload(request, userCardPath);
-				userCardUrl = upload.getStringValue("url");
-				upload.removeLocationUploadFile(userCardPath);
-			}else {
-				userCardUrl=userCardFile;
-			}
-			if(idCardFile != null && !"".equals(idCardFile)&&idCardFile.split("upload").length==1)
-			{
-				String idCardPath = uploadDirectory + idCardFile;
-				//上传名片与身份证图片给远程服务器
-				upload.requestDomainUpload(request, idCardPath);
-				idCardUrl = upload.getStringValue("url");
-				//上传后，删除本地存储文件
-				upload.removeLocationUploadFile(idCardPath);
-			}else {
-				idCardUrl=idCardFile;
-			}
-*/
-
-			Object o = SessionHelper.getAttribute(request, MobileContants.ADMIN_SESSION_KEY);
-			//if(o != null )
-			//{
-				//UserEntity user = (UserEntity)o;
-				//user.setUserRegisterStep(3);
-			/*	SendOrder  sendOrder=new SendOrder();
-				if(userCardUrl != null && !"".equals(userCardUrl))
-				{
-					sendOrder.setBeforePhoto(userCardUrl);
-				}
-				if(idCardUrl != null && !"".equals(idCardUrl))
-				{
-					sendOrder.setAfterPhoto(idCardUrl);
-				}*/
 				if(!StringUtil.isNullOrEmpty(sendOrder)){
-					//sendOrder.setOrderId(orderId);
-					//update sender status
 					sendOrder.setStatus("3");
-					//sendOrder.setContent(content);
 				}
-
 				flg = sendOrderService.updSendOrder(sendOrder);
-			/*	if(u)
-				{
-					//SessionHelper.setAttribute(request, MobileContants.USER_SESSION_KEY, u);
-					Map<String, Object> m=new HashMap<String, Object>();
-					String templateMessageId="";
-					String appid="";
-					String appscret="";
-					m.put("confKey", CodeCommon.WASH_CAR_COMPLETE_MESSAGE);
-					ConfValue confValue=confManage.findConfValueByMap(m);
-					templateMessageId=confValue.getConfValue();
-					m.put("confKey", CodeCommon.APPID);
-					confValue=confManage.findConfValueByMap(m);
-					appid=confValue.getConfValue();
-					m.put("confKey", CodeCommon.APPSECRET);
-					confValue=confManage.findConfValueByMap(m);
-					appscret=confValue.getConfValue();
-					if(!StringUtil.isNullOrEmpty(confValue)){
-						String openId="";
-						Map<String, Object> queryMap=new HashMap<String, Object>();
-						queryMap.put("id", orderId);
-						Users userEntity=userServices.findUserByMap(queryMap);
-						if(!StringUtil.isNullOrEmpty(userEntity)){
-							openId=userEntity.getOpenId();
-						}
-						SendTemplateMessage(orderId, m, templateMessageId,
-								appid, appscret, openId);
-
-					}
-
-					return u;
-				}*/
-			//}
-
 		}  catch (Exception e) {
 			e.printStackTrace();
 		}

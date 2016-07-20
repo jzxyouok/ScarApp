@@ -74,9 +74,9 @@ function onError(data) {
 }
 function initLocation(){
 
-	if(''==washAddr||null==washAddr||"定位中，请稍后......"==washAddr) {
+	//if(''==washAddr||null==washAddr||"定位中，请稍后......"==washAddr) {
 		loadMapData();
-	}
+	//}
 
 }
 

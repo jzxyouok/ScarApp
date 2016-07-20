@@ -36,7 +36,7 @@ public class SendOrderDaoImpl extends IbatisBaseDao implements ISendOrderDao{
 	 */
 	@Override
 	public boolean updSendOrder(SendOrder sendOrder) {
-		boolean flag=false;
+		boolean flag=true;
 		try {
 			this.update(UPDATE_SEND_ORDER, sendOrder);
 			//修改任务成功之后，修改订单的派单状态
@@ -45,8 +45,8 @@ public class SendOrderDaoImpl extends IbatisBaseDao implements ISendOrderDao{
 			order.setId(Integer.parseInt(sendOrder.getOrderId()));
 			order.setOrderStatus(MobileContants.status_1);//洗车完毕后,修改订单的支付状态为已支付
 			this.update(UPDATE_ORDER, order);
-			flag=true;
 		} catch (Exception e) {
+			flag=false;
 			e.printStackTrace();
 		}
 		return flag;

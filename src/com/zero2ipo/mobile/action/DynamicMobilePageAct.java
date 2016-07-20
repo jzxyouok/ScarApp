@@ -510,6 +510,21 @@ public class DynamicMobilePageAct {
 		mv.setViewName(MobilePageContants.RESET_PASSWORD_PAGE);
 		return mv;
 	}
+	/**
+	 * qq客服
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/qq.html", method = RequestMethod.GET)
+	public ModelAndView qqKefuPage(HttpServletRequest request,
+									  HttpServletResponse response, ModelMap model) {
+		FmUtils.FmData(request, model);
+		ModelAndView mv=new ModelAndView();
+		mv.setViewName("mobile/qq/qq");
+		return mv;
+	}
 
 	/**
 	 * 单页资源请求处理

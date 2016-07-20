@@ -80,7 +80,7 @@ public class PluginsPageAct {
 				openId=MobileContants.DEFAULT_OPEN_ID;
 			}
 			map.put("openId",openId);
-			//首先判断此用户是否注册
+			//首先判断此用户是否下过单
 			int isZhuCe=userServices.findUserByMapCount(map);
 			if(isZhuCe==0){
 				result.put("result", MobileContants.FLG_0);
